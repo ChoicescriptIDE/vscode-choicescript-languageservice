@@ -47,7 +47,10 @@ export enum TokenType {
 	Comment,
 	SingleLineComment,
 	EOF,
-	CustomToken
+	CustomToken,
+	Builtin,
+	Invalid,
+	Word
 }
 
 export interface IToken {
@@ -137,7 +140,13 @@ export class MultiLineStream {
 }
 
 const _a = 'a'.charCodeAt(0);
+const _c = 'c'.charCodeAt(0);
+const _e = 'e'.charCodeAt(0);
 const _f = 'f'.charCodeAt(0);
+const _m = 'm'.charCodeAt(0);
+const _n = 'n'.charCodeAt(0);
+const _o = 'o'.charCodeAt(0);
+const _t = 't'.charCodeAt(0);
 const _z = 'z'.charCodeAt(0);
 const _A = 'A'.charCodeAt(0);
 const _F = 'F'.charCodeAt(0);
@@ -270,114 +279,69 @@ export class Scanner {
 	protected scanNext(offset: number): IToken {
 
 		// CDO <!--
-		if (this.stream.advanceIfChars([_LAN, _BNG, _MIN, _MIN])) {
-			return this.finishToken(offset, TokenType.CDO);
+		if (this.stream.advanceIfChars([_MUL, _c, _o, _m, _m, _e, _n, _t])) {
+			var n = this.stream.advanceWhileChar(function (ch) {
+				return !(ch === _LFD || ch === _NWL || ch === _CAR);
+			});
+			var t = this.finishToken(offset, TokenType.SingleLineComment);
+			return (n > 0) ? t : null;
 		}
 
-		// CDC -->
-		if (this.stream.advanceIfChars([_MIN, _MIN, _RAN])) {
-			return this.finishToken(offset, TokenType.CDC);
-		}
+		var content = [];
 
-		let content: string[] = [];
-		if (this.ident(content)) {
-			return this.finishToken(offset, TokenType.Ident, content.join(''));
-		}
-
-		// at-keyword
-		if (this.stream.advanceIfChar(_ATS)) {
-			content = ['@'];
+		if (this.stream.advanceIfChar(_MUL)) {
+			content = ['*'];
 			if (this._name(content)) {
-				let keywordText = content.join('');
-				if (keywordText === '@charset') {
-					return this.finishToken(offset, TokenType.Charset, keywordText);
-				}
-				return this.finishToken(offset, TokenType.AtKeyword, keywordText);
-			} else {
+				return this.finishToken(offset, TokenType.Builtin, content.join(''));
+			} else if (content.length === 1) {
 				return this.finishToken(offset, TokenType.Delim);
 			}
+			else {
+				return this.finishToken(offset, TokenType.Invalid, content.join(''));
+			}
 		}
-
 		// hash
 		if (this.stream.advanceIfChar(_HSH)) {
 			content = ['#'];
 			if (this._name(content)) {
 				return this.finishToken(offset, TokenType.Hash, content.join(''));
-			} else {
+			}
+			else {
 				return this.finishToken(offset, TokenType.Delim);
 			}
 		}
-
 		// Important
 		if (this.stream.advanceIfChar(_BNG)) {
 			return this.finishToken(offset, TokenType.Exclamation);
 		}
-
 		// Numbers
 		if (this._number()) {
-
-			let pos = this.stream.pos();
+			var pos = this.stream.pos();
 			content = [this.stream.substring(offset, pos)];
 			if (this.stream.advanceIfChar(_PRC)) {
 				// Percentage 43%
 				return this.finishToken(offset, TokenType.Percentage);
-			} else if (this.ident(content)) {
-				let dim = this.stream.substring(pos).toLowerCase();
-				let tokenType = <TokenType>staticUnitTable[dim];
-				if (typeof tokenType !== 'undefined') {
+			}
+			else if (this.ident(content)) {
+				var dim = this.stream.substring(pos).toLowerCase();
+				var tokenType_1 = staticUnitTable[dim];
+				if (typeof tokenType_1 !== 'undefined') {
 					// Known dimension 43px
-					return this.finishToken(offset, tokenType, content.join(''));
-				} else {
+					return this.finishToken(offset, tokenType_1, content.join(''));
+				}
+				else {
 					// Unknown dimension 43ft
 					return this.finishToken(offset, TokenType.Dimension, content.join(''));
 				}
 			}
-
 			return this.finishToken(offset, TokenType.Num);
 		}
-
-		// String, BadString
-		content = [];
-		let tokenType = this._string(content);
-		if (tokenType !== null) {
-			return this.finishToken(offset, tokenType, content.join(''));
-		}
-
-		// single character tokens
-		tokenType = <TokenType>staticTokenTable[this.stream.peekChar()];
-		if (typeof tokenType !== 'undefined') {
-			this.stream.advance(1);
-			return this.finishToken(offset, tokenType);
-		}
-
-		// includes ~=
-		if (this.stream.peekChar(0) === _TLD && this.stream.peekChar(1) === _EQS) {
-			this.stream.advance(2);
-			return this.finishToken(offset, TokenType.Includes);
-		}
-
-		// DashMatch |=
-		if (this.stream.peekChar(0) === _PIP && this.stream.peekChar(1) === _EQS) {
-			this.stream.advance(2);
-			return this.finishToken(offset, TokenType.Dashmatch);
-		}
-
-		// Substring operator *=
-		if (this.stream.peekChar(0) === _MUL && this.stream.peekChar(1) === _EQS) {
-			this.stream.advance(2);
-			return this.finishToken(offset, TokenType.SubstringOperator);
-		}
-
-		// Substring operator ^=
-		if (this.stream.peekChar(0) === _HAT && this.stream.peekChar(1) === _EQS) {
-			this.stream.advance(2);
-			return this.finishToken(offset, TokenType.PrefixOperator);
-		}
-
-		// Substring operator $=
-		if (this.stream.peekChar(0) === _DLR && this.stream.peekChar(1) === _EQS) {
-			this.stream.advance(2);
-			return this.finishToken(offset, TokenType.SuffixOperator);
+		// Word
+		if (this._word()) {
+			return this.finishToken(offset, TokenType.Word);
+		} else {
+			this.stream.nextChar();
+			return this.finishToken(offset, TokenType.Delim);
 		}
 
 		// Delim
@@ -449,6 +413,19 @@ export class Scanner {
 			this.stream.advance(npeek + 1);
 			this.stream.advanceWhileChar((ch) => {
 				return ch >= _0 && ch <= _9 || npeek === 0 && ch === _DOT;
+			});
+			return true;
+		}
+		return false;
+	}
+
+	private _word(): boolean {
+		let npeek = 0, ch: number;
+		ch = this.stream.peekChar(npeek);
+		if ((ch >= _A && ch <= _Z) || (ch >= _a && ch <= _z)) {
+			this.stream.advance(npeek + 1);
+			this.stream.advanceWhileChar(function (ch) {
+				return ((ch >= _A && ch <= _Z) || (ch >= _a && ch <= _z));
 			});
 			return true;
 		}

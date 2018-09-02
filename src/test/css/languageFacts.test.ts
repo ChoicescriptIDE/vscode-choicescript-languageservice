@@ -5,7 +5,7 @@
 'use strict';
 
 import * as assert from 'assert';
-import { isColorValue, getColorValue, getBrowserLabel, getProperties, colorFrom256RGB, colorFromHex, hexDigit, hslFromColor, HSLA } from '../../services/languageFacts';
+import { isColorValue, getColorValue, colorFrom256RGB, colorFromHex, hexDigit, hslFromColor, HSLA } from '../../services/languageFacts';
 import { Parser } from '../../parser/cssParser';
 import * as nodes from '../../parser/cssNodes';
 import { TextDocument, Color } from 'vscode-languageserver-types';
@@ -57,32 +57,6 @@ function assertHSLValue(actual: HSLA, expected: HSLA) {
 
 
 suite('CSS - Language Facts', () => {
-
-	test('properties', function () {
-		let properties = getProperties();
-		let alignLast = properties['text-align-last'];
-
-		assert.ok(alignLast !== null);
-		assert.equal(alignLast.name, 'text-align-last');
-		let b = alignLast.browsers;
-		assert.equal(b['FF'], '49');
-		assert.equal(b['E'], '12');
-		assert.equal(b['C'], '47');
-		assert.equal(b['count'], 5);
-
-		assert.equal(getBrowserLabel(alignLast.browsers), 'Edge 12, Firefox 49, Chrome 47, IE, Opera');
-
-		let r = alignLast.restrictions;
-
-		assert.equal(r.length, 1);
-		assert.equal(r[0], 'enum');
-
-		let v = alignLast.values;
-		assert.equal(v.length, 5);
-		assert.equal(v[0].name, 'auto');
-		assert.equal(v[0].browsers.all, true);
-		assert.equal(v[0].browsers.count, Number.MAX_VALUE);
-	});
 
 	test('is color', function () {
 		let parser = new Parser();

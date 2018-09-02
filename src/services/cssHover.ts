@@ -25,6 +25,17 @@ export class CSSHover {
 
 		for (let i = 0; i < nodepath.length; i++) {
 			let node = nodepath[i];
+			if (node.type === nodes.NodeType.Builtin) {
+				var propertyName = node.getText().slice(1, node.getText().length);
+				var builtins = languageFacts.getBuiltins();
+				var index = builtins.map(function(cmd) { return cmd.name; } ).indexOf(propertyName);
+				if (index !== -1) {
+					return {
+						contents: builtins[index].description,
+						range: getRange(node)
+					};  
+				}
+			}
 			if (node instanceof nodes.Selector) {
 				return {
 					contents: selectorToMarkedString(<nodes.Selector>node),
@@ -36,26 +47,6 @@ export class CSSHover {
 					contents: simpleSelectorToMarkedString(<nodes.SimpleSelector>node),
 					range: getRange(node)
 				};
-			}
-			if (node instanceof nodes.Declaration) {
-				let propertyName = node.getFullPropertyName();
-				let entry = languageFacts.getProperties()[propertyName];
-				if (entry) {
-					let contents: MarkedString[] = [];
-					if (entry.description) {
-						contents.push(MarkedString.fromPlainText(entry.description));
-					}
-					let browserLabel = languageFacts.getBrowserLabel(entry.browsers);
-					if (browserLabel) {
-						contents.push(MarkedString.fromPlainText(browserLabel));
-					}
-					if (contents.length) {
-						return {
-							contents: contents,
-							range: getRange(node)
-						};
-					}
-				}
 			}
 		}
 

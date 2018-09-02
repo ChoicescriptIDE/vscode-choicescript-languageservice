@@ -13,14 +13,8 @@ import { Parser } from './parser/cssParser';
 import { CSSCompletion } from './services/cssCompletion';
 import { CSSHover } from './services/cssHover';
 import { CSSNavigation } from './services/cssNavigation';
-import { CSSCodeActions } from './services/cssCodeActions';
-import { CSSValidation } from './services/cssValidation';
+import { csSpellCheck } from './services/csSpellCheck';
 
-import { SCSSParser } from './parser/scssParser';
-import { SCSSCompletion } from './services/scssCompletion';
-import { LESSParser } from './parser/lessParser';
-import { LESSCompletion } from './services/lessCompletion';
-import { getFoldingRanges } from './services/cssFolding';
 import { LanguageSettings, ICompletionParticipant, DocumentContext } from './cssLanguageTypes';
 
 export type Stylesheet = {};
@@ -29,7 +23,7 @@ export * from 'vscode-languageserver-types';
 
 export interface LanguageService {
 	configure(raw: LanguageSettings): void;
-	doValidation(document: TextDocument, stylesheet: Stylesheet, documentSettings?: LanguageSettings): Diagnostic[];
+	doSpellCheck(document: TextDocument, stylesheet: Stylesheet, documentSettings?: LanguageSettings): Diagnostic[];
 	parseStylesheet(document: TextDocument): Stylesheet;
 	doComplete(document: TextDocument, position: Position, stylesheet: Stylesheet): CompletionList;
 	setCompletionParticipants(registeredCompletionParticipants: ICompletionParticipant[]): void;
@@ -39,20 +33,17 @@ export interface LanguageService {
 	findDocumentHighlights(document: TextDocument, position: Position, stylesheet: Stylesheet): DocumentHighlight[];
 	findDocumentLinks(document: TextDocument, stylesheet: Stylesheet, documentContext: DocumentContext): DocumentLink[];
 	findDocumentSymbols(document: TextDocument, stylesheet: Stylesheet): SymbolInformation[];
-	doCodeActions(document: TextDocument, range: Range, context: CodeActionContext, stylesheet: Stylesheet): Command[];
-	doCodeActions2(document: TextDocument, range: Range, context: CodeActionContext, stylesheet: Stylesheet): CodeAction[];
 	/** deprecated, use findDocumentColors instead */
 	findColorSymbols(document: TextDocument, stylesheet: Stylesheet): Range[];
 	findDocumentColors(document: TextDocument, stylesheet: Stylesheet): ColorInformation[];
 	getColorPresentations(document: TextDocument, stylesheet: Stylesheet, color: Color, range: Range): ColorPresentation[];
 	doRename(document: TextDocument, position: Position, newName: string, stylesheet: Stylesheet): WorkspaceEdit;
-	getFoldingRanges(document: TextDocument, context?: { rangeLimit?: number; }): FoldingRange[];
 }
 
-function createFacade(parser: Parser, completion: CSSCompletion, hover: CSSHover, navigation: CSSNavigation, codeActions: CSSCodeActions, validation: CSSValidation) {
+function createFacade(parser: Parser, completion: CSSCompletion, hover: CSSHover, navigation: CSSNavigation, spellcheck: csSpellCheck) {
 	return {
-		configure: validation.configure.bind(validation),
-		doValidation: validation.doValidation.bind(validation),
+		configure: spellcheck.configure.bind(spellcheck),
+		doSpellCheck: spellcheck.doSpellCheck.bind(spellcheck),
 		parseStylesheet: parser.parseStylesheet.bind(parser),
 		doComplete: completion.doComplete.bind(completion),
 		setCompletionParticipants: completion.setCompletionParticipants.bind(completion),
@@ -62,25 +53,14 @@ function createFacade(parser: Parser, completion: CSSCompletion, hover: CSSHover
 		findDocumentHighlights: navigation.findDocumentHighlights.bind(navigation),
 		findDocumentLinks: navigation.findDocumentLinks.bind(navigation),
 		findDocumentSymbols: navigation.findDocumentSymbols.bind(navigation),
-		doCodeActions: codeActions.doCodeActions.bind(codeActions),
-		doCodeActions2: codeActions.doCodeActions2.bind(codeActions),
 		findColorSymbols: (d, s) => navigation.findDocumentColors(d, s).map(s => s.range),
 		findDocumentColors: navigation.findDocumentColors.bind(navigation),
 		getColorPresentations: navigation.getColorPresentations.bind(navigation),
 		doRename: navigation.doRename.bind(navigation),
-		getFoldingRanges: getFoldingRanges
 	};
 }
 
 
 export function getCSSLanguageService(): LanguageService {
-	return createFacade(new Parser(), new CSSCompletion(), new CSSHover(), new CSSNavigation(), new CSSCodeActions(), new CSSValidation());
-}
-
-export function getSCSSLanguageService(): LanguageService {
-	return createFacade(new SCSSParser(), new SCSSCompletion(), new CSSHover(), new CSSNavigation(), new CSSCodeActions(), new CSSValidation());
-}
-
-export function getLESSLanguageService(): LanguageService {
-	return createFacade(new LESSParser(), new LESSCompletion(), new CSSHover(), new CSSNavigation(), new CSSCodeActions(), new CSSValidation());
+	return createFacade(new Parser(), new CSSCompletion(), new CSSHover(), new CSSNavigation(), new csSpellCheck());
 }

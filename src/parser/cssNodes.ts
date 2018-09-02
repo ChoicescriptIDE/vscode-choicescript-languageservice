@@ -83,6 +83,10 @@ export enum NodeType {
 	GridLine,
 	Plugin,
 	UnknownAtRule,
+	Builtin,
+	InvalidBuiltin,
+	RealWord,
+	TextLine
 }
 
 export enum ReferenceType {
@@ -459,6 +463,44 @@ export class BodyDeclaration extends Node {
 		return this.setNode('declarations', decls);
 	}
 
+}
+
+export class Builtin extends Node {
+
+	constructor(offset: number, length: number) {
+		super(offset, length);
+	}
+
+	public get type(): NodeType {
+		return NodeType.Builtin;
+	}
+}
+
+
+export class InvalidBuiltin extends Node {
+
+	constructor(offset: number, length: number) {
+		super(offset, length);
+	}
+
+	public get type(): NodeType {
+		return NodeType.InvalidBuiltin;
+	}
+}
+
+export class RealWord extends Node {
+	constructor(offset: number, length: number) {
+		super(offset, length);
+	}
+	public get type(): NodeType {
+		return NodeType.RealWord;
+	}
+}
+
+export class TextLine extends Node {
+	constructor(offset: number, length: number) {
+		super(offset, length);
+	}
 }
 
 export class RuleSet extends BodyDeclaration {

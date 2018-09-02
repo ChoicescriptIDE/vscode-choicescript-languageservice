@@ -91,7 +91,7 @@ export class Parser {
 	}
 
 	public acceptOneKeyword(keywords: string[]): boolean {
-		if (TokenType.AtKeyword === this.token.type) {
+		if (TokenType.Builtin === this.token.type) {
 			for (let keyword of keywords) {
 				if (keyword.length === this.token.text.length && keyword === this.token.text.toLowerCase()) {
 					this.consumeToken();
@@ -230,8 +230,6 @@ export class Parser {
 	public _parseStylesheet(): nodes.Stylesheet {
 		let node = <nodes.Stylesheet>this.create(nodes.Stylesheet);
 		node.addChild(this._parseCharset());
-
-		let inRecovery = false;
 		do {
 			let hasMatch = false;
 			do {
@@ -240,41 +238,65 @@ export class Parser {
 				if (statement) {
 					node.addChild(statement);
 					hasMatch = true;
-					inRecovery = false;
-					if (!this.peek(TokenType.EOF) && this._needsSemicolonAfter(statement) && !this.accept(TokenType.SemiColon)) {
-						this.markError(node, ParseError.SemiColonExpected);
+				} else {
+					let line = this._parseTextLine();
+					if (line) {
+						node.addChild(line);
+						hasMatch = true;
 					}
 				}
-				while (this.accept(TokenType.SemiColon) || this.accept(TokenType.CDO) || this.accept(TokenType.CDC)) {
-					// accept empty statements
-					hasMatch = true;
-					inRecovery = false;
-				}
 			} while (hasMatch);
-
 			if (this.peek(TokenType.EOF)) {
 				break;
 			}
-
-			if (!inRecovery) {
-				if (this.peek(TokenType.AtKeyword)) {
-					this.markError(node, ParseError.UnknownAtRule);
-				} else {
-					this.markError(node, ParseError.RuleOrSelectorExpected);
-				}
-				inRecovery = true;
-			}
 			this.consumeToken();
 		} while (!this.peek(TokenType.EOF));
-
 		return this.finish(node);
 	}
 
 	public _parseStylesheetStatement(): nodes.Node {
-		if (this.peek(TokenType.AtKeyword)) {
-			return this._parseStylesheetAtStatement();
+		if (this.peek(TokenType.SingleLineComment)) {
+			var node = this.create(nodes.Node);
+			this.consumeToken();
+			return this.finish(node);
 		}
-		return this._parseRuleset(false);
+		else if (this.peek(TokenType.Builtin) || this.peek(TokenType.Invalid)) {
+			return this._parseCommand();
+		}
+		return null; // this._parseRuleset(false);
+	}
+
+	public _parseTextLine(): nodes.TextLine {
+		let node = this.createNode(nodes.NodeType.TextLine);
+		while (this.peek(TokenType.Word)) {
+			let noder = this.createNode(nodes.NodeType.RealWord);
+			node.addChild(noder);
+			this.consumeToken();
+			this.finish(noder);
+		}
+		if (node.hasChildren())
+			return this.finish(node);
+		return null;
+	}
+
+	public _parseCommand(): nodes.Node {
+		return this._parseBasicCommand()
+			|| this._parseInvalid();
+	}
+
+	public _parseBasicCommand(): nodes.Builtin {
+		let node = this.create(nodes.Builtin);
+		if (!this.acceptOneKeyword(languageFacts.getBuiltins().map(function(item){ return '*' + item.name; }))) {
+			this.markError(node, ParseError.UnknownKeyword);
+			this.consumeToken();
+		}
+		return this.finish(node);
+	}
+
+	public _parseInvalid(): nodes.InvalidBuiltin {
+		var node = this.create(nodes.Builtin);
+		this.consumeToken();
+		return this.finish(node, ParseError.UnknownKeyword);
 	}
 
 	public _parseStylesheetAtStatement(): nodes.Node {

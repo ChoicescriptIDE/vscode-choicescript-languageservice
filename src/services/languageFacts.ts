@@ -545,28 +545,6 @@ function getAngle(node: nodes.Node) {
 	throw new Error();
 }
 
-/**
- * Returns true if the given name is a known property.
- */
-export function isKnownProperty(name: string): boolean {
-	if (!name) {
-		return false;
-	} else {
-		name = name.toLowerCase();
-		return getProperties().hasOwnProperty(name);
-	}
-}
-
-export function isStandardProperty(name: string): boolean {
-	if (!name) {
-		return false;
-	} else {
-		name = name.toLowerCase();
-		let property = getProperties()[name];
-		return property && property.status === 'standard';
-	}
-}
-
 export function isCommonValue(entry: Value): boolean {
 	return entry.browsers.count > 1;
 }
@@ -577,29 +555,6 @@ export function getPageBoxDirectives(): string[] {
 		'@left-bottom', '@left-middle', '@left-top', '@right-bottom', '@right-middle', '@right-top',
 		'@top-center', '@top-left', '@top-left-corner', '@top-right', '@top-right-corner'
 	];
-}
-
-export function getEntryDescription(entry: { description: string; browsers: Browsers, data?: any }): string | null {
-	if (!entry.description || entry.description === '') {
-		return null;
-	}
-
-	let desc: string = '';
-
-	if (entry.data && entry.data.status) {
-		desc += getEntryStatus(entry.data.status);
-	}
-
-	desc += entry.description;
-
-	let browserLabel = getBrowserLabel(entry.browsers);
-	if (browserLabel) {
-		desc += '\n(' + browserLabel + ')';
-	}
-	if (entry.data && entry.data.syntax) {
-		desc += `\n\nSyntax: ${entry.data.syntax}`;
-	}
-	return desc;
 }
 
 export function expandEntryStatus(status: string): EntryStatus {
@@ -627,26 +582,6 @@ function getEntryStatus(status: string) {
 	}
 }
 
-export function getBrowserLabel(b: Browsers): string {
-	let result = '';
-	if (!b || b.all || b.count === 0) {
-		return null;
-	}
-	for (let curr in browserNames) {
-		if (typeof (<any>b)[curr] === 'string') {
-			if (result.length > 0) {
-				result = result + ', ';
-			}
-			result = result + (<any>browserNames)[curr];
-			let version = (<any>b)[curr];
-			if (version.length > 0) {
-				result = result + ' ' + version;
-			}
-		}
-	}
-	return result;
-}
-
 export interface Browsers {
 	E?: string;
 	FF?: string;
@@ -668,64 +603,11 @@ export interface Value {
 export interface IEntry {
 	name: string;
 	restrictions: string[];
-	browsers: Browsers;
 	description: string;
-	values: Value[];
 	status: EntryStatus;
 }
 
 export type EntryStatus = 'standard' | 'experimental' | 'nonstandard' | 'obsolete';
-
-function evalBrowserEntry(browsers: string) {
-	let browserEntry: Browsers = { all: false, count: 0, onCodeComplete: false };
-	let count = 0;
-	if (browsers) {
-		for (let s of browsers.split(',')) {
-			s = s.trim();
-			if (s === 'all') {
-				browserEntry.all = true;
-				count = Number.MAX_VALUE;
-			} else if (s !== 'none') {
-				for (let key in browserNames) {
-					if (s.indexOf(key) === 0) {
-						(<any>browserEntry)[key] = s.substring(key.length).trim();
-						count++;
-					}
-				}
-			}
-		}
-	} else {
-		browserEntry.all = true;
-		count = Number.MAX_VALUE;
-	}
-	browserEntry.count = count;
-	browserEntry.onCodeComplete = count > 0; // to be refined
-	return browserEntry;
-}
-
-
-class ValueImpl implements Value {
-
-	private browserEntry: Browsers;
-
-	constructor(public data: any) {
-	}
-
-	get name(): string {
-		return this.data.name;
-	}
-
-	get description(): string {
-		return this.data.desc || browsers.descriptions[this.data.name];
-	}
-
-	get browsers(): Browsers {
-		if (!this.browserEntry) {
-			this.browserEntry = evalBrowserEntry(this.data.browsers);
-		}
-		return this.browserEntry;
-	}
-}
 
 class EntryImpl implements IEntry {
 	private browserEntry: Browsers;
@@ -738,14 +620,7 @@ class EntryImpl implements IEntry {
 	}
 
 	get description(): string {
-		return this.data.desc || browsers.descriptions[this.data.name];
-	}
-
-	get browsers(): Browsers {
-		if (!this.browserEntry) {
-			this.browserEntry = evalBrowserEntry(this.data.browsers);
-		}
-		return this.browserEntry;
+		return this.data.desc;
 	}
 
 	get restrictions(): string[] {
@@ -759,80 +634,30 @@ class EntryImpl implements IEntry {
 	get status(): EntryStatus {
 		return expandEntryStatus(this.data.status);
 	}
-
-	get values(): Value[] {
-		if (!this.data.values) {
-			return [];
-		}
-		if (!Array.isArray(this.data.values)) {
-			return [new ValueImpl(this.data.values.value)];
-		}
-		return this.data.values.map(function (v: string) {
-			return new ValueImpl(v);
-		});
-	}
 }
 
-let propertySet: { [key: string]: IEntry };
-let properties = browsers.data.css.properties;
-
-export function getProperties(): { [name: string]: IEntry; } {
-	if (!propertySet) {
-		propertySet = {
-		};
-		for (let i = 0; i < properties.length; i++) {
-			let rawEntry = properties[i];
-			propertySet[rawEntry.name] = new EntryImpl(rawEntry);
-		}
-
-	}
-	return propertySet;
-}
-
-let atDirectives = browsers.data.css.atdirectives;
-let atDirectiveList: IEntry[];
-export function getAtDirectives(): IEntry[] {
-	if (!atDirectiveList) {
-		atDirectiveList = [];
-		for (let i = 0; i < atDirectives.length; i++) {
-			let rawEntry = atDirectives[i];
-			atDirectiveList.push(new EntryImpl(rawEntry));
+let builtins = browsers.data.css.builtins;
+let builtinList: IEntry[];
+export function getBuiltins(): IEntry[] {
+	if (!builtinList) {
+		builtinList = [];
+		for (var i = 0; i < builtins.length; i++) {
+			var rawEntry = builtins[i];
+			builtinList.push(new EntryImpl(rawEntry));
 		}
 	}
-	return atDirectiveList;
+	return builtinList;
 }
 
-let pseudoElements = browsers.data.css.pseudoelements;
-let pseudoElementList: IEntry[];
-export function getPseudoElements(): IEntry[] {
-	if (!pseudoElementList) {
-		pseudoElementList = [];
-		for (let i = 0; i < pseudoElements.length; i++) {
-			let rawEntry = pseudoElements[i];
-			pseudoElementList.push(new EntryImpl(rawEntry));
+let flowCommands = browsers.data.css.flowCommands;
+let flowCommandList: IEntry[];
+export function getFlowCommands(): IEntry[] {
+	if (!flowCommandList) {
+		flowCommandList = [];
+		for (var i = 0; i < flowCommands.length; i++) {
+			var rawEntry = flowCommands[i];
+			flowCommandList.push(new EntryImpl(rawEntry));
 		}
 	}
-	return pseudoElementList;
+	return flowCommandList;
 }
-
-let pseudoClasses = browsers.data.css.pseudoclasses;
-let pseudoClassesList: IEntry[];
-export function getPseudoClasses(): IEntry[] {
-	if (!pseudoClassesList) {
-		pseudoClassesList = [];
-		for (let i = 0; i < pseudoClasses.length; i++) {
-			let rawEntry = pseudoClasses[i];
-			pseudoClassesList.push(new EntryImpl(rawEntry));
-		}
-	}
-	return pseudoClassesList;
-}
-
-export let browserNames = {
-	E: 'Edge',
-	FF: 'Firefox',
-	S: 'Safari',
-	C: 'Chrome',
-	IE: 'IE',
-	O: 'Opera'
-};
