@@ -278,7 +278,7 @@ export class Scanner {
 
 	protected scanNext(offset: number): IToken {
 
-		// CDO <!--
+		// Comment
 		if (this.stream.advanceIfChars([_MUL, _c, _o, _m, _m, _e, _n, _t])) {
 			var n = this.stream.advanceWhileChar(function (ch) {
 				return !(ch === _LFD || ch === _NWL || ch === _CAR);
@@ -339,9 +339,6 @@ export class Scanner {
 		// Word
 		if (this._word()) {
 			return this.finishToken(offset, TokenType.Word);
-		} else {
-			this.stream.nextChar();
-			return this.finishToken(offset, TokenType.Delim);
 		}
 
 		// Delim

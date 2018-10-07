@@ -58,7 +58,7 @@ export class CSSCompletion {
 				let node = this.nodePath[i];
 				if (node.type === nodes.NodeType.Builtin) {
 					this.getCompletionsForBuiltin(result);
-				   // this.getCompletionForTopLevel(result);
+					// this.getCompletionForTopLevel(result);
 					// } else if (node instanceof nodes.Variable) {
 					// this.getCompletionsForVariableDeclaration()
 				}
@@ -123,7 +123,7 @@ export class CSSCompletion {
 			});
 		}
 		return result;
-	};
+	}
 
 
 	public getCSSWideKeywordProposals(entry: languageFacts.IEntry, existingNode: nodes.Node, result: CompletionList): CompletionList {

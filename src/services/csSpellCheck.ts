@@ -6,15 +6,15 @@
 
 import * as nodes from '../parser/cssNodes';
 import { TextDocument, Range, Diagnostic, DiagnosticSeverity } from 'vscode-languageserver-types';
-import { LintConfigurationSettings, Rules } from './lintRules';
+import { LintConfigurationSettings, Rules } from './textRules';
 import { SpellCheckVisitor } from './spellcheck';
 import { LanguageSettings } from '../cssLanguageTypes';
 import { Typo } from './typo/typo';
 
-export class csSpellCheck {
+export class CSSpellCheck {
 
-    private settings: LanguageSettings;
-    public typo: Typo;
+	private settings: LanguageSettings;
+	public typo: Typo;
 
 	constructor() {
 	}
@@ -26,19 +26,19 @@ export class csSpellCheck {
 	public doSpellCheck(document: TextDocument, stylesheet: nodes.Stylesheet, settings: LanguageSettings = this.settings): Diagnostic[] {
 		if (settings && settings.validate === false) {
 			return [];
-        }
-        
-        // Might be a better place to do this...
-        this.typo = new Typo("", "", "", {
-            platform: 'any'
-        });
-        this.typo = new Typo("en_US", this.typo._readFile("https://raw.githubusercontent.com/cfinke/Typo.js/master/typo/dictionaries/en_US/en_US.aff"),  this.typo._readFile("https://raw.githubusercontent.com/cfinke/Typo.js/master/typo/dictionaries/en_US/en_US.dic"), {
-            platform: 'any'
-        });
+		}
+		
+		// Might be a better place to do this...
+		this.typo = new Typo("", "", "", {
+			platform: 'any'
+		});
+		this.typo = new Typo("en_US", this.typo._readFile("https://raw.githubusercontent.com/cfinke/Typo.js/master/typo/dictionaries/en_US/en_US.aff"),  this.typo._readFile("https://raw.githubusercontent.com/cfinke/Typo.js/master/typo/dictionaries/en_US/en_US.dic"), {
+			platform: 'any'
+		});
 
 		let entries: nodes.IMarker[] = [];
 		entries.push.apply(entries, nodes.ParseErrorCollector.entries(stylesheet));
-		entries.push.apply(entries, SpellCheckVisitor.entries(stylesheet, document, null, null, this.typo));
+		entries.push.apply(entries, SpellCheckVisitor.entries(stylesheet, document, null, (nodes.Level.Warning | nodes.Level.Error), this.typo));
 
 		const ruleIds: string[] = [];
 		for (let r in Rules) {

@@ -34,7 +34,8 @@
   "scripts": {
     "prepublishOnly": "npm run clean && npm run compile-esm && npm run test",
     "postpublish": "node ./build/post-publish.js",
-    "compile": "tsc -p ./src",
+    "compile": "tsc -p ./src && npm run typo",
+    "typo": "cp ./src/services/typo ./lib/umd/services/typo -r",
     "compile-esm": "tsc -p ./src/tsconfig.esm.json",
     "clean": "rimraf lib",
     "watch": "tsc -w -p ./src",

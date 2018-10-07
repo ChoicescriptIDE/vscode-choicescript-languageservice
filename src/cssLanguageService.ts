@@ -13,7 +13,7 @@ import { Parser } from './parser/cssParser';
 import { CSSCompletion } from './services/cssCompletion';
 import { CSSHover } from './services/cssHover';
 import { CSSNavigation } from './services/cssNavigation';
-import { csSpellCheck } from './services/csSpellCheck';
+import { CSSpellCheck } from './services/CSSpellCheck';
 
 import { LanguageSettings, ICompletionParticipant, DocumentContext } from './cssLanguageTypes';
 
@@ -40,7 +40,7 @@ export interface LanguageService {
 	doRename(document: TextDocument, position: Position, newName: string, stylesheet: Stylesheet): WorkspaceEdit;
 }
 
-function createFacade(parser: Parser, completion: CSSCompletion, hover: CSSHover, navigation: CSSNavigation, spellcheck: csSpellCheck) {
+function createFacade(parser: Parser, completion: CSSCompletion, hover: CSSHover, navigation: CSSNavigation, spellcheck: CSSpellCheck) {
 	return {
 		configure: spellcheck.configure.bind(spellcheck),
 		doSpellCheck: spellcheck.doSpellCheck.bind(spellcheck),
@@ -62,5 +62,5 @@ function createFacade(parser: Parser, completion: CSSCompletion, hover: CSSHover
 
 
 export function getCSSLanguageService(): LanguageService {
-	return createFacade(new Parser(), new CSSCompletion(), new CSSHover(), new CSSNavigation(), new csSpellCheck());
+	return createFacade(new Parser(), new CSSCompletion(), new CSSHover(), new CSSNavigation(), new CSSpellCheck());
 }
