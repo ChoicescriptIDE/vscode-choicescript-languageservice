@@ -1,0 +1,128 @@
+You spend several weeks winging your way across the land.  Life as a traveling dragon has much to recommend it—the freedom of the air, the thrill of the hunt, and plentiful sight-seeing opportunities.
+
+*comment DGF "You have nowhere you can safely rest"—let's show, not tell.
+On one particular night, sleeping peacefully under the stars, you awake to find yourself under attack.  A gigantic elder dragon towers before you, whipping you hard with its tail.  It must be at least four times your size!
+
+"Whelp!  How dare you sleep on my lands?"
+
+*fake_choice
+  #Apologize.
+  #Act tough.
+  #Plead ignorance.
+  #Fight back.
+  #Play nice.
+
+The elder dragon treats you with enviable Disdain.  It soundly beats you out of its territory.
+
+"Find your own lair!" it chortles.
+
+Despite the advantages, it seems that homelessness has some rather severe downsides. After all, you have nowhere to store your treasure hoard!
+
+*page_break
+A few days later, as you fly along, you see a large hill rising up from the land around it. Forests cover the lower slopes of the hill, giving way to grassy fields and then a rocky crag at the top of the hill.  A large cave mouth opens into the promontory.
+
+While you would have to check it out more carefully to be certain, you believe that the hill contains a fairly extensive cave complex.  Plenty of game runs through the forest, with herds of sheep and even cattle in some of the valleys a short flight away.  Looking beyond the immediate environs, several human villages and towns are well within a day's flight, offering the promise of easy pillaging to come, but none are close enough to make harassment and annoyance likely.  In short, it appears to be a perfect lair.
+
+*page_break 
+As you fly down to claim your new lair, you spot a group of small, mostly bald, orange-skinned humanoids outside the cave.  They look up and point at you in terror and alarm.  Some of them flee into the cave, while others bravely shake crude, ineffectual spears at you.
+
+"Don't eat me!" jabbers one of the goblins.  "Eat Grubsh! He's got meat on him!"
+
+The goblin who spoke pushes forward one of the other goblins with the butt of his spear.  The other goblin, presumably Grubsh, drops his spear as he shakes in front of you.
+ 
+How cute.
+ 
+What do you do?
+ 
+*choice
+  #Scare them off.
+    A mighty roar and a puff of smoke and fire are more than sufficient to scatter them.  Almost no exertion, and they are gone.  What's more, as you follow them into the cave, you find that they are quickly proffering food before you.
+   
+    It can be good to have respectful minions.
+   
+    Disdain and Finesse increase.
+    *set brutality %-20
+    *set disdain %+20
+    *goto Fighting
+  #Slaughter them all.
+    You pounce on them as they flee into the cave.  You totally devastate them.  By the time they realize that they have no prayer of victory, only two of the attackers are left alive.  They flee, and you enjoy a leisurely afternoon hunt.  Roast goblin makes a pleasant change from your diet of mutton.  You return to your new lair confident that you have taught them a lesson.  Well, perhaps not them personally, but certainly the other goblins….
+   
+    Brutality and Vigilance increase.
+    *set brutality %+20
+    *set disdain %-20
+    *goto Fighting
+ 
+*label Fighting
+*page_break
+The cave complex within the hill is everything you hoped for: it's defensible, spacious enough for a good hoard, and full of those greasy little goblins, who quickly acknowledge you as their eternal sovereign and overlord.
+
+They give you the best of their treasure and the finest of their foods.  Well, almost the finest.  They burn the very best of their foods on a crude altar to their primitive goblin god.  How do you react to that?
+
+*choice
+  #It is good for them to serve their god, as best they can.
+    Even goblins should venerate their god.  That is the divine order.  Their offerings show that they are better than mere animals, and you tolerate and even encourage their offerings to their patron. You also secure the unswerving loyalty of the goblin shaman.  Good job.
+    
+    Honor increases.
+
+    *set cunning %-10
+    *goto A
+
+  #As long as they're loyal to me, I don't care if they worship a unicorn covered with polka dots.
+    The offerings are inconsequential, and you can ignore them easily.  By tolerating their religion, you also secure the unswerving loyalty of the goblin shaman.  Good job.
+    
+    Disdain increases.
+    *set disdain %+10
+    *goto A
+  #I should be the focus of all of their attention, not some stupid god!
+    How dare they offer sacrifices to a god?  Those pieces of meat are rightfully yours!
+
+    You smash the altar, taking time to scrape your claw directly through the image of the goblin god.
+
+    The goblin shaman rushes towards you.  "You go too far, lizard!  The gods will punish—"
+
+    That's as far as he gets before you eat him.  Problem solved.
+    
+    Some of the goblins begin offering rudimentary prayers to you.
+
+    *set blasphemy +1
+    *goto A
+
+*label A
+*page_break
+
+The goblins obey your every command, sometimes even anticipating your desires. They may be stupid, crude, and savage minions, but at least they're your stupid, crude, and savage minions.
+ 
+Life is good.
+ 
+*page_break
+ 
+A few days later, you hear the sound of squabbling from one of the other chambers.  You poke your snout in and see that a rudimentary pit has been arranged and some of the lowest status goblins are being made to battle for the amusement of the chieftain (now your lieutenant).  The fighting is savage, and it's clear that the losers will die.
+
+*choice
+  #They do not have my permission to waste their lives.  This must stop!
+    You rush into the chamber and turn on your lieutenant.  "How dare you fritter away the lives of my minions for your entertainment!"
+ 
+    The former chieftain cowers.  "I'm sorry, great and mighty dragon.  We meant no offense, but our traditions demand that young goblins see bloodshed to learn bravery."
+ 
+    You smile cruelly. "You want them to see bloodshed?"
+    
+    *page_break
+ 
+    You finish chewing up the former goblin chieftain.  He is a little gristly, but nicely marbled.  The former underchief, your new lieutenant, begs for his life and assures you that the goblins will henceforth only ever fight when you will it.  You do not know if he will be a more acceptable lieutenant than his predecessor, but you decide that he will have a chance to prove himself.
+ 
+    Vigilance increases, Brutality decreases.
+    *set disdain %-20
+    *set brutality %-15
+    *finish
+  #It is well that they should fight for my amusement.  Bring me some refreshments!
+    The goblins stop fighting when they realize you are present, but you settle in and gesture imperiously for them to continue.  The fights make up for their lack of finesse or skill with a certain raw viciousness tinged with desperation.  Goblins attend to your every whim as you watch the fights; the losers make a pleasant snack.
+ 
+    Brutality increases.
+    *set brutality %+25
+    *finish
+  #What the goblins do is beneath my notice, as long as they are ready to serve me.
+    Your curiosity satisfied, you return to your main chamber and settle in.  You now simply tune out the sounds of fighting from the goblin quarters.  It is nothing worthy of your attention.
+ 
+    Disdain increases.
+    *set disdain %+20
+    *finish

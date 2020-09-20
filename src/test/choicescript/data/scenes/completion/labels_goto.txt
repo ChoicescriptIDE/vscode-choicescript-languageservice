@@ -1,0 +1,11 @@
+*label mylabel
+mytext mytext
+*fake_choice
+	#doit
+		You're doing it!
+	#skip
+		*goto s
+*label secondlabel
+more text text and text
+*label end
+*finish

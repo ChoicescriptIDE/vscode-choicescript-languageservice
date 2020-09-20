@@ -1,0 +1,317 @@
+
+You rule over your territory for several uneventful years before your goblin minions begin to report some disturbing news.  They have seen another dragon raiding within your territory, seizing tribute that ought to be yours, and eating your prey.  Based on their description, you realize that the dragon is none other than your elder clutchmate, Axilmeus.
+
+Axilmeus was always an overbearing brute, seeking to seize what did not belong to him.  (You may recall what he did to your golden shield.)
+ 
+What do you do about Axilmeus's incursion into your domain?
+ 
+*choice
+  #This is intolerable.  Axilmeus must be destroyed!
+    How dare he enter your territory?  His effrontery leaves you no choice.
+ 
+    Vigilance increases.
+    
+    Your rapid response also prevents him from taking some of your
+    tribute.
+    
+    Wealth increases.
+    *set disdain %-20
+    *set wealth +500
+    *goto Conflict
+  #Another dragon on the far reaches of my territory is not worth a response.
+    You ignore Axilmeus's hunting and his raids on humans who pay you tribute.  After a few weeks, however, he begins to attack caravans carrying tribute directly to you and to move ever closer to your lair.  You know that he will continue to take more and more of what is rightfully yours unless you stop him.  Battle cannot be avoided.
+ 
+    Disdain increases.
+    *set disdain %+20
+    *goto Conflict
+ 
+*label Conflict
+*page_break
+ 
+As your elder clutchmate, Axilmeus is a foe worthy of respect.
+ 
+How do you plan to defeat him?
+ 
+*choice
+  #Wait for him to come to me.  He'll need to, eventually, and I'll have the advantage.
+     *goto Wait
+  #Set up an ambush for him.
+    Clever.  It will be a little challenging, though, and you'll need good bait.  Are you willing to risk some of your hoard as bait for him?
+    *choice
+      #Of course!  There's no risk, because my ambush will certainly succeed.
+        That's the spirit!
+ 
+        *goto Ambush
+      #Well, when you put it that way, maybe not….
+         Then you need to pick another choice:
+         *goto No_Ambush
+  #Confront him in the air, relying on my superior aerial maneuver skills.
+    *goto Aerial_battle
+  #Just head in his general direction and beat him into the ground like the cur he is.
+    *goto Brute_force
+  #Trick Axilmeus into fighting one of my enemies.
+    *goto Trick
+  #Bribe him to leave my territory and never return.
+    *goto Negotiate
+ 
+*label Wait
+ 
+You set up in your lair and wait.  You make sure to fly near enough to Axilmeus that he is aware of you, while staying far enough away that he can't engage you directly. Meanwhile, Axilmeus rampages across your territory.  His depredations make you antsy—instinct pushes you to meet the threat directly.
+ 
+*page_break
+ 
+*if  (disdain > 60)
+  With your high Disdain, you resist the urge to respond intemperately.  Axilmeus's raiding is annoying, but you put it out of your mind.  Eventually, he decides that he is unwilling to have you within the territory that he now views as his own. 
+  
+  In the meantime, you command your goblins to build a series of traps into your lair that can restrain Axilmeus.
+  
+  Your plan is working. Cunning and Disdain increase.
+  
+  *set cunning %+15
+  *set disdain %+10
+  *page_break
+ 
+  *if (cunning > 50)
+    Axilmeus storms directly into your lair.  You trigger the traps; Axilmeus soon finds himself bound in enchanted chains and beneath an avalanche of falling rocks—underwater.  You rush in to press the attack, and he is quickly defeated.
+ 
+    *goto Victory
+  *else
+    Axilmeus storms directly into your lair, but your feeble defenses don't do much to slow him down.  You are not sufficiently cunning to trap a dragon as savvy as Axilmeus.
+ 
+    *goto Wounded
+*else
+  You try to wait him out, but you can't stand it—your Disdain isn't high enough.  After Axilmeus burns a forest that you particularly liked hunting in, you lose your temper and charge out of your lair at him, determined to fight him immediately.
+ 
+  *goto Brute_force
+ 
+*label Ambush
+ 
+*if  (cunning > 60)
+  You arrange for a caravan to carry a sizable portion of your hoard along past Axilmeus. The caravan makes a big show of its wealth, and Axilmeus inevitably feels the need to attack the caravan.
+ 
+  While the caravan distracts him, you pounce on him from behind.  You drive him to the ground with your weight, ripping into him with claws and teeth.  Axilmeus struggles, but he is no match for you.
+  
+  Cunning and Disdain increase.
+ 
+  *set cunning %+20
+  *set disdain %+10
+  *goto Victory
+*else
+  You arrange for a caravan to carry a sizable portion of your hoard along past Axilmeus while you lie in wait.  
+  
+  Cunning and Disdain increase.
+  
+  *set cunning %+10
+  *set disdain %+10
+  
+  As you wait, a fire breaks out in the forest between you and the caravan.  The smoke blocks your view—flying forth while you can't see would both eliminate the trap and risk your flying into an ambush.
+ 
+  But when the smoke clears, you realize that Axilmeus has tricked you.  He must have lit the fire.  While it burned, he raided the caravan and carried off 1000 gold coins of your precious hoard.  Curses!
+ 
+  You'll need to choose a different way to deal with Axilmeus.
+  *set wealth -1000
+  *page_break
+  *goto No_Ambush
+ 
+*label Aerial_battle
+*if (brutality < 40)
+  You fly out in the direction of Axilmeus.  You see him flying a long distance off and circle carefully into a better position.  You climb higher and higher, positioning yourself between the sun and Axilmeus.  You then fly at him.
+ 
+  Because you are flying directly out of the sun, Axilmeus doesn't see you until you are nearly upon him.  He tries to maneuver, but you slam into his back before he can adjust his position. The impact breaks one of his wings, and he falls to the ground in your claws.
+ 
+  Finesse and Honor increase.
+  *set brutality %-20
+  *set cunning %-10
+  *goto Victory
+*else
+  You fly out in the direction of Axilmeus.  You see him flying a long distance off and try to maneuver into a better position, but he sees you as well and matches your efforts. Despite your best efforts, you are drawn into a straight-up fight.
+  
+  Finesse increases.
+ 
+  *set brutality %-10
+  *page_break
+  *goto Brute_force
+ 
+*label Brute_force
+You battle Axilmeus on even terms, without any tactical advantage.  The fighting is intense and deadly serious, and you find that he is a formidable foe.
+ 
+*if (brutality > 85)
+  Axilmeus is powerful, but he is no match for you.  Your muscles are stronger than his, your teeth and claws are sharper, and, perhaps most importantly, your killer instinct and drive to crush all who oppose you is more intense.  His claws scrape your mighty scales several times, but he never inflicts a serious wound.  Your blows, however, rend his hide and crush his limbs.
+ 
+  Brutality and Honor increase.
+  *set brutality %+20
+  *set cunning %-20
+  *goto Victory
+*elseif (brutality > 50)
+  You are nearly evenly matched.  Axilmeus strikes you as hard as you strike him.  The fight could go either way.
+ 
+  Brutality and Honor increase.
+  *set brutality %+10
+  *set cunning %-10
+  *goto Wounded
+*else
+  As the fight begins in earnest, Axilmeus gashes you with his claws, buffets you with his wings, and bites out a gobbet of flesh from your legs.  He is stronger and faster than you, but at least as importantly, he has more of the killer instinct that you need in a close fight.  Your situation is desperate, and you begin to wonder whether you will die this day.
+ 
+  Brutality and Honor increase.
+  *set brutality %+10
+  *set cunning %-10
+  *goto Badly_wounded
+ 
+*label No_Ambush
+How do you plan to defeat him?
+ 
+*choice
+  #Wait for him to come to me.  He'll need to, eventually, and I'll have the advantage.
+     *goto Wait
+  #Confront him in the air, relying on my superior aerial maneuver skills.
+    *goto Aerial_battle
+  #Just head in his general direction and beat him into the ground like the cur he is.
+    *goto Brute_force
+  #Trick Axilmeus into fighting one of my enemies.
+    *goto Trick
+  #Negotiate with him.
+    *goto Negotiate
+ 
+*label Wounded
+*page_break
+After a long struggle, Axilmeus rakes you across the belly with his claws.  He hurts you badly, ripping away some armored plates that will never regrow and leaving a sore spot on your belly that will always bother you in the future.  But despite his success, that attack turns the battle in your favor.  Axilmeus exposes his neck as he overextends on the attack, and you counter-attack with a vicious bite.  Forcing yourself to keep battling despite the pain, you pound him with attack after attack.  Finally, you break his resistance.  Axilmeus stops trying to defeat you and starts simply trying to survive.
+ 
+*set wounds +1
+ 
+*goto Victory
+ 
+*label Badly_wounded
+*page_break
+Axilmeus thrashes you badly.  He gashes your belly, ripping away some armored plates that will never regrow and leaving a sore spot that will always bother you in the future.  As you struggle to survive, he stomps on your ribs, snapping the iron-hard bones like twigs.  Every breath for the rest of your life is a little harder and a little more painful.  You struggle desperately, hoping somehow to survive, as he plays with you with increasing cruelty.
+ 
+Finally, however, Axilmeus makes a mistake.  As he gloats and belittles you, he turns his attention away for just long enough, and you lash out with one last swipe of your claws.  You catch him across the eyes, gouging out one altogether and leaving the other blinded with blood and bone fragments.  Now, you are able to gain the upper hand.  You quickly press your advantage and defeat Axilmeus, but the battle has cost you badly.
+ 
+*set wounds +2
+ 
+*goto Victory
+ 
+*label Victory
+*page_break
+ 
+You have defeated Axilmeus.  He is still alive, but you have beaten him and he will be unable to offer serious resistance.  What do you do with him now?
+ 
+*choice
+  #Axilmeus is too great a threat to leave alive, but he is worthy of a quick and painless death.
+    You snap Axilmeus's neck, killing him instantly.  He fought well and was a worthy fellow
+    dragon.
+ 
+    Honor increases and Brutality decreases.
+    *set cunning %-20
+    *set brutality %-20
+    *set clutchmate_alive false
+    *finish
+ 
+  #Like a cat playing with a mouse, I will make Axilmeus suffer before he dies.
+    Axilmeus dared to enter your territory.  Now, he will suffer!
+ 
+    *if (disdain > 60)
+      You chase Axilmeus all over your territory.  Whenever he thinks he might have gotten away, you pounce again, inflicting another small wound.
+ 
+      Then he dodges into a forest.  You fly into the forest, searching for him, but he has tricked you into a set of trees where you have to walk.  He immediately shoots into the air, winging away as fast as he can.  You hurry out from the trees and leap into flight just as he disappears behind a hill.  You fly over as fast as you can but can see no sign of him.  Somehow, Axilmeus has escaped.  Your Vigilance was not high enough to catch him.
+ 
+      Vigilance decreases; Brutality, Cunning, and Infamy increase. 
+      *set clutchmate_alive true
+      *set cunning %+10
+      *set brutality %+10
+      *set disdain %+15
+      *set infamy %+10
+      *finish
+    *else
+      You chase Axilmeus all over your territory.  Whenever he thinks he might have gotten away, you pounce again, inflicting another small wound.  He suffers from the increasing number of injuries until he can't even fly or run away.  You then spend a while slowly working him over until you tire of him and finally leave him to bleed to death.
+ 
+      You truly are a dread and horrible beast.  I don't quite know how you can live with what you have done.
+ 
+      Brutality and Infamy increase greatly, Honor declines, and Vigilance increases.
+      *set clutchmate_alive false
+      *set brutality %+30
+      *set cunning %+20
+      *set disdain %-10
+      *set infamy %+30
+      *finish  
+ 
+  #Axilmeus must leave my territory, never to return, but he can live.
+    "You have fought well, Axilmeus, but I am the master of this domain.  Fly long and hard away from these lands, and never return.  Next time, I will not be so lenient."
+ 
+    Axilmeus bows his head, acknowledging your command.  Without another word, he flies off.
+ 
+    Was it wise to leave such a powerful foe alive, one who might want revenge for his humiliation and defeat?
+ 
+    Brutality decreases greatly, Honor increases, and Infamy decreases.
+    *set clutchmate_alive true
+    *set brutality %-30
+    *set cunning %-15
+    *set infamy %-20
+    *finish
+
+*label Trick
+Axilmeus is dangerous, but you can turn that into an advantage by arranging for him to battle one of your enemies.  Besides, if two of your enemies fight, you always end up ahead.
+
+Some of your subjects have complained to you about a wizard…Vermias, Vormius, something like that.  You haven't bothered to learn her name yet, since she clearly isn't a threat to you.  Apparently, she has been performing strange experiments on local people and other animals in the kingdom, and she defends her territory vigorously.  If Axilmeus can eliminate her, so much the better.
+
+How do you arrange for Axilmeus to fight her?
+*choice
+      #I lure Axilmeus there in flight.
+        *if (brutality<30)
+          You fly out towards Axilmeus, giving the impression that you intend to duel him in the air.  You then curve away and beat steadily towards Vermias's tower.  Axilmeus chases you, but you easily elude him.  Finally, as you near Vermias's tower, you climb rapidly.
+          
+          Axilmeus flies up to meet you, but then stops to notice something inside the tower.  From this angle, you can't quite see what he's looking at, but you can certainly guess, as a forked lighting bolt shoots out from the tower, stunning him.  Another lighting bolt shoots out in your general direction, but you dodge it easily.
+
+          You fly away without waiting to see who prevails.  In any event, you do not hear any further reports of Axilmeus threatening your territory.  Mission accomplished.
+
+          Finesse and Cunning increase.
+          *set clutchmate_alive false
+          *set Vermias_killed_Axilmeus true
+          *set cunning %+10
+          *set brutality %-15
+          *finish
+        *else
+          You fly out towards Axilmeus, giving the impression that you intend to duel him in the air.  You then curve away and beat steadily towards Vermias's tower.  Your plan is to draw Axilmeus to Vermias's tower, but Axilmeus is too fast for you.  He catches you after only a few hours of flight and forces you to battle.
+          *page_break
+          *goto Brute_force
+
+      #I spread rumors about Vermias's great wealth.
+        Axilmeus won't be able to resist the opportunity to seize a treasure trove.
+
+        *if (cunning>70)
+          You contact your network of minions and spies, sending the word forth that Vermias has a vast fortune waiting to be plundered.  Eventually, Axilmeus captures one of your minions and tortures the "truth" out of him.  You lose one of your pawns, but that's a small price to pay to set Axilmeus and Vermias against each other.
+
+          You don't hear anything about their battle, but you also hear no further reports of Axilmeus threatening your territory.  Mission accomplished.
+          
+          Cunning and Finesse increase.
+          *set clutchmate_alive false
+          *set Vermias_killed_Axilmeus true
+          *set cunning %+15
+          *set brutality %-10
+          *finish
+        *else
+          You spread the rumors about Vermias's wealth, and Axilmeus takes the bait.  Or more accurately, that's what you think happens.  Axilmeus disappears shortly after you spread the rumors, and you begin to relax.  A week later, as you take a leisurely hunting flight through your territory, Axilmeus drops out of the sun at you and forces you to battle.  Apparently, he saw through your ruse and decided to use it as an opportunity to set up an ambush of his own.
+
+          *page_break
+          *goto Brute_force  
+
+
+*label Negotiate
+A fellow dragon—and one of your clutchmates, no less—is a dangerous foe.  Better to reach an accommodation with Axilmeus than to chance a battle.  You fly out to meet Axilmeus with a chest full of gold.
+
+"Take this treasure and leave, Axilmeus!" you shout.  "If we fight, we will both lose."
+
+"I am glad you recognize my superiority," Axilmeus hisses back as he takes the chest.  "It wouldn't be sporting to crush a whelp like you, not when you give up so easily!  I will leave your territory; consider yourself lucky."
+
+*set wealth -1000
+*if (infamy>70)
+  Axilmeus is as good as his word.  He takes the treasure and bothers you no further.
+
+  You're glad to be rid of him, but the loss of some of your gold still rankles.  Perhaps you could have dealt with him in some better way.
+  *set clutchmate_alive true
+  *finish
+*else
+  Unfortunately, your bribe does you no good in the long run.  A week later, as you take a leisurely hunting flight through your territory, Axilmeus drops out of the sun at you and forces you to 
+  battle.  Apparently, he took your bribe purely as a sign of weakness.
+  *page_break
+  *goto Brute_force
+

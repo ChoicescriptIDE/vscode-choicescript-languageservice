@@ -1,0 +1,4 @@
+*temp myname ""
+*temp mynum 0
+*temp novar ""
+*set my

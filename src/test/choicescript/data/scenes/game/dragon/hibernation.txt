@@ -1,0 +1,169 @@
+Many years have passed since you seized control of this kingdom.  It's becoming harder and harder to resist your kind's urge to hibernate.
+
+Dragons typically hibernate for at least ten years, perhaps longer.  Some older dragons hibernate for generations.
+
+How are you going to leave your hoard defended while you rest?
+
+*choice
+    #Set a magical trap.
+        *label trap
+        A clever plan…but beware, magical traps are notoriously unreliable.
+        
+        *page_break
+        *if (cunning > 70)
+            In the years to come, many thieves will try to loot your lair, but none of them will make it past your trap.  Good thing 
+            you're so cunning.
+
+            *goto end
+        *else
+            Unfortunately, you're not sufficiently cunning to outthink all of the thieves who will come in the years to come.  Sure, some of them will die in your trap, but a few make it past.  They take some of your best treasure.
+
+            Too bad.
+
+            *set wealth (wealth -2000)
+            *goto end
+        
+    #Prepare an elite squad of goblin guards.
+        *label guards
+        The words "elite" and "goblin" don't often go well together.  You manage to train up a handful of tougher goblins who seem reasonably loyal.
+
+        *page_break
+
+        *if (brutality < 15)
+            It's hard to train goblins into anything more than marginally sentient minions; you manage it somehow.  Many thieves will try to make it past your guard, but none will succeed.  Of course, once you wake up, you'll have to convince the successors to the elite guard that you trained that they still want to obey you now that they're used to being the big goblins.
+
+            Still, that's a much better problem to have than trying to recover stolen treasure from your hoard.
+
+            *goto end
+        *else
+            Despite your best efforts, they're still just goblins.  They're better than most goblins, but you just don't have the Finesse to make them more than they are.
+
+            Over the years to come, adventurers cut their way through your goblins and loot much of your hoard.
+        
+            *set wealth -2000
+            *goto end
+    #None would dare steal from me!
+        *label dare
+        *if (infamy > 75)
+            You're right.  You're the sort of dragon whom parents use to scare their kids into eating their broccoli.  Even as time passes, your legend remains strong, growing as stories are retold and embellished.  And who would want to bring your wrath down on their whole kingdom by stealing even a trinket?
+
+            *goto end
+        *else
+
+            You're probably right…at least, at first.  But after half a generation or more, humans start to forget their place.  They start to become ambitious.  Uppity, even.
+
+            That's when they'll come after your treasure, with nothing more than some incompetent goblins to defend it.  You will lose much of your hoard.  You just aren't infamous enough to scare them away after time has passed.
+
+            *set wealth -2000
+        
+            *goto end
+    #Try to stay awake as long as possible.
+        The call of hibernation is seductive, but it's not impossible to resist, for a time.
+        
+        Each time you go to sleep, it becomes harder and harder to rouse yourself.  Your nictitating membrane (also known as the "third eyelid") starts to dry and crack; your powerful muscles begin to ache; you begin to yawn loudly and frequently, threatening the lives of everyone around you.  
+        
+        How long do you think you can stay awake?
+        
+        *choice
+            #Ten more years.
+                With a little will power, you can manage it.
+                
+                *goto irresistable
+            #Twenty more years.
+                It's a lot of work, but you can do it.  You manage to gather up a bit more treasure in the process, which will make your lair all the more comfortable when hibernation comes.
+                
+                *set wealth +500
+                *goto irresistable
+            #Fifty more years.
+                This is a real struggle.  The first twenty years are barely manageable, but the next twenty or so are almost unlivable.  You manage to gather up some more treasure, but in your state you can barely count it; some of it finds its way into other people's pockets.
+                
+                *goto irresistable
+            #A century or more.
+                I'm sorry, but this just isn't reasonable, even for a mighty dragon like yourself. One night, as you drift off to sleep, hibernation overtakes you.  Since you weren't expecting it, you didn't make proper preparations; you can only hope that your hoard will still be there when you awake!
+                *set wealth -5000
+                *goto end
+
+        *label irresistable
+        Now you really MUST hibernate; you simply can't avoid it any longer.  So, how will you keep your hoard defended?
+        
+        *choice
+            #Set a magical trap.
+                *goto trap
+            #Prepare an elite squad of goblin guards.
+                *goto guards
+            #None would dare steal from me!
+                *goto dare
+
+*label end
+*page_break
+As hibernation overtakes you, you begin to think back on what you've accomplished, and dream of what lies ahead.  Glory.  Treasure.  Loss.  Revenge.  Victory.
+
+Soon, you will spread your mighty wings and the shadow of your majesty will block out the sun itself. The finest baubles will line the walls of your palaces.  The greatest heroes will fall before your razor-sharp teeth. Soon, the whole world will whisper your name in fear and reverence.
+
+But for now, you rest.  And wait.
+*page_break
+
+You finished with the following stats:
+
+*temp wealth_text
+*set wealth_text wealth & " gold coins"
+
+*temp wound_text
+*if wounds = 0
+  *set wound_text "Uninjured"
+  *achieve flawless
+  *goto chart
+*elseif wounds = 1
+  *set wound_text "Battle-scarred"
+  *goto chart
+*elseif wounds = 2
+  *set wound_text "Permanently wounded"
+  *goto chart
+*elseif wounds = 3
+  *set wound_text "Permanently weakened"
+  *goto chart
+*else
+  *set wound_text "At Death's door"
+*label chart
+
+*if brutality >= 80
+    *achieve brute
+*if brutality <= 20
+    *achieve sophisticate
+*if cunning >= 80
+    *achieve machiavelli
+*if cunning <= 20
+    *achieve pure
+*if disdain >= 80
+    *achieve transcendent
+*if disdain <= 20
+    *achieve ruler
+*if infamy >= 80
+    *achieve monster
+*if wealth >= 20000
+    *achieve tycoon
+
+*stat_chart
+  opposed_pair Brutality
+    Brutality
+    Finesse
+  opposed_pair Cunning
+    Cunning
+    Honor
+  opposed_pair Disdain
+    Disdain
+    Vigilance
+  percent Infamy
+  text wealth_text Wealth
+  text wound_text Wounds
+  text Blasphemy  
+
+*page_break
+*if choice_subscribe_allowed
+    We hope you've enjoyed playing "Choice of the Dragon."
+
+    We release new games on a regular basis.
+    *subscribe
+    *page_break
+
+*goto_scene ending

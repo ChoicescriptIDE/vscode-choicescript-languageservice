@@ -1,0 +1,106 @@
+While you are flying across your territory, you spot a new shrine that your people have erected.  You fly down and find that a goat has been tied to the shrine.  A young woman is bowing before the shrine and praying.  The symbols on the shrine depict some winged deity, but the iconography is unfamiliar.
+
+"You there," you call out.  "To whom is this shrine dedicated?"
+
+The woman looks over her shoulder at you.  Her eyes widen in surprise, and she quickly turns, throwing herself prone before you.  She speaks without lifting her head.  "O mighty dragon, this shrine is dedicated to you.  Please, accept my praise and offering.  I know it's not much, but it's the best I could afford."
+
+It seems the people in your territory have started to worship you.  What do you want to do about that?
+
+*choice
+  #This is heresy!  Worshipping me is now forbidden.
+    You inform the woman that you are a dragon, not a god, and that you find her veneration offensive.  She blanches and then flees, hoping to be left alive.
+
+    You rip down the shrine and let the word go forth that worshipping you is forbidden.  It takes a certain amount of enforcement, but eventually the religion dies down.
+
+    Your decision pleases the gods, but it costs you a certain amount of tribute—it turns out that some people are more willing to give money to a "god" as tribute than to a dragon.
+    *set blasphemy -1
+    *finish
+  #Whom they worship is their business.  I ignore it.
+    You ignore the groveling woman and pause only to eat the goat before returning to your lair.
+
+    Over the following weeks, you become aware of a slowly growing cult worshipping you.  Your worshippers give more in tribute than most of the rest of the people living in your territory, but other than accepting the tribute, you pay little attention to the cult.
+    *set wealth +500
+    *set encourage 0
+    *page_break
+    *goto Statue
+  #Yes, they should worship me!  I encourage it.
+    "It is well that you recognize my divine glory!" You place one clawed hand lightly upon the woman's form. "Accept my blessing, and go forth knowing that a dragon guides your actions!"
+
+    On numerous similar occasions, you do everything you can to encourage the new religion.  Soon, you are venerated throughout your territory as widely as any of the major gods.
+
+    Almost immediately, you begin to reap tangible rewards from your new status as a deity.  It turns out that people will dig deeper to make offerings to their god than to their feared draconic overlord.
+    *set encourage 1
+    *set blasphemy +1
+    *set wealth +1500
+    *page_break
+    *goto Statue
+
+*label Statue
+
+Several weeks after you first learned of the new religious movement, a group of humans approach your lair.  They carry a large golden statue with them.  The artistry is not perfect, but it is clearly a dragon and probably intended as a representation of you.
+
+An old man steps forward from the group and genuflects towards your lair.  "Master…great dragon that breathes the fire that burns in our hearts…hear our prayer! Bless this statue, that it may watch over us and that we may pray before it."
+
+The statue was clearly made out of gold, with semi-precious stones for the eyes and at the tips of the claws and teeth.  It is worth a small fortune, and you hunger for it.
+
+What do you do?
+*choice
+  #Claim the statue for my hoard and send the people away.
+    "This is a worthy gift," you say.  "It will enhance my hoard nicely.  Now leave!"
+
+    There is some discontented murmuring among the people, but they have enough sense not to arouse your ire.
+
+    The statue goes nicely in your hoard, surrounded by piles of gold coins and adorned with a little jewelry. But the statue is pretty much the last benefit you get from your little cult.  Oh well.
+    *set wealth +1000
+    *goto ImpietyCheck
+  #Bless the statue and send it back with them.
+    You breathe flame at the statue; not much, enough to heat it a little but not to melt it.  The gemstone eyes shine as if some of the flame has been captured within.  The people praise you enthusiastically and carry the statue back to their village to be the center of their religious practices.
+
+    Over the subsequent weeks, you receive increasing gifts and offerings as your religion grows.
+    *set wealth +750
+    *page_break
+    *goto BeliefQuestion
+
+*label BeliefQuestion
+Your followers continue making offerings and praying to you.  It's a pretty sweet setup, all things considered.
+
+Let's be honest, though.  Do you actually believe you are a god, or is this just a way to gain control over your followers and extract additional offerings?
+
+*choice
+  #I am actually a god!  How dare you question my divinity?
+    Sorry, sorry!  I didn't mean any insult, your holiness. 
+
+    Honor increases.
+    *set cunning %-20
+    *page_break
+    Despite your new perspective, life continues much as it did before.  It turns out that there isn't much difference between a dragon that believes it is a god and a dragon that does not.  Of course, the gods themselves may disagree….
+    *goto ImpietyCheck
+  #Don't be silly, it's just a means of control.
+    That's what I thought.  Running a fake religion dedicated to yourself isn't very pious or honorable, but it is very profitable.
+
+    Cunning and Wealth increase.
+    *set cunning %+20
+    *set wealth +1000
+    *goto ImpietyCheck
+
+*label ImpietyCheck
+*page_break
+*if (blasphemy >= 3)
+  As you are flying one day, a blue thunderbolt knocks you from the air.
+  
+  While you try to recover, an avatar of the goddess of war attacks you. "The gods are much angered by your blasphemy, lizard!"
+  
+  With the first strike of her sword, both your wings are gone; you plummet to the ground with a deafening thud.  With another strike of her sword, she blinds you in holy light.
+  
+  With the final blow, she severs your head from your body, taking it as a trophy for the heavens.
+
+  *achieve blasphemy
+
+  *goto_scene death
+*elseif (blasphemy > 0)
+  The gods may not be pleased by your impiety, but they do not deign to take action against you.
+  *finish
+*else
+  The gods are pleased with your piety.
+
+  *finish

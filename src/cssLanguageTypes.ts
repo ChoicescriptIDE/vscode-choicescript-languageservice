@@ -9,6 +9,30 @@ export { TextDocument } from 'vscode-languageserver-textdocument';
 
 export * from 'vscode-languageserver-types';
 
+// ChoiceScript
+export type UserDictionaryEntry = { [key: string]: boolean };
+export type UserDictionary = { [key: string]: UserDictionaryEntry };
+
+
+//let x: UserDictionary = { "session": { "hola": true, "no": false } };
+
+export enum SpellCheckDictionary {
+	EN_US = "en_US",
+	EN_GB = "en_GB"
+}
+
+export interface SpellCheckSettings {
+	dictionaryPath: string;
+	enabled: boolean;
+	dictionary: SpellCheckDictionary;
+	userDictionary: UserDictionary;
+}
+
+export interface BadSpellingContext {
+	text: string;
+	range: Range;
+}
+
 export type LintSettings = { [key: string]: any };
 
 export interface CompletionSettings {
@@ -20,6 +44,12 @@ export interface LanguageSettings {
 	validate?: boolean;
 	lint?: LintSettings;
 	completion?: CompletionSettings;
+}
+
+export interface ChoiceScriptLanguageSettings {
+	validate?: boolean;
+	lint?: LintSettings;
+	spellcheck: SpellCheckSettings;
 }
 
 export interface PropertyCompletionContext {
@@ -51,6 +81,7 @@ export interface MixinReferenceCompletionContext {
 }
 
 export interface ICompletionParticipant {
+	onBadSpelling?: (context: BadSpellingContext) => void;
 	onCssProperty?: (context: PropertyCompletionContext) => void;
 	onCssPropertyValue?: (context: PropertyValueCompletionContext) => void;
 	onCssURILiteralValue?: (context: URILiteralCompletionContext) => void;

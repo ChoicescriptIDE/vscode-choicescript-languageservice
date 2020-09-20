@@ -1,0 +1,609 @@
+*title Choice of the Dragon
+*author Dan Fabulich and Adam Strong-Morse
+
+*scene_list
+  startup
+  lair
+  queenpolitics
+  clutchmate
+  checkpoint
+  heroes
+  goblinhero
+  warrequest
+  worship
+  mating
+  evilwizard
+  hibernation
+
+*create name ""
+*create brutality 50
+*create cunning 50
+*create disdain 50
+*create gender "unknown"
+
+*comment I've added wounds and blasphemy to provide hit points of sorts;
+*comment if the PC gets hurt, wounds goes up, with 3 usually meaning death;
+*comment impiety tracks whether the gods have been directly angered
+*create wounds 0
+*create blasphemy 0
+*create infamy 50
+*create wealth 5000
+
+*create encourage 0
+*comment encourage = 1 if you encourage the folk religion
+
+*create victory 0
+
+*create clutchmate_alive false
+*create vermias_killed_axilmeus false
+*create callax_alive true
+*comment Callax_Alive = true if Callax is alive, false if Callax is dead
+*create Callax_With false
+
+*achievement flawless visible 50 Flawless
+  Finish the game without wounds.
+  Finished the game without wounds.
+*achievement brute visible 50 Brute
+  Finish the game with at least 80% Brutality.
+  Finished the game with at least 80% Brutality.
+*achievement sophisticate visible 50 Sophisticate
+  Finish the game with at least 80% Finesse.
+  Finished the game with at least 80% Finesse.
+*achievement machiavelli visible 50 Machiavelli
+  Finish the game with at least 80% Cunning.
+  Finished the game with at least 80% Cunning.
+*achievement pure visible 50 Pure
+  Finish the game with at least 80% Honor.
+  Finished the game with at least 80% Honor.
+*achievement transcendent visible 50 Transcendent
+  Finish the game with at least 80% Disdain.
+  Finished the game with at least 80% Disdain.
+*achievement ruler visible 50 Ruler
+  Finish the game with at least 80% Vigilance.
+  Finished the game with at least 80% Vigilance.
+*achievement monster visible 100 History's Greatest Monster
+  Finish the game with at least 80% Infamy.
+  Finished the game with at least 80% Infamy.
+*achievement tycoon visible 100 Tycoon
+  Finish the game with at least 20,000 gold pieces.
+  Finished the game with at least 20,000 gold pieces.
+*achievement villain visible 50 Villain
+  Defeat a party of heroes.
+  Defeated the heroes.
+*achievement blasphemy visible 50 Blasphemy
+  Anger the gods.
+  Slain by gods.
+*achievement lover visible 100 Lover
+  Find a mate.
+  Found a mate.
+*achievement champion visible 50 Champion
+  Defeat an evil wizard.
+  Defeated Magister Vermias.
+*achievement dragonslayer visible 50 Dragon Slayer
+  Stop your own heart.
+  Stopped your own heart.
+
+*if not(choice_is_web or choice_is_steam)
+  *temp skip_description
+  *config skip_description false
+  *if skip_description
+    *advertisement
+    *goto purchased
+*check_purchase adfree
+*if choice_purchase_supported and (not(choice_purchased_adfree) and not(choice_is_web))
+    Choice of the Dragon is supported by advertisements, but you can buy the unlimited version
+    to turn off ads forever.
+
+    *purchase_discount adfree 2019-07-09 $4.99 $2.99 purchased
+    *page_break No, thanks. I'll wait through the ads.
+    *advertisement
+
+*label purchased
+Let us begin.
+
+A knight charges up the slope at you.  His horse pounds at the ground, carrying the heavily armored warrior as if he were a child's doll.  The knight sets his lance to attack you.
+
+How do you defend yourself, O mighty dragon?
+*choice
+  #I take to the air with a quick beat of my wings.
+    You leap to the air, deftly avoiding the knight's thrust.  Now that you are in the air, he hardly poses any threat at all—not that he ever posed much of one to you.  You circle back and knock him off his horse with a swipe of your claw.
+
+    *set brutality %-10
+    *goto Victory
+
+  #I knock the knight from his horse with a slap of my tail.
+    You swing your mighty tail around and knock the knight flying.  While he struggles to stand, you break his horse's back and begin devouring it.
+
+    *set cunning %+10
+    *goto Victory
+ 
+  #I rush into his charge and tear him to pieces with my claws.
+    The knight's lance shatters against your nigh-impenetrable hide as you slam into him.  You yank him clean off his horse, slamming him to the ground and ripping his plate armor with your vicious claws.  The fight is over before it has begun. 
+
+    *set brutality %+10
+    *goto Victory
+
+  #A puff of my fiery breath should be enough for him.
+    You let loose an inferno of fire.  The knight's horse is cooked nicely, and your stomach lets out a deafening rumble as the smell of roast destrier reaches your nostrils.  The knight himself staggers to his feet.  His armor managed to keep him alive, but only barely.
+
+    *set disdain %+10
+    *goto Victory
+  *if (choice_save_allowed) #Restore a saved game.
+    *restore_game
+    *goto purchased
+
+*label Victory
+
+Do you finish him off, victorious dragon?
+*choice
+      #Of course!  How dare he attack me?
+        Your jaws crush him in a single bite.
+
+        That showed him.
+        *set brutality %+10
+        *goto Naming
+
+      #I let him live to warn others of my immense power.
+        "Begone, petty human.  To attack me is to meet your doom," you growl.
+
+        The knight stumbles away as quickly as he can, not even daring to pretend that he could still fight you.
+        *set infamy %+15
+        *goto Naming
+
+      #Eh.  Now that the threat is ended, he is beneath my concern.
+        You leisurely eat the knight's horse.  He slinks away as quietly as he can.  (His heavy armor makes a stealthy escape impossible.)  Still, you pay him no mind as he leaves.
+
+        *set infamy %+10
+        *set disdain %+10
+        *goto Naming
+
+*label Naming
+
+You know, it's going to get annoying to keep calling you "great and mighty dragon."  What is your name?
+*choice
+    #Gorthalon.
+        *set name "Gorthalon"
+        *goto gender
+    #Sssetheliss.
+        *set name "Sssetheliss"
+        *goto gender
+    #Calemvir.
+        *set name "Calemvir"
+        *goto gender
+    #These names are all terrible!
+        Oh! Please forgive me.
+        *label input_name
+        What name would you prefer?
+        *input_text name
+
+        *comment check capitalization
+        *if ("${name}" != "$!{name}")
+
+            Your name is $!{name}, is that right?
+
+            *choice
+                #Yes.
+                    *set name "$!{name}"
+                    *goto gender
+                #No, my name is ${name}, just as I said.
+                    *goto gender
+                #Er, wait, let me try that again.
+                    *goto input_name
+
+*label gender
+Will you be male or female?
+*choice
+    #Male.
+        *set gender "male"
+        *goto Princess
+    #Female.
+        *set gender "female"
+        *goto Princess
+    #Neither.
+        *set gender "neither"
+        *goto Princess
+    #Unknown/undetermined.
+        *set gender "unknown"
+        *goto Princess
+    #Do not pester me with impudent questions!
+        *set brutality %+ 15
+        I, ah, I mean, yes!  Of course!  How churlish of me.
+        
+        But, O mighty ${name}, I feel I should let you know that this game is full of choices; indeed, it is nothing but multiple choice questions that determine the course of your adventures as a dragon.  If you don't enjoy answering questions, this game may not be for you!
+        
+        Do you…I mean, if I may, would you like to specify your gender after all?
+        
+        *choice
+            #Very well.
+                Excellent choice!  What gender will you be?
+                
+                *choice
+                    #Male.
+                        *set gender "male"
+                        *goto Princess
+                    #Female.
+                        *set gender "female"
+                        *goto Princess
+                    #Neither.
+                        *set gender "neither"
+                        *goto Princess
+                    #Unknown/undetermined.
+                        *set gender "unknown"
+                        *goto Princess
+            #I said no.
+                *set gender "unknown"
+                
+                Well, let's just leave it undetermined, then!
+                *goto Princess
+       
+*label Princess
+
+As you think about it, the knight's attack was probably inevitable.  After all, you did just kidnap the princess from right out of her tower.  Although…
+
+Isn't it a little sexist to always kidnap princesses?
+*temp royal
+*choice
+  #Maybe, but tradition demands that dragons kidnap princesses, even if that is sexist.
+    I guess you're right.
+
+    Anyway, as you ripped the roof off her tower, the light glistened off your…
+    *set royal "princess"
+    *goto color
+  #You dare question my actions?
+    No, no!  Of course not.  I just wanted to—I mean—What I'm trying to say is…
+
+    Let's just move on.
+
+    Anyway, as you ripped the roof off her tower, the light glistened off your…
+    *set royal "princess"
+    *goto color
+  #You know, I never thought about that before.  In fact, I think I kidnapped a prince, just to avoid being sexist.
+    Right you are.  As I was saying, the knight's attack was probably inevitable.  After all, you did just kidnap the prince 
+    from right out of his tower.  As you ripped the roof off his tower, the light glistened off your…
+    *set royal "prince"
+    *goto color
+  #I'll have you know that I make a careful point of alternating between princes and princesses, but it happened to be time for a princess.
+    Of course.  I'm sorry for questioning you.
+
+    Anyway, as you ripped the roof off her tower, the light glistened off your…
+    *set royal "princess"
+    *goto color
+
+*label color
+*temp royal_him
+*temp royal_his
+*temp royal_she
+*temp royals
+*if (royal="princess")
+  *set royal_him "her"
+  *set royal_his "her"
+  *set royal_she "she"
+  *set royals "princesses"
+  *goto A
+*else
+  *set royal_him "him"
+  *set royal_his "his"
+  *set royal_she "he"
+  *set royals "princes"
+  *goto A
+
+*label A
+
+Ah, would you like to specify the color of your hide?  I wasn't sure which color to put in that description.
+
+*temp color
+*choice
+    #Can we just get on to the smashing?
+        *set brutality %+ 30
+        Y—yes, of course!  Your wish is my command.
+        
+        On with the show!
+        
+        *page_break
+        *goto RoyalResolution
+    #Black.
+        *set color "black"
+        *goto limbs
+    #Blue.
+        *set color "blue"
+        *goto limbs
+    #Brown.
+        *set color "brown"
+        *goto limbs
+    #Gold.
+        *set color "golden"
+        *goto limbs
+    #Green.
+        *set color "green"
+        *goto limbs
+    #Iridescent.
+        *set color "iridescent"
+        *goto limbs
+    #Red.
+        *set color "red"
+        *goto limbs
+    #White.
+        *set color "white"
+        *goto limbs
+    
+
+*label limbs
+Wonderful choice.  So the light glistened off your ${color} hide, as you snatched the ${royal} out of ${royal_his} tower.
+
+While we're on the subject, let's settle a few other details.  How many limbs will you have, not counting your wings or tail?
+
+*fake_choice
+    #Four.
+    #Five.
+    #Six.
+    #Eight.
+
+Hmm.  Is the top of your head ridged or smooth?
+*temp head
+
+*choice
+    #Ridged.
+        *set head "ridged"
+        *goto wings
+    #Smooth.
+        *set head "smooth"
+        *goto wings
+
+*label wings
+
+I see.  And your wings—feathery, leathery, or scaly?
+
+*temp wings
+
+*choice
+    #Feathery.
+        *set wings "feathery"
+        *goto Summary
+    #Leathery.
+        *set wings "leathery"
+        *goto Summary
+    #Scaly.
+        *set wings "scaly"
+        *goto Summary
+
+*label Summary
+As you kidnapped the ${royal}, you beat your ${wings} ${color} wings and flew off into the night, as ${royal_she} clutched tightly to your ${head} scalp to avoid plummeting to ${royal_his} doom.
+
+*label RoyalResolution
+What are you planning on doing with the ${royal}, anyway?
+*choice
+  #It's all about companionship and good conversation.
+    Life can be lonely as a dragon, and interesting conversation is at a premium.  The elite upbringing of royalty makes them more suitable for entertaining dragons.
+
+    But what do you do after you tire of ${royal_his} conversation?
+    *choice
+      #Then it's time for a royal feast—by which I mean I eat ${royal_him}.
+        The ${royal}'s efforts to entertain you with ${royal_his} stories, harp-playing, and singing become more desperate as your boredom becomes more apparent.  But even ${royal_his} best efforts are not enough, and you devour ${royal_him} without remorse.
+
+        *set brutality %+10
+        *set cunning %+10
+        *set infamy %+10
+        *goto personality
+
+      #I let ${royal_him} slip away, pretending not to notice ${royal_his} escape plan.
+        The ${royal} becomes gradually more fearful as ${royal_his} stories, harp-playing, and singing amuse you less each passing day.  One evening, as you pretend to sleep, ${royal_she} makes a break for it.  You are well aware of ${royal_his} departure and could catch ${royal_him} easily, but you let ${royal_him} go.  $!{Royal_She} made several months more interesting, and that's
+        worth sparing ${royal_his} life.
+        *set brutality %-10
+        *set cunning %-10
+        *set infamy %-10
+        *goto personality
+  #I'll keep ${royal_him} around for a little while to lure in more knights, but then ${royal_she}'s dinner.  It's a little known fact that ${royals} taste better than most humans.
+    *goto EatHer
+  #It's all about the ransom payments.  Those are a quick and easy way to build a hoard.
+    Indeed.  Within a month, a large chest of gold comes to pay for the ${royal}'s release.
+    *set wealth +1500
+
+    What do you do then?
+    *choice
+      #Honor demands that I carry out my end of the bargain.
+        Of course.  No sooner have you received the payment than you let the ${royal} go.
+        *set cunning %-20
+        *set brutality %-10
+        *set infamy %-10
+        *goto personality
+
+      #Once I have the payment, I have no reason to delay my dinner.
+        Crunch, munch.  Delicious.
+
+        *set cunning %+20
+        *set brutality %+10
+        *set infamy %+10
+        *goto personality
+    
+*label EatHer
+It must be the diet.  In any event, you have a delightful dinner of roast ${royal}.
+*set brutality %+10
+*set infamy %+10
+*goto personality
+
+*label personality
+
+*page_break
+This would be a good time to talk a little more about your personality.
+
+All dragons can be described in terms of a handful of characteristics, each in opposed pairs:  Brutality and Finesse, Cunning and Honor, Disdain and Vigilance.
+
+*comment We start with the basic dichotomies between the paired attributes
+*comment brutality is the opposite of finesse; only modify by %+ or %-
+
+Are you more notable for your Brutality or your Finesse?
+*choice
+  #Brutality: strength and cruelty.
+    *set brutality %+70
+    *goto CunningQuestion
+  #Finesse: precision and aerial maneuverability.
+    *set brutality %-70
+    *goto CunningQuestion
+
+*label CunningQuestion
+
+*comment cunning is the opposite of honorable; only modified by %+ or %-
+
+Do you have more Cunning or Honor?
+*choice
+  #Cunning: intelligence and trickery.
+    *set cunning %+70
+    *goto DisdainQuestion
+  #Honor: honesty and trustworthiness.
+    *set cunning %-70
+    *goto DisdainQuestion
+
+*label DisdainQuestion
+
+*comment disdain is the opposite of vigilant; only modify by %+ or %-
+
+Do you disdain threats and insults that are beneath you, or are you vigilant
+against any slight or transgression?
+*choice
+  #Disdain: patience and scorn.
+    *set disdain %+70
+    *goto FirstChoice
+  #Vigilance: attention and impulsiveness.
+    *set disdain %-70
+    *goto FirstChoice
+
+*label FirstChoice
+*comment Now we face some real choices to finish chargen and establish setting
+*comment First choice trades off cunning vs. brutality
+Now we're going to view some flashbacks to your days as a wyrmling.
+
+As a young hatchling, you lived with your mother in a cave high up on a mountain.  Your mother had a vast hoard of treasure and a varied hunting range. Some of your siblings chose to spend much of their time reading the rare codices and scrolls your mother had collected.  Other siblings spent their time hunting dangerous game and brawling with each other.  Which pursuit did you prefer?
+
+*choice
+  #Reading.
+    A wise choice that made you more Cunning and taught you Finesse.
+    *set cunning %+20
+    *set brutality %-20
+    *goto SecondChoice
+  #Hunting.
+    You developed your muscles as you gloried in combat and the kill at
+    the end of the hunt.  Your brawls with your siblings also taught you the
+    basics of Honor. 
+
+    Brutality and Honor increase.
+    *set cunning %-20
+    *set brutality %+20
+    *goto SecondChoice
+
+*label SecondChoice
+*comment Second choice trades off cunning vs. disdain
+
+As you reached maturity, you began to threaten your mother's dominance over her territory.  Before you could possibly have bested her in a direct confrontation, she threw you out of her lair and drove you from the lands in which you grew up, leaving you to fend for yourself without any resources beyond your claws, wings, and teeth. 
+
+Did you seek revenge on her by turning some of the humans in her lands against her, or did you consider petty revenge beneath you?
+
+*choice
+  #I sought revenge.
+    You were unable to truly threaten her, but you forced your mother to
+    spend her time suppressing the revolts of human villages.  The dead    
+    villagers also provided her with no tribute, reducing the increase of her
+    hoard.  Perhaps something more direct would be better as revenge. Still, a real
+    gain nonetheless. 
+
+    Cunning and Vigilance increase.
+    *set cunning %+20
+    *set disdain %-20
+    *goto ThirdChoice
+  #Revenge is beneath my dignity.
+    Disdain for petty matters is essential for a dragon, as it avoids the
+    pointless feuds that weaken you and allow your enemies to achieve great
+    goals. 
+   
+    Manipulating peasants is also not the most honorable of activities for a    
+    mighty dragon such as yourself. 
+   
+    Your wise choice increases Disdain and Honor.
+    *set cunning %-20
+    *set disdain %+20
+    *goto ThirdChoice
+
+*label ThirdChoice
+*comment Trades off Disdain versus Brutality
+
+After several days of flight, you came across a tiny halfling travelling through the desert.  Even from afar, your keen eyes detected the glint of gold and the sparkle of magic.  This halfling has some sort of magic golden shield strapped to his tiny back.
+
+You knew immediately that this treasure must be yours.
+
+The halfling was far from civilization and would almost surely die soon of thirst and starvation.  For the moment, he seemed to be protected by the power of the shield.
+
+Did you kill him on the spot, ignoring his magical protections, or did you hover nearby and wait for the halfling to die, knowing that you might lose the treasure?
+
+*choice
+  #I waited for him to die.
+    There's no reason you have to do all the dirty work yourself.  A few hours later, the halfling stumbled, crawled for a while, and finally stopped.  You easily plucked the treasure off of his body, saving yourself quite a bit of work.
+   
+    Disdain and Finesse increase.
+    *set brutality %-20
+    *set disdain %+20
+    *goto Axilmeus
+  #I killed him on the spot.
+    It wasn't easy; the shield protected him from fire and helped him evade your attacks.  Eventually you had to swallow him whole and cough up the shield.  That worked!
+   
+    Brutality and Vigilance increase.
+    *set brutality %+20
+    *set disdain %-20
+    *goto Axilmeus
+
+*label Axilmeus
+*page_break
+One of your elder clutchmates was an overbearing brute named Axilmeus.  Axilmeus loved to torment the others, always seeking to seize what did not belong to him.
+
+"${name}," he said with a menacing grin, "give me that golden shield, or I will beat you within an inch of your life."
+
+*choice
+  # I gave him the shield to avoid a fight.
+    *set disdain %+ 15
+    Disdain increases.
+    
+    Axilmeus took your shield and beat you with it, hard.
+    *goto ResolveAxilmeus
+  # I dueled him for the shield.
+    *set brutality %+ 15
+    *set cunning %- 15
+    Brutality and Honor increase.
+    
+    You fought your hardest, but Axilmeus was a bit stronger than you; he pinned you to the ground and pried the shield out of your claws.
+    *goto ResolveAxilmeus
+  # I evaded him and hid the shield.
+    *set brutality %- 15
+    *set cunning %+ 15
+    Cunning and Finesse increase.
+  
+    Unfortunately, Axilmeus is your elder; at this age, he has the advantage in maneuverability.  He caught up to you quickly, pinning you to the ground and prying the shield out of your claws.
+
+*label ResolveAxilmeus
+Then he crushed the shield in his jaws, wasting the magical energies imbued within it, and spat it out at your feet.  He laughed with a great roar as he flew away.
+
+*label Wrapup
+*comment [We need to generate a starting Wealth somehow.  My current thought is
+*comment that we use a random number increased up by low Brutality, low Disdain,
+*comment and high Cunning. 
+*comment But we could also tie it more specifically to the choices, or just go
+*comment random, or whatever.]
+
+*page_break
+
+You have the following stats:
+
+*temp wealth_text "${wealth} gold coins"
+
+*stat_chart
+  opposed_pair Brutality
+    Brutality
+    Finesse
+  opposed_pair Cunning
+    Cunning
+    Honor
+  opposed_pair Disdain
+    Disdain
+    Vigilance
+  percent Infamy
+  text wealth_text Wealth
+
+*finish Begin the Adventure
+

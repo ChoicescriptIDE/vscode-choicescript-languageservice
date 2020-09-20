@@ -1,0 +1,101 @@
+You are lounging on your treasure horde when you hear the sounds of booted feet coming bravely towards your treasure chamber.
+
+The gait is that of a goblin, but what goblin wears boots? The creature who enters is walking bravely forward, clearly scared of you but secure in the notion that he's doing the right thing.
+
+He is armed with a small sword—a long knife, really—and wears a crude helmet that clearly used to be a kitchen implement.
+
+He begins to speak.  Like all goblins, his voice is nasal, but he puffs out his chest and begins to speak in important-sounding tones.
+
+"O great dragon," he quavers, "I am Thokket of this tribe.  I have known all my life that I am destined for greatness.  Possessed as I am of a noble soul, I have practiced for many months and have mastered the art of martial combat.  In your name, I wish to ride out on the field of combat and prove my worth as a true hero.  One day, I shall return with a great treasure to add to your magnificent hoard.  Will you grant me your blessing on my quest?"
+
+*choice
+    #Eat him.
+        *label eat
+        Good move.  Experience has shown clearly that heroes are nothing but trouble.  He's got a little more meat on him than your average goblin, which makes his cries for mercy all the more delicious!
+        
+        *finish
+    #Grant him my blessing.
+        *label blessing
+        "Thank you, master!  I swear that I will make you proud of me!"
+       
+        Other than encouragement, are you going to help him along in any way?
+       
+        *choice
+            #Give him some real weapons.
+                That's generous of you.  Maybe your investment in him will pay
+                off some day.
+               
+                Do you want to send him off in a general direction?
+                *choice
+                    *if clutchmate_alive
+                        #Point him in the general direction of my clutchmate.
+                            *goto clutchmate
+                    #Direct him toward the capitol of my kingdom.
+                        *goto capitol
+                    #Urge him to attack a neighboring kingdom.
+                        *goto neighbors
+                    #Let him fend for himself.
+                        *goto fend
+            *if clutchmate_alive
+                #Point him in the general direction of my clutchmate.
+                    *label clutchmate
+                    Your clutchmate kills him, but he does manage to annoy Axilmeus somewhat, which is really all you could ask from a minion of his stature.
+                    *finish
+            #Direct him toward the capitol of my kingdom.
+                *label capitol
+                Do you plan to send word of his arrival?
+               
+                *choice
+                    #Tell them to kill the crazed beast.
+                        At a word from you, they kill him.  All's well that ends well, I suppose.
+                        *finish
+                    #Tell them to honor him as a hero.
+                        They welcome the "hero" reluctantly into their cities; they give him a small riding pony.  Eventually, he wanders over to the neighboring kingdom in search of treasure.
+                       
+                        *page_break
+                        *goto neighbors
+                    #Tell them nothing; just wait and see what they do.
+                        Humans don't take kindly to hostile goblins; they kill him. All's well that ends well, I suppose.
+                        *finish
+            #Urge him to attack a neighboring kingdom.
+                *label neighbors
+                He manages to get himself killed, but he does do some damage. He proudly carries a banner of your kingdom and yells your name loudly when he rides out onto the field of battle.
+               
+                This starts something of an international incident; the neighboring kingdom begins skirmishing with yours.  You have not heard the end
+                of this.
+                *finish
+            #Let him fend for himself.
+                *label fend
+                Eventually, he wanders over to the neighboring kingdom in search
+                of treasure.
+               
+                *goto neighbors
+    #Test his prowess.
+        You put him through some simple tests of skill and bravery.  He's tougher than the average goblin, but not all that tough; his overabundance of sheer determination to succeed—despite all odds—compensates for whatever he may lack in general prowess.
+       
+        *choice
+            #Eat him.
+                *goto eat
+            #Grant him my blessing.
+                *goto blessing
+            #Forbid him to go questing.
+                *goto forbid
+       
+    #Forbid him to go questing.
+        *label forbid
+        He looks crestfallen.  "Y—yes, master."
+        
+        How pathetic.  You nestle back down into your pile of gold coins.
+       
+        *page_break
+        But he's back again, not a week later.
+       
+        "Master, I can't ignore my destiny!  I know I risk the ultimate penalty for questioning your will, but I accept that risk willingly!  Please, grant me your blessing to quest in your holy name!"
+       
+        Persistent, isn't he?  What do you do with a goblin minion who won't take "no" for an answer?
+       
+        *choice
+            #Eat him.
+                *goto eat
+            #Grant him my blessing.
+                *goto blessing

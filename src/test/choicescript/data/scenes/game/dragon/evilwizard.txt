@@ -1,0 +1,772 @@
+*temp KilledDemon
+*comment KilledDemon = true if you killed the first demon that spoke to you, false otherwise
+*set KilledDemon false
+
+*temp AttackedCallax
+*comment AttackedCallax is true if you destroyed Callax's tower.  It only matters if Callax is still alive.
+*set AttackedCallax false
+
+*temp visited_mountain false
+
+The next two years pass leisurely.  You sleep on your hoard of treasure, hunt for prey, and occasionally sack a small town for variety.  All in all, you're enjoying a little time without annoying interruptions, when some sort of conjured fiend materializes in front of you. It trails smoke as it hunches before you and claws at the stone floor, bat wings fanning the air. Whatever this thing is, it isn't natural.
+
+The fiend's voice sounds like the movement of many, many slugs. "O mighty ${name}," it gurgles, "the wizard Callax sends his regards. You have been marked for death. And I, or one of my kin, will be your executioner."
+
+Constant interruptions like this make it hard to enjoy all of your treasure.
+
+*choice
+    #Kill it.
+        *label KillDemon
+        This isn't as easy as you expected. It tastes revolting, it isn't hurt by your breath, it's fast, and it isn't entirely real. Chewing it is like trying to bite through a ghost. Its claws hurt, though. The creature leaves rents in your scales and actually manages to break your skin before you slap it into the wall with your tail. It disappears into greasy vapor, laughing.
+ 
+        Magic. One more reason to hate wizards.
+        *set KilledDemon true
+        *goto Callax
+    #Question it.
+        It chortles as it hears your question. "I am sent by an enemy you didn't even know you had. I am a creature of nightmare, and three other dragons have fallen before my kind. When you are dead, I will eat your soul and wear your flesh as a disguise, and then my master will rule instead of you."
+
+        Three other dragons? You'd think you'd have heard about that.
+
+        *choice
+            #Question it further.
+                "Surely you have heard of the mighty wizard Callax? He abides in the High Tower of Wizardry, within the very country you 
+                claim. He has grown annoyed that you overthrew his queen, and has sentenced you to death. Goodbye, worm."
+                *goto Callax
+            #Kill it.
+                *goto KillDemon
+
+*label Callax
+*page_break
+The wizard Callax, eh? How do you feel about the attack?
+*choice
+        #What sort of idiot would try to kill me?
+            Exactly. It would take a brave man to challenge outright someone as powerful as you. A brave, stupid man.
+            *goto A
+        #I'm furious and demand immediate vengeance.
+            No time like the present. You even know where the High Tower of Wizardry is, although they haven't bothered you before.
+            *goto A
+        *if (KilledDemon=true)
+            #This is going to become tedious if it continues. That thing tasted awful.
+                It's probably worth looking into, if for no other reason than that it'll be hard to sleep uninterrupted.
+                *goto A
+
+*label A
+What's your next step?
+*choice
+    #Try to find out more about the monster.
+        You have the goblins haul out the chest of books you found the last time you ate a wizard, and they turn pages as you look through them. The picture is on page 418 of the fifth book. Apparently, the creature that attacked you is a fiend that only the most powerful wizards can summon, a creature of pure hatred and bile that feeds by killing. If Callax summoned him, the wizard is quite powerful indeed.
+
+        Now what?
+        *choice
+            #Assault the High Tower of Wizardry and kill Callax.
+                *goto Assault
+            #Fly to the High Tower of Wizardry and talk to Callax.
+                *goto TalkCallax
+            #Try to find out more about Callax.
+                You launch yourself out of your lair and circle silently on the wind as you think about whom to ask. At this point, you know enough intimidated humans that someone should be able to give you information. It doesn't take long; Callax is the high mage, whatever that is. He's supposed to be fairly powerful and very proud, someone who likes to succeed and doesn't have much patience for rivals.
+
+                You're going to have to go to the High Tower of Wizardry to see him.  But do you plan to kill him, or to talk first?
+                *choice
+                    #Kill him!
+                        *goto Assault
+                    #Talk to him first.
+                        *goto TalkCallax
+    #Assault the High Tower of Wizardry and kill Callax.
+        *label Assault
+        *set AttackedCallax true
+        No mercy for one who would oppose you. You are a thunderbolt as you hit the tower from the outside, slamming against it from the air with all of your might. You feel spell-strengthened stones creak and tumble beneath your weight. The top of the tower breaks loose and falls to the ground, and you hear the sound of screams.
+        
+        "Callax!" you roar. You stick your snout into the top of the tower and breathe flame straight down into the broken structure. "CALLAX!" A sweep of your tail takes out the stables, and you pounce on the first people to flee the structure.
+
+        The wizard doesn't introduce himself when he attacks; he simply hits you with a magical spell from behind.
+
+        "Coward!" you growl, and only a magical globe of water saves him from being flash-fried. "Where are your conjured monsters now?" 
+
+        He looks a little surprised at that.
+
+        *choice
+            #Find out why he looks surprised.
+                You pause in your assault. "What?" Fire dances around your nostrils.
+                    
+                "What conjured monsters? I can't do that."
+                        
+                Uh-oh.  "You can't?"
+                            
+                "No! I transform and transfigure things. I never learned conjuring."
+
+                *choice
+                    #Whoops.  
+                        "Ah. Right, then. So you didn't send a monster to attack me?"
+
+                        "No!"
+                                    
+                        You glower. "It said you did. It told me you had slain three other dragons, and I would be your latest victim."
+
+                        "You believed a monster?" Callax looks around at the wreckage and death.  He appears somewhat sick.
+                
+                        "Silence! If not you, who?"
+
+                        "I think an old enemy of mine is trying to kill you, or to use you as a murder weapon to assassinate me. She calls herself Magister Vermias, although I don't know her real name. She's definitely a conjurer, and she can't stand me."
+
+                        "Has she killed dragons before?"
+
+                        "I don't know for sure, but her staff is supposed to be made from a dragonbone, so the answer might be yes. She lives in the mountains far to the south, and she wants this country as her own. Luckily, she's never been able to raise an army, since no one is stupid enough to follow her. She's crazy and very dangerous."
+
+                        You depart without another word, leaving the dying wizard and burning tower behind.
+                        *goto ReturnLair
+                    #Lies! I'd better eat him before he says anything else.
+                        *goto EatCallax
+            #Nah, I eat him.
+                *label EatCallax
+                A magical spell strikes you, and you can feel your scales turning as soft as butter. That's not good. Both claws slam down onto the wizard before he can react, and you turn him into a gooey paste. Then you're off and flying before anyone can strike you in your newly vulnerable spot. Your enemy is dead, and you're barely hurt. Not bad. On the way back, you can feel your scales hardening again.  They're still softer than they've been in years, but you don't think he's left you permanently vulnerable.  At least, you hope not.
+                *set wounds +1
+                *set Callax_Alive false
+                *goto ReturnLair
+ 
+    #Fly to the High Tower of Wizardry and talk to Callax.
+        *label TalkCallax
+        The Tower isn't far at the speeds you fly, less than an hour away. You land in the courtyard, and there's no doubt that everyone knows you're there. A cowering servant is pushed through a door to find out what you want. Do you want to demand to see Callax, or ask more politely?
+        *fake_choice
+            #Demand to see him.
+                Your roar shatters ancient stained-glass windows, and the sound makes you smile. "Worm! Fetch Callax!"
+            #Ask to see him.
+                 The servant is clearly terrified. "Bring me Callax, human. He and I have a problem to discuss."
+        *page_break
+        You prepare yourself for battle. If Callax is brave enough to accost you now, you won't be taken by surprise.
+            
+        Callax strides out the doorway into the courtyard, his body sheathed in magical fires that he thinks will protect him from you. He seems cautious but not afraid. "It is an honor to meet you, ${name}," he says in a clear voice. "To what do I owe the pleasure of this visit?"
+        *fake_choice
+            #"You tried to kill me."
+                Your voice rumbles through the courtyard, and all the apprentices watching from the tower's windows go silent with dread. 
+
+                Callax squints. "No, I didn't."
+            #"Why are you trying to kill me?"
+                Callax looks surprised. "I'm not trying to kill you. That would be stupid. Why would I do that?"
+            #"How many dragons have you killed in your life?"
+                He looks surprised. "None. Killing dragons is a dangerous line of work. I have my hands full with human enemies, thank you very much."
+
+        *choice
+            #He's lying. I eat him.
+                No reason to waste words. You reach out your jaws to devour him, and his protective spells flare into existence. The pain is incredible. You take to the air and blanket the courtyard with fire; he creates a bubble of water to protect himself. He throws a spell at you and you feel it blacken the scales on your belly. The pain increases. Finally, you simply drop on him out of the sky, massive claws ripping and tearing through his magical shields as your bulk pins him down. It takes several minutes and you're badly hurt, but the wizard Callax is dead. You should now be safe.
+
+                "Thus perish all who attack me!" you roar—a little pretentious, perhaps, but you're angry and in pain. You drag yourself aloft and return to your lair. You trail droplets of smoking blood as you fly.
+                *set wounds +1
+                *set Callax_Alive false
+                *goto ReturnLair
+            #Maybe he's telling the truth. Find out more.
+                "That's not what your conjured beast told me as it tried to kill me." Your anger shakes the tower's stone.
+  
+                "Conjured beast? Your Majesty, I don't do conjurations. I specialize in transmutations. I can change a housefly into an ogre or an apple into a pear, but I can't conjure fiends to set against my enemies." He pauses. "Why do you believe I did this?"
+ 
+                "Are you not listening? Your creature told me before I killed it."
+ 
+                He shuts his eyes as if in pain. "${name}, I apologize. I think an old enemy is trying to kill you, or to use you as a murder weapon to assassinate me. She calls herself Magister Vermias, although I don't know her real name. She's definitely a conjurer, and she can't stand me."
+ 
+                "Has she killed dragons before?"
+ 
+                "I don't know for sure, but her staff is supposed to be made from a dragonbone, so the answer might be yes."
+                *choice
+                    #Ask where Vermias is.
+                        "She lives in the mountains far to the south, and she wants this country as her own. Luckily, she's never been able to raise an army, since no one is stupid enough to follow her. She's crazy and very dangerous. Be cautious."
+                        *goto ReturnLair
+                    #Leave.
+                        Your wings beat the air as you fly back to your lair. Vermias, eh?
+                        *goto ReturnLair
+
+    #Try to find out more about Callax.
+        You launch yourself out of your lair and circle silently on the wind as you think about who to ask. At this point, you know enough intimidated humans that someone should be able to give you information. It doesn't take long; Callax is the high mage, whatever that is. He's supposed to be fairly powerful and very proud, someone who likes to succeed and doesn't have much patience for rivals.
+
+        What's next?
+        *choice
+            #Try to find out more about the monster.
+                 You have the goblins haul out the chest of books you found last time you ate a wizard, and they turn pages as you look through them. The picture is on page 418 of the fifth book. Apparently, the creature that attacked you is a fiend that only the most powerful wizards can summon, a creature of pure hatred and bile that feeds by killing. If Callax summoned him, the wizard is quite powerful indeed.
+
+                 You're going to have to go to the High Tower of Wizardry to see him.  But do you plan to kill him, or to talk first?
+                 *choice
+                    #Kill him!
+                        *goto Assault
+                    #Talk to him first.
+                        *goto TalkCallax
+                
+            #Assault the High Tower of Wizardry and kill Callax.
+                *goto Assault
+            #Fly to the High Tower of Wizardry and talk to Callax.
+                *goto TalkCallax
+        
+*label ReturnLair
+
+*if ((Callax_Alive=false) or (AttackedCallax=true))
+  A different conjured monster is waiting for you as you arrive at your lair. "Mighty ${name}," it mocks in a wheedling voice, "did you feel oh so smart as you attacked an innocent wizard just now? My true master grows more powerful while you weaken his enemies. Thank you, for you have been an awfully good little servant. And you will never know who my master actually is.
+  *goto SecondMonster
+*else
+  A different conjured monster is waiting for you as you arrive at your lair. "Mighty ${name}," it mocks in a wheedling voice, "you may have been clever enough to not attack an innocent wizard, but you are no closer to your goal.  My true master grows more powerful while you chase his enemies.
+  *goto SecondMonster
+
+*label SecondMonster
+
+"Come to the peak of Crooked Mountain tomorrow at midnight, where you will learn what is required of you, should you wish to live."
+
+*fake_choice
+    #Eat it.
+        This thing needs to shut up.
+    #Ask it questions before eating it.
+        It doesn't seem as smart as the last one. Maybe you can learn something.
+        
+        "Who is your master?"
+
+        "Why, I am summoned by the queen of this country you claim to—" You cut it off mid-sentence by biting off its froglike legs. It tastes utterly revolting.
+As you bite into it, the beast's eyes bug out of their sockets.
+
+"Vermias said you couldn't hurt me…" it croaks out.
+
+"Vermias lied," you reply, destroying the monster.  You settle back down on your hoard in annoyance.
+*page_break
+               
+So, Vermias wants to face you on the peak of Crooked Mountain.  You know where that is.  The question is, why?
+*fake_choice
+    #So that she can present me with a list of demands.
+        It makes sense that she wants to humiliate you before she tries to enslave or kill you.
+    #So that she can ambush and kill me.
+        You know that she uses lies to manipulate her foes, and this seems like a classic trap.
+*comment endif
+
+Do you want to show up atop the mountain at the appointed time?
+*choice
+    #Absolutely, by myself.
+        None will stand before you, and there is no challenge you can't face down alone. This wizard is doomed.
+        
+        Brutality and Honor increase.
+        *set brutality %+15
+        *set cunning %-10
+        *goto CrookedAlone
+
+    #Absolutely, taking that human wizard Callax with me.
+        Having a wizard as backup makes some sense.
+
+        *if (Callax_Alive = false)
+            Unfortunately, you've already eaten him. So, will you go there alone, or refuse to show up?
+            *label decide_without_callax
+            *choice
+                #Even on my own, I'm more than a match for Vermias.
+                    *goto CrookedAlone
+                #I'm not going there without backup.
+                    *goto RefuseCrooked 
+        *else            
+            You think he'll be willing to come?
+            *choice
+                *if (AttackedCallax=true)
+                    #Well, I did just destroy his tower and kill most of his friends.
+                        Good point. Forget this plan. So, will you go there alone, or refuse to show up?
+                        *goto decide_without_callax
+                #I'll eat him if he doesn't.
+                    Who could turn down an offer like that?
+
+                    *if (cunning > 85)
+                        Unfortunately, Callax knows your reputation too well.  You'll probably betray him and try to eat him in the end, so he figures that working with you is suicide.  Instead of going with you, he turns himself into a cloud of mist and floats away.  That's frustrating.
+
+                        So, will you go there alone, or refuse to show up?
+                        *goto decide_without_callax
+                    *else
+                        You threaten Callax with death, and he decides that he'd prefer to fight Vermias with you instead of fighting you now.
+                        *goto CrookedWithCallax
+                #I appeal to his sense of self-interest:  Vermias tried to kill both of us, and he should work with me to eliminate the threat.
+                    Ah, a sensible appeal.  
+                    
+                    Finesse increases.
+                    *set brutality %-15
+
+                    *if (cunning > 85)
+                        Unfortunately, Callax knows your reputation too well.  You'll probably betray him and try to eat him in the end, so he figures that working with you is suicide.  Instead of going with you, he turns himself into a cloud of mist and floats away.  That's frustrating.
+
+                        So, will you go there alone, or refuse to show up?
+                        *goto decide_without_callax
+                    *else
+                        Callax listens to your reasoning and agrees to go with you to fight Vermias.
+                        *goto CrookedWithCallax
+    #Not a chance—too dangerous.
+        *label RefuseCrooked
+        Well, if that's the case, what's your better idea?
+        *choice
+            #I attack her tower at midnight, when we're supposed to be on Crooked Mountain.
+                Sneaky. What's more, if a summoner has set an ambush for you, she's probably still at her tower and only sending demons or the like to ambush you.
+                
+                Cunning increases.
+                *set cunning %+15
+                *goto VermiasTower
+            #I ignore it and stay home in my lair.
+                If she wants you, she can come here to you.  
+                
+                Disdain increases.
+                *set disdain %+ 15
+                *goto WaitInLair
+
+*label CrookedAlone
+*set visited_mountain true
+You fly off to Crooked Mountain.  As you approach, you see Vermias levitating above the top of the peak.  She smiles as you approach, holding up her dragonbone staff in a defensive posture and muttering a spell.
+*if (Vermias_killed_Axilmeus=true)
+  As you look at the dragonbone staff, something about its curvature draws your attention.  You can't be sure, but you think that was your clutchmate Axilmeus's shinbone once.
+*comment endif
+
+There are two pentagrams carved into the stone of the mountaintop.  They begin to glow, and reddish smoke rises up from the center of each.
+
+If you don't kill Vermias before she finishes the summoning, it might be a little dicey for you.
+
+*temp DestroyedPentacles
+*set DestroyedPentacles false
+
+What do you do?
+*choice
+    #Wizards are most dangerous at a distance, where they can use their spells to reach me.  The sooner I get my claws into Vermias, the better.
+        You rush at Vermias and plunge your claws into her.
+        *label LightningBlast
+        Where there should be flesh, there is only air and smoke, and a blast of lightning engulfs you.  The energy burns and scars you as it races across your body, wracking you with pain.  Two of your teeth explode, leaving nasty bleeding stumps.  There is no sign of Vermias—you clearly faced a magical trap rather than the wizard herself.
+        
+        *set wounds +1
+        
+        *label AttackedIllusion
+        *if DestroyedPentacles
+          Now what?
+          *choice
+              #She must actually be back at her tower!
+                  *goto VermiasTower
+              #Enough of this nonsense.  I'm going back to my lair.
+                  *goto WaitInLair
+        *else
+          *goto DemonFight
+
+    #I fly at Vermias and blast her with my fiery breath.  Not even a wizard could survive that.
+        *label BlastIllusion
+        As you approach, you draw in a great breath.  You unleash an inferno from a dozen feet away.  Nothing human could survive that blast.
+
+        Unfortunately, Vermias is not truly here.  Her illusion dissolves as your flame hits; a blast of lightning erupts from the apparition and engulfs you.  It blasts across your body, inflicting excruciating pain, but the spell is not powerful enough to truly threaten a dragon.
+
+        *goto AttackedIllusion
+
+    #When fighting a summoner, the most important thing is to prevent them from conjuring up allies.  The first step is to destroy those pentagrams.
+        You unleash a blast of flame on each pentacle, softening the rock itself.  Vermias continues muttering her spells, but without the summoning circles, nothing happens.
+
+        *if (disdain > 80)
+            You turn to rush at Vermias.  If you'd been more vigilant, you might have noticed that Vermias didn't react to the destruction of her pentagrams.
+            *goto LightningBlast
+        What's next?
+        *choice
+            #Now Vermias dies!
+                You rush at her.
+                *goto LightningBlast
+            #Wait a second….
+                Why didn't Vermias stop casting when you destroyed her pentagrams?  That doesn't make much sense.  Actually, she doesn't seem to be reacting to you at all, except for her initial reaction when you arrived.
+
+                You wave a claw in front of her face.  No response.
+                
+                "Are you always this stupid, or are you making a special effort today?"  No response.
+                
+                (That was the funniest joke you know!)
+
+                Now what?
+                *choice
+                    #Kill her quickly.
+                      You rush at her.
+                      *goto LightningBlast
+                    #Blast her with flame.
+                      *goto BlastIllusion
+                    #She must actually be back at her tower!
+                        *goto VermiasTower
+                    #Enough of this nonsense.  I'm going back to my lair.
+                        *goto WaitInLair
+
+
+*label CrookedWithCallax
+*page_break
+*set visited_mountain true
+You fly off to Crooked Mountain with Callax clinging to your back.  As you approach, you see Vermias levitating above the top of the peak.  She smiles as you approach, holding up her dragonbone staff in a defensive posture and muttering a spell.
+*if (Vermias_killed_Axilmeus=true)
+  As you look at the dragonbone staff, something about its curvature draws your attention.  You can't be sure, but you think that was your clutchmate Axilmeus's shinbone once.
+*comment endif
+
+There are two pentagrams carved into the stone of the mountaintop.  They begin to glow, and reddish smoke rises up from the center of each.
+
+If you don't kill her before she finishes the summoning, it might be a little dicey for you.
+
+You turn into a dive to begin your attack run.  As you shoot towards her, Callax shouts above the rushing wind, "Wait, ${name}! Do not attack yet!"
+ 
+What do you do?
+*choice
+    #Ignore him.  I need to strike now, and he is only a cowardly wizard.
+        You rush at Vermias and plunge your claws into her before the summonings can finish.  Where there should be flesh, there is only air and smoke, and a blast of lightning engulfs you.  The energy burns and scars you as it races across your body, wracking you with pain.  Two of your teeth explode, leaving nasty bleeding stumps.  Callax cries out in agony as the lightning blasts through him as well, and his lifeless body topples from your back.  There is no sign of Vermias—you clearly faced a magical trap rather than the wizard herself.
+
+        *set Callax_Alive false
+        *set wounds +1
+        *goto DemonFight
+
+    #Stop short and blast Vermias with flame.
+        As you approach, you draw in a great breath.  You unleash an inferno from a dozen feet away.  Nothing human could survive that blast.
+
+        Unfortunately, Vermias is not truly here.  Her illusion dissolves as your flame hits; a blast of lightning erupts from the apparition and engulfs you.  It blasts across your body, inflicting excruciating pain, but the spell is not powerful enough to truly threaten a dragon.
+        
+        Callax is less fortunate, however. The lightning blasts through him, and his lifeless body slumps across your back.
+
+        *set Callax_Alive false
+        *goto DemonFight
+        
+    #Turn away and listen to Callax more carefully.
+        You veer away from Vermias as Callax explains.  "There is no human life there—I reached out to change her blood to water, but I only sensed energy and illusion.  Blast away the pentacles and pay no attention to the image of Vermias."
+
+        You unleash a blast of flame on each pentacle, softening the rock itself.  The apparition of Vermias continues muttering her spells, but without the summoning circles, nothing happens.
+
+        Callax nods his head sagely.  "I can trace the magic from the summoning circles back to its source.  Vermias is some fifty miles west of here—if I remember my geography, that's just about right for her to be casting from her tower."
+
+        Fifty miles is an easy flight for you, so you turn towards the west, wings beating a slow and steady pace as you race across the clouds.  You can feel Callax adjusting his grip, desperate not to fall off. "Hold tight, mage," you rumble. 
+
+        This ends today.
+        *goto TowerWithCallax
+
+*label DemonFight
+Two ten-foot-tall demons appear from the pentacles; each demon wields an enormous black sword.  They flap their leathery wings and fly towards either side of you while you shake your head to clear away the pain.
+
+This could be bad.  Either demon alone would be no threat for you, of course, but there are two of them.
+
+How do you plan on handling them?
+*choice
+    #They're just demon warriors.  I'll rip them to pieces and then fight Vermias.
+        *label DemonBattle
+        *if (brutality > 80)
+            The demons are no match for you.  You slap one aside with your tail and engage the other.  It slashes you with its sword.  The impact bruises you a little, but it can't penetrate your thick scales.  Your counter-attack is more effective as you bite its head off.
+
+            The other demon regains its balance and flies in at you.  You have to give them credit—they're brave.  But you've already killed one demon warrior today, and the other fares no better.
+
+            Now what?
+            *choice
+                #Vermias must actually be back at her tower!  I'll take the fight to her!
+                    *goto VermiasTower
+
+                #Enough of this nonsense.  I'm going back to my lair.
+                    *goto WaitInLair
+        *else
+            *set wounds +1
+            *if (wounds >= 5)
+                The demon warriors attack you from each side, hacking away at you.  Even with two of them, in your prime you would have been able to defeat them, but injuries old and new slow you down.  They hack at you with their swords.  While you manage to overwhelm one of them, the other slips behind you and strikes a vicious blow to the back of your head, knocking you unconscious.  You regain consciousness within Vermias's laboratory.
+
+                *goto Captivity
+            *else
+                You defeat the demon warriors, but they hurt you badly before you kill them.  You underestimated them—you could have beaten one demon warrior without difficulty, but the second one slashes deep cuts into your wing muscles; it's hard to fly now without swaying and bobbing.
+
+                What's next?
+                *choice
+                    #Vermias must actually be back at her tower!  I'll take the fight to her!
+                        *goto VermiasTower
+
+                    #Enough of this nonsense.  I'm going back to my lair.
+                        *goto WaitInLair
+
+
+    #My quarrel is with Vermias, not her summoned minions.  I'll evade them in the air and leave them behind as I fly away.
+        *set brutality %-15
+        *if (brutality < 25)
+             You execute a clever roll as they close on you.  The two demons collide with each other while you wing away.  Once you have a lead on them, you outdistance them easily, leaving them behind as you fly away.  
+             
+             Finesse increases.
+
+             What's next?
+             *choice
+                #Vermias must actually be back at her tower!  I'll take the fight to her!
+                    *goto VermiasTower
+
+                #Enough of this nonsense.  I'm going back to my lair.
+                    *goto WaitInLair
+        *else
+            You try to evade them, but they manage to box you in.  You don't have enough Finesse to avoid a fight.
+            
+            *goto DemonBattle  
+
+*label VermiasTower
+You fly to Vermias's tower.  The tower is a heavy granite structure with large oak doors at the base.  Five flames glow at the top of the tower.
+
+*comment  This sorta assumes that you've guessed that Vermias is still in her tower.  It might be a little jarring to players who expect Vermias to be at
+*comment Crooked Mountain while they hit the tower.
+
+How do you plan to handle this?
+
+*choice
+    #Start at the top and work my way down.
+        You crash through the wooden deck at the top of the tower.  As you begin your assault, inky black smoke from the five flames around the tower's edge begins to coalesce into a strange smoky form, all claws and eyes.  You're trapped between the demon and whatever is below you in the tower.  
+      
+        This could become awkward.
+        *page_break
+        *goto Pinned
+    #Knock the tower down, then kill anything still moving in the rubble.
+        *if (brutality > 90)
+            *goto KnockedDownTower
+        *else
+            You slam into the tower with a resounding boom.  Your claws scrabble at the stone, but they can't dig in.  Despite your best efforts, the tower resists your assault.  It must be magically reinforced.
+            
+            *comment Vermias should say something cool here
+            
+            *goto FairFight
+    #Smash through the main doors at the base of the tower.
+        *goto MainDoorAssault
+    #Announce my presence and challenge Vermias to battle.
+        *set cunning %-15
+        You let out a mighty roar, deafening any animals with the misfortune to be nearby.  "Vermias!  Your death is at hand!"  
+        
+        Honor increases.
+
+        *comment Vermias should say something cool here
+        Vermias calmly strides out the main door, summoned spirits swirling around her.  The dragonbone staff she holds glows with an angry light.  "This is it, then.  Let's be quick about it—I have experiments waiting."
+
+        *goto FairFight
+
+*label TowerWithCallax
+You fly to Vermias's tower.  The tower is a heavy granite structure with large oak doors at the base.  Five flames glow at the top of the tower.
+
+Callax shouts as you approach, "I would stay away from the top of the tower, ${name}. I would wager that Vermias has prepared a summoning trap with those flames.  If you land there, it will likely conjure a demon behind us."
+
+How do you plan to handle this?
+*choice
+    #Ignore Callax, start at the top, and work my way down.
+        Callax shouts, "You fool!  You'll kill us both!" as you crash through the wooden deck on the top of the tower.
+
+        He's really quite annoying.  You consider killing him.  Before you can decide, a smoky black form, all claws and eyes, coalesces at the top of the tower.  Its claws rip into Callax and tear him to pieces.  I guess he was right about half of his statement.  Let's see about the other half….
+
+        *set Callax_Alive false
+        *set Callax_With false
+        *page_break
+        *goto Pinned
+    #Tell Callax to weaken the tower so that I can knock it down easily, then kill anything still moving in the rubble.
+        Callax smiles.  "With pleasure…As a transmuter, weakening stone, even magically reinforced stone, is trivial."  He casts a spell, and the tower glows as he weakens the mortar holding it together.
+
+        *if (brutality > 40)
+            *goto KnockedDownTower
+        *else
+            You slam into the tower with a resounding boom.  Your claws scrabble at the stone, but even with the benefit of Callax's spells, they can't quite dig in.  Despite your best efforts, the tower resists your assault.
+            
+            *comment Vermias should say something cool here
+
+            *goto FairFight
+    #Smash through the main doors at the base of the tower.
+        *goto MainDoorAssault
+    #Announce my presence and challenge Vermias to battle.
+        *set cunning %-15
+        Callax winces as you alight some fifty feet from the tower.  "Is this really a good idea?" he asks, but you ignore him.  
+        
+        Cunning decreases.
+
+        You let out a mighty roar, deafening any animals with the misfortune to be nearby.  "Vermias!  Your death is at hand!"
+
+        *comment Vermias should say something cool here
+        Vermias calmly strides out the main door, summoned spirits swirling around her.  The dragonbone staff she holds glows with an angry light.  "This is it, then.  Let's be quick about it—I have experiments waiting."
+
+        *goto FairFight
+
+*label Pinned
+*page_break
+*comment Vermias should say something cool here
+Vermias climbs up the stairs towards you, her dragonbone staff glowing in her hands.  She laughs.  "I thought you might be smart enough to attack me in my tower, but it didn't occur to me that you would manage that yet still be stupid enough to leave a shadow demon behind you.  Your doom is at hand, beast."
+
+This is a bad tactical situation.  What do you do?
+*choice
+    #Lash out in a frenzy, attacking both Vermias and the shadow demon indiscriminately until the battle is won.
+        *label Frenzy
+        You go berserk, slashing and biting and breathing flame.  A red haze overtakes your vision.  There is nothing but battle, now and forever.
+        *page_break
+        *if (brutality > 90)
+            *goto ResolveFrenzy
+        *elseif (brutality > 50)
+            *set wounds +1
+            *goto ResolveFrenzy
+        *else
+            *set wounds +2
+            *goto ResolveFrenzy
+        *label ResolveFrenzy
+        *if (wounds >= 5)
+            You fight for all you're worth, struggling against the odds.  Unfortunately, your best is not enough.  Vermias summons innumerable hideous crawlers that swarm up your legs and infest your eyes and nose. Blinded, you begin to convulse; soon you feel them burrowing into your brain. All goes dark.
+            *goto Captivity
+        *else
+            The fighting is savage, but eventually the haze clears and you return to your senses.  Your whole body aches, and half your tail is missing. A long bloody smear and some tattered bits of robe are all that is left of Vermias.  You really taught her.
+            
+            Brutality increases.
+
+            It takes you months to recover.  On the upside, you are able to loot her tower fully.  You get quite a nice haul, once you feel up to flying again.
+            *set wealth +2500
+            *set brutality %+15 
+            *achieve champion
+            *finish
+    #Skewer Vermias with a claw as I race down the tower, planning on escaping through the main doors below.
+        *if (brutality < 10)
+            *goto ResolveSkewer
+        *elseif (brutality <50)
+            *set wounds +1
+            *goto ResolveSkewer
+        *else
+            *set wounds +2
+            *goto ResolveSkewer
+        *label ResolveSkewer
+        *if (wounds >= 5)
+            You dive at Vermias, but the shadow demon rips into your shoulders before you can reach her.  You plunge to the ground, slamming into the stone floor of the tower at her feet.  She smiles down at you as she summons innumerable hideous crawlers that swarm up your legs and infest your eyes and nose. Blinded, you begin to convulse; soon you feel them burrowing into your brain.  All goes dark.
+            *goto Captivity
+        *else
+            Diving down a tower at full speed with a demon at your back would take a lot of Finesse.  Trying to stab an enemy wizard simultaneously makes this an impossible feat.
+            *page_break
+            —Impossible for anyone but you.  Despite the odds, you pull it off.  You don't escape unscathed—the shadow demon rips at you 
+            as you dive and severs nearly half of your tail.  Nonetheless, you make it out, and Vermias is very dead.  After taking a moment to eat her body, you circle back and take on the shadow demon.  Without its master, it is no threat at all.
+            
+            Finesse increases.
+
+            It takes you months to recover.  On the upside, you are able to loot her tower fully.  You get quite a nice haul, once you feel up to flying again.
+            *set wealth +2500
+            *set brutality %-15 
+            *achieve champion
+            *finish
+
+    #Run away!  I need to get clear of this mess before I'll have a chance to defeat Vermias.
+        You try to reverse course and fly out of the top of the tower, but the shadow demon sinks its claws deep into your back.  Your wings will heal in time, assuming you live, but for now you are grounded, with Vermias before you and the demon still on your back.  You have no choice but to fight for your life.
+        *page_break
+        *set wounds +1
+        *goto Frenzy
+        
+
+*label KnockedDownTower
+With a thunderous crash, the tower collapses to the ground.  The devastation is enormous, and a great cloud of dust rises up into the air.
+
+Infamy increases.
+
+*set infamy %+15
+
+You pick your way through the wreckage, occasionally dispatching a grievously wounded apprentice with the flick of your claw, until you finally reach Vermias.  She staggers to her feet.
+
+*if (wounds >= 5)
+    *comment Dead dragon flying resolution
+    *comment Vermias should say something cool here
+    Gasping for air, she cries out, "You may have destroyed my tower, but you are still no match for me!"
+    
+    Vermias holds out her staff at you and gestures.  Out of nowhere, a vaguely humanoid shape of pain and suffering appears above you and slams down into you, grappling you with intangible tendrils.  Your body is paralyzed with torment; you quickly lose consciousness.
+
+    *goto Captivity
+*else
+    *comment Vermias should say something cool here
+    Her magic has protected her from the worst of the effects of her tower's destruction, but she is still stunned and without some of her best defenses.  As soon as she sees you approaching, she begins to cast a spell, but you are too fast for her.  You bat her to the ground with your claw, then quickly snatch her up with your teeth.  She has some sort of magical protection up, but you crush her with your mighty jaws anyway.
+
+    In the wreckage of the tower, you find more than a little treasure worth pillaging, although much of the most valuable treasure has been crushed and ruined.
+    *set wealth +1000
+    *achieve champion
+
+    *if (Callax_With = true)
+        *label CallaxChoice
+        *set Callax_With false
+        
+        What do you do with Callax, anyway?
+        *choice
+            #He is no concern of mine.  Leave him at the wreckage of the tower.
+                He shakes his head as you fly away.  You can see him slowly trudging back towards his home—it will be a long and difficult journey, although not particularly dangerous for a powerful mage.
+
+                You're not very nice, are you?
+                *finish
+            #He served me well.  I give him a small share of the loot and return him to his home.
+                Very honorable of you.  He may yet prove to be a useful ally.
+                
+                Honor increases.
+
+                *set cunning %-30
+                *finish
+            #I have no more use for him…except as a snack.
+                In cold blood, you eat the wizard who has helped you destroy a dangerous foe.  You really are an evil dragon, aren't you?
+
+                Hopefully, you won't live to regret killing him!
+                *page_break
+                Actually, I hope you DO live to regret killing Callax.
+
+                Honor decreases significantly.
+                *set cunning %+30
+                *set Callax_Alive false
+                *finish
+    *else
+        *finish       
+
+*label FairFight
+Vermias alone would be no match for an angry dragon, but dozens of summoned demons swarm to her aid.  You have met your match with Vermias.
+
+The battle is epic.  Over the next several hours, you face demons of every variety.  Winged fiends claw at your hide.  The sky rains down tiny parasitic creatures who drain your strength.  Tentacled larvae wrap themselves around your throat.
+
+At the end, Vermias calls the true name of a demonic mist.  "G'leal!" she sings into the walls that separate this world from the next.  "The time has come to finish this."  G'leal appears in a hideous fog that insinuates itself into your nostrils.  All goes dark.
+
+*set wounds +1
+*if (wounds >= 5)
+    *goto Captivity
+*else
+    *page_break
+    Unfortunately for Vermias, G'leal is flammable.
+    
+    You cough once; that's all it takes.
+    *page_break
+    The air around you ignites; the conflagration pierces Vermias's magical defenses.  Clutching her chest in searing pain, she releases her dragonbone staff.
+    
+    In one motion, you bite the staff in two and eviscerate her with your claws.  The last of the demonic minions flee in terror.
+
+    You have won this battle. What's more, with Vermias dead, there is nothing to prevent you from plundering her tower.  You gain much fine loot.
+    
+    Infamy increases.
+    *achieve champion
+    *set infamy %+15
+    *set wealth +2500
+    *if (Callax_With = true)
+        *goto CallaxChoice
+    *else
+        *finish
+    
+
+*label WaitInLair
+You wait in your lair.  Vermias sends a demonic minion to attack you periodically, but you dissipate them.  Eventually, she seems to give up.
+
+*if (disdain > 85)
+    Unfortunately for you, she was merely keeping you busy while she set up a base of operations nearly on top of your lair.  One day, while you fly above your domain to hunt, storm spirits appear around you.  They drive you to the ground.  The spirits hammer you with lightning and buffet you with wind.
+
+    *comment Vermias should say something cool here
+    Vermias makes her way over to you.  Her robes swirl about her, and her dragonbone staff glows with an evil light.  "This ends now, beast.  You will soon wish you were dead."
+    *set wounds +1
+    *goto FairFight
+*else
+    Vermias isn't willing to let the matter drop, however.  Your spies report that she has established a base of operations a few paltry miles from your lair. You can't let that go unanswered, so you fly over to attack her.
+
+    *comment Vermias should say something cool here
+    Vermias looks at you in surprise as you rip away the top of her bivouac.  "So, you found me before I could ambush you," she says.  "No matter.  I will defeat you easily enough anyway."  She raises her dragonbone staff high.
+    *goto FairFight
+
+*label Captivity
+*page_break
+The next few years are a blur of pain and suffering as Vermias experiments on you.  You are vaguely aware that she offers bits of your body and your inherent magical energy to the various foul creatures that she summons.  After many degrading and terrible experiences, it's a relief when you finally muster the force of will to stop your own heart.
+
+*achieve dragonslayer
+
+*goto_scene death
+
+*label MainDoorAssault
+
+You smash through the main door of the tower and begin fighting your way up the tower.  Fighting in the cramped confines of a tower is difficult—it calls for more Finesse and less Brutality.  After you cut through some apprentices as if they were nothing, you reach Vermias.  She waves her dragonbone staff at you and begins chanting tones into the wall that separates this world from the next.  As you lunge at her, things that are not meant to be rally to her aid.
+*page_break
+
+*if (brutality < 25)
+    *goto ResolveMainDoor
+*elseif (brutality <75)
+    *set wounds +1
+    *goto ResolveMainDoor
+*else
+    *set wounds +2
+    *goto ResolveMainDoor
+
+*label ResolveMainDoor
+*if (wounds >= 5)
+    You battle Vermias, but it becomes increasingly clear that you are outmatched.  You just don't have enough room to maneuver, whereas she is in the seat of her power.  Finally, Vermias summons innumerable hideous crawlers that swarm up your legs and infest your eyes and nose. Blinded, you begin to convulse; soon you feel them burrowing into your brain.  All goes dark.
+    *goto Captivity
+*else
+    The fighting is brutal within the tight confines of her tower. You face dozens of demons, each more hideous than the next.  
+    
+    But you are more nimble than she expected.  After a long battle, you bite her dragonbone staff in two and eviscerate Vermias.  Your wounds are grievous, but you have triumphed.
+    
+    Finesse increases.
+
+    It takes you months to recover.  On the upside, you are able to loot her tower fully.  You get quite a nice haul, once you feel up to flying again.
+    *set wealth +2500
+    *set brutality %-15 
+    *if (Callax_With = true)
+        *goto CallaxChoice
+    *else
+        *finish

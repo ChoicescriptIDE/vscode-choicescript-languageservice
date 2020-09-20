@@ -1,0 +1,9 @@
+*label mylabel
+*set myvar "another thing"
+*return
+
+*temp myvar "this"
+*set myvar "something else"
+*gosub mylabel
+
+${myvar} is the best!

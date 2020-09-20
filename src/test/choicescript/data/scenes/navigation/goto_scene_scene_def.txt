@@ -1,0 +1,6 @@
+*label startup
+*create this ""
+*create and_that ""
+Then...
+*goto_scene not_startup mylabel
+*finish

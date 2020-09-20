@@ -7,6 +7,7 @@
 		"declaration": true,
 		"strict": true,
 		"stripInternal": true,
+		"allowJs": true,
 		"outDir": "../lib/umd",
 		"lib": [
 			"es5", "es2015.promise"

@@ -1,0 +1,801 @@
+You look down from your lair at the lands beyond your mountain. Those green lands are full of humans, and humans have large reserves of livestock and rich treasure. Shouldn't that food and wealth be yours instead?
+*fake_choice
+    #It certainly should, and now!
+        That's what I thought.
+    #You mean it isn't already?
+        Ummmm…no, it isn't.  You're right to think that it's as good as yours, but you'll need to do something to actually take possession.
+    #Nothing enlivens a lair like cringing humans carrying tribute.
+        How true, how true.
+*comment endif
+
+Let's be clear about why you plan on conquering the humans.  What's most important to you?
+*fake_choice
+    #I need to ensure a steady supply of prey.
+        The humans should have vast herds of cows and horses. Intimidate them into bringing you some weekly, and you'll have that much more time to eat.
+    #I need an easy supply of princes and princesses to kidnap. I'm a stickler for tradition.
+        What's a lair without a captive royal to chat with? Besides, kidnapping royalty brings knights in shining armor, and they're always particularly 
+        tasty.
+    #I need heaping great piles of gold and loot to adorn my lair.
+        Dragons without hoards are nothing more than scaly failures. You can hear the gold sing to you, and you want more of it.
+    #I want to make humans into my terrified subjects.
+        Goblins are nice, but it's your right to have a better cut of minions. Cringing human slaves really brighten up the ol' lair.
+*comment endif
+
+You push off from your rocky spire and glide outwards on the wind. You smell the faint scent of human cooking fires. Where to start?
+
+*temp DidSomething false
+
+*label main
+*choice
+    *hide_reuse #Conquer the nearby village.
+        *set DidSomething true
+        Why the nearest village?
+        *fake_choice
+            #It's better to start small and see if they have any defenses.
+                Good thinking!  Clever planning like this will be useful later on, when you'll face more worthy opponents.
+            #People should learn that living near me is a terrible, terrifying idea.
+                Oh, they'll learn that soon enough.
+            #I just want to burn peasants (and their thatched-roof cottages)!
+                *comment This is a gag; a riff off of the Homestar Runner/Strong Bad email Trogdor. http://www.homestarrunner.com/sbemail58.html
+                I should've known.
+        *page_break
+        *label ConquerVillage
+        You soar above the local village.  From here you can see fields of crops, shepherds with their flocks, and a few wagons filled with vegetables. It's fairly small, though.  In the center of the village you can see a hanging banner, displaying the livery of the queen.
+
+        What do you do to the village?
+        *choice
+            #Set the town afire and suffer no one to live.
+                You make several passes, lighting the buildings on fire.  As the people pour out of their homes, you touch down periodically to eat a few and mangle a few more, and then you lift off again to catch a few people who thought they could escape.  Finally, the only people left alive are a handful of farmers cowering in a golden wheat field.  You fly past, allowing them to think they've evaded you, and then with a single puff you light the whole field afire, burning them alive.
+                
+                Brutality and Infamy increase.
+
+                Your attack on the village was savage.  Why did you destroy it, anyway?
+                *set brutality %+20
+                *set infamy %+10
+                *comment Wanton destruction is good for boosting infamy, but not as good as leaving people to talk about you.
+                *fake_choice
+                    #I needed to set an example.
+                        I think we can all agree that the burnt out wreckage of the village provides an excellent example, warning other villages nearby to…ummm…well…not exist, I guess, since that's the only offense that I can think of that this village committed.  Good work.
+                    #It's fun.
+                        That's what I always say: burning a village and killing everyone in it is just good, clean fun.  Oh, wait, I never say that.
+                *comment endif
+
+                Anyway, there's nothing left of the village.  I guess the rest of your plan for dominance will need to unfold elsewhere.
+                *goto VillageNextStep
+            #Destroy a few buildings before conquering the village.
+                You swoop downwards and set the largest building in the village on fire with a single breath.  Humans rush out of the building and stop in their tracks, clearly terrified of you. What do you say?
+                *choice
+                   #I roar, "Grovel before me, humans, or be devoured!"
+                       They grovel. Oh, how they grovel. There's no one here who would even think of challenging you, so they squirm on the ground and sing your praises. They're planning to betray you, of course, but for now they're terrified and docile.
+                       *goto DoneScaring
+                   #I say, "Behold, I am your new liege lord. Unless any of you brave enough to stand against me—?"
+                       Several brave (or perhaps stupid) peasants actually step forward.
+  
+                       How do you punish this effrontery?
+                       *label effrontery
+                       *choice
+                           #Eat them.
+                               Munch, crunch, munch.  They are a little tougher than you prefer—hard work will do that to livestock—but they have a nice flavor, probably a result of their high-grain, low-meat diet.
+                               *goto quashed
+                           #Breathe fire on them.
+                               Foosh!  You incinerate them in a blast of dragonfire.
+                               *goto quashed
+                           #Rip them apart with my claws.
+                               These peasants aren't worthy of being eaten by a dragon like you.  You shred them effortlessly.
+                               *goto quashed
+                           *hide_reuse #Smile kindly at them and offer them some treasure.
+                               Nah, only kidding. Pick a different choice.
+
+                               *comment DGF Previously, "smile kindly" added to brutality and disdain, but that makes no sense.
+                               What do you actually do?
+                               *goto effrontery
+
+                       *label quashed
+
+                       Once the survivors see what defiance gets them, they quickly fall in line. Until they try to betray you by sending messengers to their queen, 
+                       this village is yours.
+                       *goto DoneScaring
+                *label DoneScaring
+
+                You eat a bellyful of their sheep, take what few valuables they have, terrify them again for good measure, and take to the air.
+                
+                Infamy increases; Brutality increases slightly.
+                *set infamy %+15
+                *set brutality %+5
+                *set wealth +500
+                *goto VillageNextStep
+            #Demand their surrender and obeisance.
+                You land in front of the largest group of humans and say, "Grovel before me, humans, or be devoured!"
+
+                They grovel. Oh, how they grovel. There's no one here who would even think of challenging you, so they squirm on the ground and sing your praises. They're planning to betray you, of course, but for now they're terrified and docile.
+
+                The humans offer you the meager tribute that their village can muster up.  It's not much, but every gold coin counts.  With a belly full of their sheep, you take to the air again.
+                
+                Finesse increases; Infamy decreases.
+
+                *set brutality %-15
+                *set infamy %-10
+                *set wealth +750
+                *goto VillageNextStep
+
+        *label VillageNextStep
+        *page_break
+        What's next?
+        *goto main
+
+
+    *hide_reuse #Fly directly to a big city and confront the human queen there.
+        *goto BigCity
+
+    *hide_reuse #Head to the mountain pass used by all the merchants.
+        *set DidSomething true
+        Interesting choice.  Why start with the mountain pass?
+        *choice
+            #Control trade, and I'll control the kingdom.
+                An insightful analysis.
+
+                Cunning increases.
+                *set cunning %+15
+                *goto MountainPass
+            #Merchants are rich and cowardly. If they want to pass into the kingdom, they can afford to pay me well.
+                Rich and cowardly—really, is there any better victim?
+                *goto MountainPass
+            #Merchants taste good, and so do their horses.
+                Blood-curdling fear and seared horse flesh: two great tastes that taste great together!
+                *goto MountainPass
+            #Hijacking a few wagon trains is an easy way to decorate my lair.
+                Indeed, your lair is badly in need of a little sprucing up.
+                *goto MountainPass
+        *label MountainPass
+        
+        There's one main pass through the mountains that all merchants use, mostly because it has a good road. The human queen has her own toll booth here. You can see a line of wagons making their way through the pass even now. How do you want to handle this?
+
+        *choice
+            #Be sneaky and terrify the toll keepers into giving me all the money they collect.
+                You can be stealthy when you put your mind to it, and you can be patient. You wait until dark before you stalk close to the toll keepers' blockade. When he comes outside to answer the call of nature, you rise up suddenly in front of him.  His scream is a delight to hear.
+
+                What do you ask for?
+                *choice
+                    #"Turn over every penny you have collected in tolls, or I will eat you!"
+                        Terrified or not, the toll keeper manages to stutter out, "That's nothing but highway robbery!"
+
+                        How do you respond?
+                        *choice
+                            #Eat him.
+                                Brutality increases.
+                                
+                                The toll keeper is tasty, but now that you've eaten him, he can't give you any money; you need a new strategy.
+                                *set brutality %+10
+                                
+                                What do you do?
+                                *choice
+                                    #Set up my own toll operation.
+                                        *goto OwnTolls
+                                    #Seize the caravan that's in the pass.
+                                        *goto SeizeCaravan
+                                    #Abandon the mountain pass.
+                                        *goto MountainNext
+                            #Show my teeth and convince him it's a fine idea anyway.
+                                He certainly agrees once he realizes that any other answer means being eaten. He turns over all their gold to you and promises that he'll send a letter to the queen to get official permission. You think he may be lying, but you have a steady inflow of gold tribute regardless.
+                                *set wealth +1500
+                                *goto MountainNext
+                            #Discuss the nature of taxation in the feudal state and explain that highway robbery isn't much of a change.
+                                *set brutality %-30
+                                "It is the nature of the world that the strong take from the weak," you say.  "You would agree, I suppose, that there's no difference between what I'm proposing and the various knights who establish [i]ad hoc[/i] tolls at fords or along roadways?"
+
+                                "I guess so," responds the toll keeper, "but we're different—we have official authority from the queen!"
+
+                                "And what gives the queen the power to grant that authority?"
+
+                                "The fact that she's the queen, of course, by the grace of the gods and by virtue of inheritance…"
+
+                                "Nonsense!" you reply.  "The queen has that power because she has the most knights and the largest army in this realm.  If she didn't, one of her nobles would have deposed her.  You admit that has happened from time to time?"
+
+                                "Yes, but usually only when the rebelling nobles had a claim to rightful rule…"
+
+                                "The important word there is 'claim.'  At the end of the day, it is the army that matters.  Now that we've established that sheer force grants the power to establish tolls, we have also established my authority to take over this toll station.  Unless you think I'm not the most powerful entity in this pass?"  You smile an impressively toothy grin.
+
+                                The toll keeper agrees once he realizes that any other answer means getting eaten. He turns over all their gold to you. He will almost certainly contact the queen to send heroes to fight you, but in the meantime you have a steady inflow of gold tribute regardless.
+                                
+                                Finesse increases greatly.
+                                *set wealth +1500
+                                *goto MountainNext
+                    #"You will give me half of your tolls, now and forever.  That's assuming that you want to live…."
+                        *set brutality %-10
+                        The toll keeper seems doubtful that their queen will allow it, but he certainly doesn't want to get eaten. He agrees to the deal, but says he'll have to clear it with his superiors in the capitol.
+                        
+                        Finesse increases.
+                        *set wealth +750
+                        *goto MountainNext
+
+            #Eat the toll keepers and settle in for a bit to extract my own tolls.
+                They're stringy, but well seasoned. 
+                *label OwnTolls
+                You settle into the roadway in front of the toll booth. 
+
+                The merchants are taken aback to meet a dragon on the road, but they're willing to pay whatever it takes to prevent you from killing them.
+
+                So, how much do you take?
+                *choice
+                    #About the same amount as the queen's toll keepers charged.
+                        The point here is to maximize revenue, after all.  If the caravans stop coming, so does the money.
+                        
+                        Finesse and Cunning increase.
+
+                        You make a hefty profit.
+                        *set wealth +1500
+                        *set brutality %-10
+                        *set cunning %+10
+                        *goto HowLong
+                    #A heavier toll, but not so much as to discourage trade significantly.
+                        The point here is to maximize revenue, after all.  If the caravans stop coming, so does the money.  On the other claw, there's no need to leave money on the table.
+                        
+                        Finesse and Cunning increase.
+
+                        You make a hefty profit.
+                        *set wealth +1500
+                        *set brutality %-10
+                        *set cunning %+10
+                        *goto HowLong               
+
+                    #As much as they can possibly afford.
+                        You're being generous by letting them live and keep their wagons.  You might as well get maximum value out of this.
+
+                        Unfortunately, the number of caravans drops precipitously as news of the new toll gets around.  You might have made more money with a lighter touch.
+                        *set wealth +1000
+                        *goto HowLong
+                    #As much as they can possibly afford, and then some.  It might be cheaper for them to just give me the wagons with everything in them.
+                        You make the merchants bleed—literally, in one case, when one of them refuses to pay what you demanded.
+
+                        Unfortunately, other merchants hear about the new toll and refuse to use the pass.  You've basically closed the pass, but you don't see much more trade to prey on.  
+                        Time to move on.
+                        *set wealth +750
+                        *goto MountainNext
+                *label HowLong
+                *page_break
+                Your little toll operation is netting you a nice chunk of change.  How long do you plan on maintaining it?
+                *choice
+                    #Years and years.
+                        *if (disdain < 10)
+                            You settle in and continue applying your toll to every caravan that comes through.  The merchants grumble, but they start to calm down after they realize that you've squeezed out the bandits from this route—after all, who's crazy enough to compete with a dragon?  Over the course of years, you pull in a large amount of treasure.  But even so, something about the work grates on you.  There is no honor in toll-collecting, none of the thrill of the hunt or the rush of the kill.  A little bit of you dies inside with every month you spend collecting tolls.  After several years, you return to your lair.
+
+                            Cunning increases.
+                            
+                            *set cunning %+15
+                            *set wealth +2000
+                            *goto MountainNext
+                        *else
+                            That's just not realistic without extraordinary Vigilance.  You decide that you will collect tolls for years, but by the end of the first couple of weeks, you are miserable and bored.  You just can't make yourself stay in the pass, not for small sacks of gold collected like a functionary.  You fly home to your lair in less than a month.
+                            
+                            Vigilance increases; Cunning increases slightly.
+                            *set disdain %-20
+                            *set cunning %+5
+                            *set wealth +250
+                            *goto MountainNext
+                    #A couple of months.
+                        *if (disdain < 30)
+                            You settle in and continue applying your toll to every caravan that comes through.  The merchants grumble, but they start to calm down after they realize that you've squeezed out the bandits from this route—after all, who's crazy enough to compete with a dragon?  You pull in a lot of money, but you're still relieved when it's time to move on.
+                            
+                            Vigilance increases; Cunning increases slightly.
+                            *set disdain %-10
+                            *set cunning %+5
+                            *set wealth +1000
+                            *goto MountainNext
+                        *else
+                            You try, but you can't stick to your plan without more Vigilance.  You decide that you will collect tolls for a couple of months, but by the end of the first couple of weeks, you are miserable and bored.  You just can't make yourself stay in the pass, not for small sacks of gold collected like a functionary.  You fly home to your lair in less than a month.
+                            
+                            Vigilance increases.
+                            *set disdain %-10
+                            *set wealth +250
+                            *goto MountainNext
+
+                    #A couple of weeks, maybe as long as a month.
+                        You settle in and take your tolls.  It's not exciting and you get a little bored, but you seize a decent amount of gold.  And when you're starting to get restless, you fly back to your lair.  All in all, a nice bit of work.
+                        
+                        Vigilance increases slightly.
+                        *set disdain %-5
+                        *set wealth +750
+                        *goto MountainNext
+
+                    #I'm a dragon, not a toll collector!  A single caravan is the limit for me.
+                        Of course.  And so after you collect your "toll," you fly back to your lair with your loot.  All in all, a nice bit of work, and without sullying yourself by acting like a functionary.
+                        
+                        Disdain and Honor increase.
+                        *set disdain %+10
+                        *set cunning %-10
+                        *goto MountainNext
+            #Swoop down and take the train of wagons for myself.
+                *label SeizeCaravan 
+                You swoop down in front of the wagon train.  One overzealous caravan guard fires a bow at you; you eat her for her trouble.  Almost all of the merchants and guards surrender immediately, although a few near the back scurry away.
+
+                You pick through the wagon train, looting it thoroughly.  Some wagons have low value trade goods that you simply fling over the precipice to their destruction.  Several are loaded down with salted meats that make a nice snack.  And a few others represent the jackpot:  gold- and silverwork.  Those wagons you carry back to your lair.  By the end of the process, you've taken or destroyed everything of value in the wagon train.
+                
+                *set wealth +750
+
+                What do you do with the merchants and guards, by the way?
+                *choice
+                    #Let them all go.
+                        Once you've looted the wagons, the humans are of no value to you.  You make a shooing gesture and they flee.  How benevolent of you!  You have ruined only their careers.
+                        
+                        Finesse and Infamy increase.
+
+                        *set brutality %-10
+                        *set infamy %-15
+                        *goto TrainDestruction
+
+                    #Eat most of them and let the rest go.
+                        You start at the front of the caravan and slaughter your way to the back.  You eat a few of the merchants outright, but you kill many more to eat at your leisure.
+
+                        A few of the fastest teamsters manage to dash a distance down the road by the time you finish killing the rest of the humans.  You leap to the air and fly down to catch them.  A flick of your tail knocks them to the ground and you loom above them.  Just when they are convinced that their deaths are at hand, you roar, "Let the world know of my power. My name is ${name}! Let the world know, and despair!"
+
+                        You leave them trembling on the ground and go back to your plunder.
+                        
+                        Infamy increases; Brutality increases slightly.
+                        *set brutality %+5
+                        *set infamy %+20
+                        *goto TrainDestruction
+                    #Eat them all.
+                        You slaughter them all.  They scream in terror and mount a feeble effort to fight back, but a bunch of merchants and hired guards are no match for a dragon. One of the guards tries to make his way down the almost vertical cliff face to escape—a clever thought, but for nought.  He's nicely tenderized when you get around to scraping him off the base of the mountain.  All in all, a delightful bit of carnage.
+                        
+                        Infamy increases.
+
+                        *set infamy %+10
+                        *goto TrainDestruction
+
+                *label TrainDestruction
+
+                You wait in the mountain pass for the next caravan to come, but reports of the destruction of that caravan travel quickly.  Trade through the pass dries up completely.  It was fun while it lasted, anyway.  Time to move on.
+
+                *goto MountainNext
+
+        *label MountainNext
+        *page_break
+        What's the next step in your climb to dominance?
+        *goto main
+
+
+    *hide_reuse #Send one of my goblin minions to announce my new rule to the queen of the neighboring realm.
+        *set DidSomething true
+        One of your goblin slaves cowers before you. "Yes, O great and mighty master?" she squeaks.
+
+        "I want a kingdom," you growl as you roll over on your pile of treasure. "Go down the mountain and inform the humans that I will be their new monarch."
+
+        The goblin looks horrified, as far as that sort of thing goes; it's always hard to tell with goblins. (They're so ugly.) "But master, they'll kill me immediately!"
+
+        You snort, sending flames into the air. "Just tell them that if they do, my vengeance will be horrible to behold."
+
+        She almost looks hopeful. "Will it?"
+
+        "Yes. But you'll still be dead. So don't fail me."
+
+        She heads off down the mountain that afternoon. You don't hear from her again.
+
+        What do you do next?
+        *choice
+            #Find out what happened to her.
+                *set disdain %-5
+                Anything that filthy is easy to track by smell. In the dead of night, you creep down the mountain and follow her trail. It leads to the nearest inhabited hut. Several peasants sit outside it by a fire. Your hearing is so good that they're easy to make out.
+                
+                Vigilance increases slightly.
+
+                "I still can't believe it. Just the damnedest thing. Stupid little goblin jumped out at me from nowhere and started babbling something in that tongue of theirs. I could barely get to my knife in time before the thing stabbed me."
+
+                "You got lucky," says the other man. "Them things are dangerous. I hear they're spies for that dragon."
+
+                "Dragon?" the first man snorts. "I'm not even sure it exists. If it does, and they're spies, good thing we killed it!"
+
+                What do you want to do?
+                *choice
+                    #Sneak away quietly.
+                        You silently return to your lair, brooding. Looks like you'll need a better technique to seize the kingdom.
+                        
+                        Disdain increases.
+                        *set disdain %+10
+                        *goto GoblinNext
+                    #Reveal myself.
+                        "Is that so?" Your voice rumbles out, and both men jump to their feet. You slowly reveal yourself, letting the firelight play across your shining scales and magnificent wings. You rear up in front of them. "No one destroys anything of mine." The men panic and begin to run, consumed with fear.
+
+                        What do you do?
+                        *choice
+                            #Kill them both.
+                                You let them get just far enough away that they think they may escape, and then you belch fire on them. They stumble into the night, on fire and with arms pinwheeling, making perhaps another fifteen steps before dropping down dead. That should teach them.
+                                
+                                Brutality and Vigilance increase.
+
+                                *set brutality %+10
+                                *set disdain %-10
+                                *goto GoblinNext
+                            #Kill one and keep another one alive to use as a spy.
+                                *set cunning %+20
+                                *set disdain %-10
+                                Your tail whips up and around, sending one peasant flying. You watch the other flee. As soon as he thinks he's escaped, you flex your powerful wings and fly up into the air. With a thud, you land directly in front of the fleeing peasant. The man drops to his knees in terror and begins begging for his life.
+
+                                "You want to live?" you ask. "You will tell me all you know about the human capitol, and then you will go there and feed me information about their military and defenses.  You will become my spy. If you do, you will be alive and rich. If you don't?" You raise one claw.
+                                
+                                Cunning and Vigilance increase.
+
+                                *comment Maybe some consequences later?
+                                *goto GoblinNext
+                            #Let them both go.
+                                *set disdain %+5
+                                That? That was funny. Easy come, easy go, as far as goblins are concerned, and those two peasants will never forget you. You incinerate their thatched-roof cottage, just to make a point, and return home.  Disdain increases slightly.
+                                *goto GoblinNext
+            #Forget her.
+                *set disdain %+20
+                Disdain increases.
+                
+                Apparently, sending a minion to do a dragon's work isn't a good idea. Time to try a new plan.  
+                *goto GoblinNext
+
+        *label GoblinNext
+        What's next?
+        *goto main
+    *hide_reuse *if (DidSomething) #That's enough activity on my part.  I'm heading back to my lair.
+        *goto WaitInLair
+        
+*label BigCity
+
+It doesn't take long before you are circling over their puny city; it would burn beautifully, and you could smash it into flinders, but it's full of wealth. You can smell the treasure from here. You settle heavily in the main plaza in front of the palace.  As you land, your tail idly destroys the ancient statue of some dead king.
+
+"Send out your queen!" you roar. People flee from the sound of your voice. "I demand to talk to her. Send her out, or I'll rip apart the castle piece by piece and then eat her once I'm done. NOW!"
+
+Someone screams. You see worried courtiers staring at you from around the door to the palace, then hastily ducking back inside. From behind, the sound of a horse distracts you. You smell weapon oil and metal.
+
+"Avaunt, foul beast!" challenges a human encased in metal armor. He carries a long lance with a pennant flying from it. "I am Sir Rodegard, knight of—"
+
+Are you going to put up with that?
+*choice
+    #Let him finish his speech.
+        "…knight of our Royal Highness, her graceful majesty Queen Juliet, long may she reign over—"
+
+        *choice
+             #He's really boring. Eat him instead.
+                 *label EatKnight
+
+                 You knock him down before he ever completes his little speech. A claw swipe knocks him sideways off of his horse and sends the mount fleeing in blind terror. The knight rolls and awkwardly tries to get to his feet. As he does, he looks up to see you dangling the remains of the plaza's statue over his head. "Duck," you suggest, and he does. Then your head 
+                 snaps down and catches him in your jaw. He struggles, half in and half out of your mouth, as you decide whether to eat him.
+
+                 *choice
+                     #Devour him.
+                         You bite down hard, swallow, and smile a terrible grin.
+                         *goto AfterKnightfall
+                     #Allow him to live.
+                         *label allow_live
+                         "You're too small to bother with," you growl, "and it's funnier to let you live knowing that you failed. Can't have you running after me, though." With a flick of your neck, you fling him into a nearby building.  You hear bones snap as he hits the wall and promptly forget about him.
+                         *goto AfterKnightfall
+                 
+
+             #No, I let him finish.
+                 "…us all. I am her sworn protector. I challenge you, beast, and I shall skin your dead body to make my next shield."  He spurs his warhorse towards you.
+
+                 How do you plan to fight him?
+                 *choice
+                     #Take to the air to fight.
+                         Your wings beat the air and you rise upwards out of the reach of his lance. He seems a bit bewildered by this simple tactic. He reins his horse to a halt and cries upwards, "Come down and fight honorably!" Instead, you breathe fire on him. He's still alive as his horse catches fire beneath him, but not for long. You're picking your teeth with the cooling remains of his lance when the queen cautiously pokes her head out from around the palace doors, sighs, and emerges out into the courtyard.
+                         *goto AfterKnightfall
+
+                     #Stay on the ground to fight.
+                         He's charging you head-on. Not particularly smart on his part. You roar, a noise that shatters windows and causes his horse to flinch, and you slap your claw down on top of him. He dodges to the side, throwing himself off his horse, and you feel the beast's blood pumping out over your scales as you simply squeeze. The horse gives a shriek.   
+                         "I'm sorry," you say, "were you using this?" Then you casually lower the horse's remains into your own maw.
+
+                         The knight is senseless with fury as he draws a sword and charges. He's braver than he is skilled; you allow him to hack at your side for a minute or two before you pick him up with two pinched claws. "Are you quite done?"
+
+                         What do you do with him?
+                         *choice
+                             #Allow him to live.
+                                 *goto allow_live
+                             #Eat him.
+                                 "Foul beast," he cries out, "I will never surrender!"
+
+                                 "Fair enough," you say, and eat him whole. The metal armor crunches unpleasantly in your mouth, but the soft bit inside is delicious.
+                                 *goto AfterKnightfall
+
+    #Eat him now.
+        *goto EatKnight
+
+*label AfterKnightfall
+
+Mustering whatever dignity she can, the human queen steps outside the doors to her palace. You can smell her fear, and her courtiers beg her not to, but she emerges to meet you with what passes for human courage. You smile, a terrible sight.
+
+"Beast?" she asks in a remarkably steady voice. "I am Queen Juliet. We have not offended you. What is it you want with us?"
+
+What do you do?
+*choice
+    #Eat her.
+        Your head snaps forward and the queen is gone in one bloody gulp. "I am your new ruler!" you roar to all who can hear. "Bring treasure to the base of my mountain, every piece of gold you possess! If you do not, I will return and level your entire city!" You place your mouth up to the door of the palace and give a quick breath of fire, enough to get their attention but not enough to burn down the place. You then shatter a few homes for good measure. 
+
+        You round up the ex-queen's advisors.  You kill a few to motivate the rest and force the survivors to abase themselves before you.  As your new slaves cower before you, one of the former queen's advisors shouts out to the terrified populace, "Behold our new master, ${name}! To defy the dragon is death!"  Good, they understand the way things work now.  They are terrified of you, and you can expect their tribute.
+        
+        Brutality and Infamy increase.
+
+        *set wealth +1000
+        *set brutality %+15
+        *set infamy %+10
+        *finish
+    #Command the queen to surrender her kingdom.
+        How do you want to command the queen?
+        *choice
+            #Brutally.
+                You roar, and the queen staggers backward.  "I have defeated your greatest champion without any difficulty.  I can destroy you and all that you hold dear at my whim.  Surrender your crown and bow before me.  I'm willing to let you at least beg for your life and the lives of your family."
+
+                *if (cunning > 35)
+                    The queen shudders and then draws a small dagger.  It takes you a moment to realize that she is trying to attack you with an ornament.  "I will never surrender my kingdom to you, beast!  You are an ignoble monster worthy only of death!"
+
+                    She is surprisingly brave to attack you with no hope of success.  She is also surprisingly tasty, as you discover while chewing on her.  
+
+                    After you finish devouring her, you round up the ex-queen's advisors.  You kill a few to motivate the rest and force the survivors to abase themselves before you.  As your new slaves cower before you, one of the former queen's advisors shouts out to the terrified populace, "Behold our new master, ${name}! To defy the dragon is death!"  Good, they understand the way things work now.
+                    
+                    You then gather the most valuable items in the palace for your hoard and fly back to your lair. You won't be able to trust them, of course, but that hardly matters so long as they keep you supplied with food and gold.
+                    
+                    Brutality and Infamy increase.
+                    *set wealth +1000
+                    *set infamy %+10
+                    *set brutality %+10
+                    *finish
+                *else
+                    The queen shakes, as if she finds it physically revolting to acquiesce, but she kneels and lifts off her crown, offering it to you.  "I know you are an honorable dragon. Please, accept the tribute of your loyal subjects, and spare them from destruction."
+
+                    *choice
+                        #I accept her tribute and spare her life.
+                            You lift your head and give a mighty roar of triumph that echoes off the walls of the city.  The queen raises her voice to anyone who can hear.  
+                    
+                            "Kneel before your new sovereign, O people!" she shouts. "Behold the dragon ruler,
+                            ${name}!
+
+                            You take the ex-queen's crown and a pile of treasure that her courtiers promptly bring out to you, and you depart clutching the first of your tribute in your claws, exceptionally pleased with how the day has gone. You'll have to wait for treachery, of course, but you have a good feeling about this. You've never owned a kingdom before.
+                            
+                            Honor increases; Infamy decreases.
+  
+                            *set wealth +1500
+                            *set infamy %-10
+                            *set cunning %-10
+                            *finish
+
+                        #It's no fun if I don't get to sack the palace.  I eat her and go on a rampage before accepting the surrender of her advisors.
+                            "No, no, no," you say in disgust.  "You were supposed to refuse and make me destroy the heart of your capital."
+
+                            The queen looks up at you in horror as she realizes what you're saying.  That's when you pounce on her.  The next few minutes are ugly.  Then you turn your attention to the palace, ripping the very building apart and smashing through the guards like they were toy soldiers.  
+                            
+                            Brutality and Infamy increase; Honor decreases.
+
+                            After a satisfying rampage, you're finally willing to accept the surrender of a haggard, miserable group of the ex-queen's advisors.  You kill a few to motivate the rest and force the survivors to abase themselves before you.  As your new slaves cower before you, one of the former queen's advisors shouts out to the terrified populace, "Behold our new master, ${name}! To defy the dragon is death!"  Good, they understand the way things work now.
+                            
+                            You then gather the most valuable items in the wreckage of the palace for your hoard and fly back to your lair. You won't be able to trust them, of course, but that hardly matters so long as they keep you supplied with food and gold.
+                            *set wealth +1000
+                            *set infamy %+25
+                            *set brutality %+20
+                            *set cunning %+15
+                            *finish
+
+            #Cleverly.
+                "Dearest queen," you croon, "I am not without mercy. I am able to kill you and everyone you protect. Alternately, I could decimate your kingdom; your few remaining subjects would kill you themselves for betraying them to a fearsome dragon. I have a better idea, however. In exchange for a somewhat burdensome amount of treasure, I will rule you from afar. You will become MY kingdom, and my subjects, and in return for your obedience and tribute I will protect you. What say you?"
+
+                The soon to be ex-queen's eyes are bulging. "Great dragon," she stutters, "that is a very kind and gracious offer. We would be blessed to have as mighty a protector such as you. May we have some time to decide?"
+                *fake_choice
+                    #Give her some time.
+                        "Of course," you say. "This must be a very difficult decision for you. You may have five minutes."
+
+                        "Five minutes?" She sounds shocked. "But that is hardly enough time to—"
+
+                        "To betray me and summon your knights? To smuggle out the best of your riches? I agree. You have a choice, Queen. You can die, or live; you can lose your kingdom or give it the most powerful protector imaginable. It will only cost you wealth and your pride. What do you choose?"
+
+                    #No, she must decide now.
+                        "NO!" you roar. "You must decide this instant, human. Is not the ability to make rapid decisions a good quality in a ruler?"
+                *temp honor
+                *temp finesse
+                *set honor 100-cunning
+                *set finesse 100-brutality
+
+                *if ((honor + finesse) > 100)
+                    *comment Honor makes it more likely she will accept, as does finesse.
+                    "Yes, O mighty dragon. I will accept you as my ruler, and perhaps through me you will administer to your new kingdom." She raises her voice to anyone who can hear.  
+                    
+                    "Kneel before your new sovereign, O people!" she shouts. "Behold the dragon ruler, ${name}!
+
+                    You depart clutching the first of your tribute in your claws, exceptionally pleased with how the day has gone. You'll have to wait for treachery, of course, but you have a good feeling about this. You've never owned a kingdom before.
+                    
+                    Finesse increases; Infamy decreases.
+  
+                    *set wealth +1500
+                    *set infamy %-15
+                    *set brutality %-10
+                    *finish
+                *else
+                    "The answer is no. You are a treacherous beast, and you can not intimidate me. I would rather die than—"
+
+                    "In that case, allow me to oblige." You eat her in a single snap of your teeth.
+                    
+                    Infamy increases.
+
+                    After you finish devouring her, you round up the ex-queen's advisors.  You kill a few to motivate the rest and force the survivors to abase themselves before you.  As your new slaves cower before you, one of the former queen's advisors shouts out to the terrified populace, "Behold our new master, ${name}! To defy the dragon is death!"  Good, they understand the way things work now.   
+                 
+                    You then gather the most valuable items in the palace for your hoard and fly back to your lair. You won't be able to trust them, of course, but that hardly matters so long as they keep you supplied with food and gold.
+                    *set wealth +1000
+                    *set infamy %+5
+                    *finish
+
+*label WaitInLair
+
+You return to your lair.  You have demonstrated your power and might, even majesty.  Now, it's time for the humans to come before you and acknowledge your rulership.  You wait for them on your bed of gold, not anxiously, but simply confident that they will acknowledge your power.
+
+Disdain increases.
+
+*set disdain %+25
+
+After about a month, a knight arrives at your lair.  She kills a few of your goblin guards perfunctorily—no great loss there—and calls out to you.  "Beast!  I am Dame Elsa.  Queen Juliet has sent me to demand that you end your depredations within her lands.  If you will not, I shall put an end to your threat."
+
+How do you respond?
+*choice
+    #I present my demands:  if the humans acknowledge me as their ruler and give me adequate tribute, I will cut back on my raiding.
+        You fly out of your lair and unleash a blast of flame into the air, causing Dame Elsa's horse to rear uncontrollably.
+
+        "Listen, knight.  If your little queen wants me to stop raiding her lands for money and food whenever I feel like it, she'll have to meet my demands.  She needs to acknowledge that I'm the true ruler of these lands, and she needs to provide me with great tribute in both food and gold.  Otherwise, I will continue to take what I please, when I please.  Is that understood?"
+
+        The knight does not answer at all, except to lower her visor and to set her lance to charge you.  You brush her lance aside with your claw and bite her head off.
+
+        Her fleeing squire carries your message back to the queen.
+        *goto annoyance
+    #I ignore her—if the queen wants to talk, she should come here herself.
+        You ignore the knight, refusing to acknowledge her presence.
+        
+        Disdain increases.
+        
+        Eventually, she forces her way into your presence, cutting a path through your goblins with her sword.  She's certainly 
+        persistent.
+
+        When she finally reaches your actual lair, you demonstrate that persistence is no substitute for might at arms and eat her.
+        *set disdain %+15
+        *goto annoyance
+    #I kill the insolent knight.
+        A knight dares to question you at your own lair?  Can't have that.  You fly out through the secret back exit to your lair, loop around behind her, and pounce on her from behind.  In a 
+        moment, it's all over except for the chewing.
+        
+        Vigilance increases.
+
+        *set disdain %-10
+        *goto annoyance
+    
+*label annoyance
+*page_break
+A few more knights come by over the next several months with similar results.  It's a bit annoying, but random knights are no real threat to a dragon like you.
+
+Are you willing just to wait until the humans are willing to acknowledge your rule?
+*choice
+   #What are a few more months or years to a dragon who will live centuries?  I'm not leaving my lair.
+       *goto KeepWaiting
+   #Forget this, I'm going to the capital and speaking to the queen herself.
+       Vigilance increases.
+       
+       *set disdain %-10
+       *goto BigCity
+
+*label KeepWaiting
+
+It's true, waits that would seem long to a human are just relaxing breaks for you.  You even manage to sneak in a short three-month nap.
+
+Disdain increases.
+*set disdain %+25
+
+Eventually, your goblin minions rouse you.  "O great dragon, a large group of humans is outside."
+
+You emerge from your lair to see a small army camped outside under royal banners and flags of truce.  Trumpets sound a fanfare as a human wearing a crown—Queen Juliet, you suppose—walks out of the crowd to meet you.
+
+"Mighty dragon, we would parlay with you.  We have done nothing to offend you.  Why do you despoil our lands?"
+
+How do you respond?
+*choice
+    #Loudly demand that she surrender her lands to my rule and provide me with tribute if she wants to survive.
+        You roar, and the queen staggers backward.  "I have defeated your champions without any difficulty.  I can destroy you and all that you hold dear at my whim.  Surrender your crown and bow before me.  I'm willing to let you at least beg for your life and the lives of your family."
+
+        *if (cunning > 35)
+            The queen shudders and then draws a small dagger.  It takes you a moment to realize that she is trying to attack you with an ornament.  "I will never surrender my kingdom to you, beast!  You are an ignoble monster worthy only of death!"
+
+            She is surprisingly brave to attack you with no hope of success.  She is also surprisingly tasty, as you discover while chewing on her.
+            
+            Infamy increases.
+
+            After you finish devouring her, you round up the ex-queen's advisors.  You kill a few to motivate the rest and force the survivors to abase themselves before you.  As your new slaves cower before you, one of the former queen's advisors shouts out to the terrified populace, "Behold our new master, ${name}! To defy the dragon is death!"  Good, they understand the way things work now.            
+
+            A few short weeks later, the first shipment of tribute arrives from the humans. You won't be able to trust them, of course, but that hardly matters so long as they keep you supplied with food and gold.
+            *set wealth +1000
+            *set infamy %+10
+            *finish
+        *else
+            The queen shakes, as if she finds it physically revolting to acquiesce, but she kneels and lifts off her crown, offering it to you.  "I know you are an honorable dragon. Please, accept the tribute of your loyal subjects, and spare them from destruction."
+
+            *choice
+                #I accept her tribute and spare her life.
+                    You lift your head and give a mighty roar of triumph that echoes through the valley below.  "Behold your new ruler!" you shout in deafening tones.
+                    
+                    Honor increases; Infamy decreases.
+
+                    You take the ex-queen's crown and a pile of treasure that her courtiers promptly bring over to you, and you send your new human minions away, exceptionally pleased with how the day has gone. You'll have to wait for treachery, of course, but you have a good feeling about this. You've never owned a kingdom 
+                    before.
+  
+                    *set wealth +1500
+                    *set infamy %-10
+                    *set cunning %-10
+                    *finish
+
+                #It's no fun if I don't get to slaughter the army.  I eat her and go on a rampage before accepting the surrender of her advisors.
+                    "No, no, no," you say in disgust.  "You were supposed to refuse and make me destroy your puny little army."
+
+                    The queen looks up at you in horror as she realizes what you're saying.  That's when you pounce on her.  The next few minutes are ugly.  Then you turn your attention to the army, smashing through the troops like they were toy soldiers.  
+                    
+                    Brutality and Infamy increase; Honor decreases.
+
+                    After a satisfying rampage, you round up the ex-queen's advisors.  You kill a few to motivate the rest and force the survivors to abase themselves before you.  As your new slaves cower before you, one of the former queen's advisors shouts out to the terrified populace, "Behold our new master, ${name}! To defy the dragon is death!"  Good, they understand the way things work now.
+                    
+                    A few weeks later, a wagon train of tribute arrives from the humans. You won't be able to trust them, of course, but that hardly matters so long as they keep you supplied with food and gold.
+                    *set wealth +1000
+                    *set infamy %+25
+                    *set brutality %+20
+                    *set cunning %+15
+                    *finish
+
+    #Quietly explain that her best option is to accept you as an overlord.
+        "Dearest queen," you croon, "I am not without mercy. I am able to kill you and everyone you protect. Alternately, I could decimate your kingdom; your few remaining subjects would kill you themselves for betraying them to a fearsome dragon. I have a better idea, however. In exchange for a somewhat burdensome amount of treasure, I will rule you from afar. You will become MY kingdom, and my subjects, and in return for your obedience and tribute I will protect you. What say you?"
+
+        The soon to be ex-queen's eyes are bulging. "Great dragon," she stutters, "that is a very kind and gracious offer. We would be blessed to have as mighty a protector such as you. May we have some time to decide?"
+        *fake_choice
+            #Give her some time.
+                "Of course," you say. "This must be a very difficult decision for you. You may have five minutes."
+
+                "Five minutes?" She sounds shocked. "But that is hardly enough time to—"
+
+                "To betray me and smuggle out the best of your riches? I agree. You have a choice, Queen. You can die, or live; you can lose your kingdom or give it 
+                the most powerful protector imaginable. It will only cost you wealth and your pride. What do you choose?"
+
+            #No, she must decide now.
+                "NO!" you roar. "You must decide this instant, human. Is not the ability to make rapid decisions a good quality in a ruler?"
+        *temp honor
+        *temp finesse
+        *set honor 100-cunning
+        *set finesse 100-brutality
+
+        *if ((honor + finesse) > 100)
+            *comment Honor makes it more likely she will accept, as does finesse.
+            "Yes, O mighty dragon. I will accept you as my ruler, and perhaps through me you will administer to your new kingdom." She raises her voice to anyone who can hear.  
+            
+            "Kneel before your new sovereign, O people!" she shouts. "Behold the dragon ruler, ${name}!
+
+            Within a few weeks the first shipments of treasure arrive.  You are exceptionally pleased with how the process of taking over a kingdom has gone. You'll have to wait for treachery, of course, but you have a good feeling about this. You've never owned a kingdom before.
+            
+            Finesse increases; Infamy decreases.
+  
+            *set wealth +1500
+            *set infamy %-15
+            *set brutality %-10
+            *finish
+        *else
+            "The answer is no. You are a treacherous beast, and you can not intimidate me. I would rather die than—"
+
+            "In that case, allow me to oblige." You eat her in a single snap of your teeth. A few particularly loyal knights attack, but you quickly dispatch them as well.   
+
+            After you finish devouring the knights, you round up the ex-queen's advisors.  You kill a few to motivate the rest and force the survivors to abase themselves before you.  As your  
+            new slaves cower before you, one of the former queen's advisors shouts out to the terrified populace, "Behold our new master, ${name}!
+            To defy the dragon is death!"  Good, they understand the way things work now.            
+            
+            They are much more cooperative than the queen was, and within a few weeks the first shipments of tribute arrive from the 
+            humans. You won't be able to trust them, of course, but that hardly matters so long as they keep you supplied with food and gold.
+            
+            Infamy increases.
+            *set wealth +1000
+            *set infamy %+5
+            *finish
+
+    #Eat her and the whole little army.
+        You attack without warning and without mercy.  The queen dies in the first moments of your attack along with the shocked heralds who thought that not even a dragon would violate a flag of truce. Her knights and soldiers rush in to fight you—she must have been popular—but a few blasts of flame cook most of them.  Your claws and teeth deal with the rest.
+        
+        Brutality and Cunning increase; Infamy increases greatly.
+
+        You enjoy a leisurely afternoon hunting down the remaining courtiers, musicians, and servants as they desperately flee your wrath.
+
+        Less than a month later, the humans send their first shipment of tribute to you.  
+        
+        They've learned that talking to you will get them nothing.  All in all, that worked out pretty well.
+        *set brutality %+15
+        *set cunning %+10
+        *set infamy %+20
+        *set wealth +750
+        *finish

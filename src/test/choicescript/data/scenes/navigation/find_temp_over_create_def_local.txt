@@ -1,0 +1,5 @@
+*label look
+*temp z 7
+*set a "b"
+*set z 0
+*set t false

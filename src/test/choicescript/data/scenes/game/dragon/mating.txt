@@ -1,0 +1,329 @@
+You spend the next five years leisurely hunting, recounting your hoard, and sleeping for months at a time. It's a pretty nice life, but you also feel quite lonely at times. Occasionally, you imagine what it would be like to find a mate.
+
+You wake up in the middle of the night on your enormous bed of treasure; you realize that you were dreaming of a romantic partner, one who could put fire in your life again.
+
+Will you try to find a mate?
+
+*choice
+    #No.
+        Very well, it's your decision.
+        *goto ending
+    #Yes.
+        Very well.
+
+What gender of dragon will you seek out for a mate?
+
+*temp he
+*temp his
+*temp himself
+*temp him
+*fake_choice
+    #Male.
+        *set he "he"
+        *set his "his"
+        *set himself "himself"
+        *set him "him"
+    #Female.
+        *set he "she"
+        *set his "her"
+        *set himself "herself"
+        *set him "her"
+    #I don't care.
+        *set he "it"
+        *set his "its"
+        *set himself "itself"
+        *set him "it"
+*comment endif
+
+How are you going to find ${him}?
+
+*choice
+    #Post on an Internet message board.
+        That was just a joke. What are you really going to do?
+        
+        *choice
+            #Go out hunting for ${him}.
+                *goto hunting
+            #Use a network of human spies to seek ${him} out.
+                *goto spies
+            #Just wait in my lair; eventually ${he} will find me.
+                *goto wait
+    #Go out hunting for ${him}.
+        *label hunting
+        The problem with going out and hunting is that you must leave your treasure hoard unattended for some time.  In your absence, someone may try to steal your treasure.
+        
+        How concerned are you about this?
+        
+        *choice
+            #Extremely concerned.
+                That's understandable.  Do you still want to go hunting at all?
+                
+                *choice
+                    #No, I'll just stay in my lair.
+                        *goto wait
+                    #Yes, but I'll stay close by to minimize risk.
+                        Hey, at least you're trying!  I respect that.
+                        
+                        *goto closeby
+            #Somewhat concerned.
+                That's only reasonable.  How far are you willing to go to hunt for a mate?
+                
+                *choice
+                    #Not too far. I have my hoard to think about.
+                        *label closeby
+                        You patrol the countryside, careful not to wander too far from your usual territory.
+                        
+                        Unfortunately, you can't find another dragon in such a small area; you probably would have heard of ${him} already if ${he} were already so near.
+                        
+                        What are you going to do now?
+                        
+                        *choice
+                            #Give up.
+                                Well, at least you tried.
+                                *goto ending
+                            #Broaden the hunt a little.
+                                *goto normalhunt
+                    #A significant distance.
+                        *label normalhunt
+                        You travel hundreds of miles, sniffing the air for the scent of a fellow dragon.
+                        
+                        Unfortunately, you aren't able to completely defend your lair from thieves while you are abroad. You'll return to find that a fraction of your treasure trove has been stolen…nothing too pricey, but you'll miss that jewel-encrusted goblet.
+                        *set wealth -100
+                        *goto huntmate
+                    #I will travel to the seven corners of the earth if need be!
+                        That's dedication!
+                        *label stop_at_nothing
+                        
+                        Unfortunately, your unwavering efforts to find a mate are incompatible with defending your lair.
+                        You'll return to find that a noticeable fraction of your treasure trove has been stolen;
+                        your jewel-encrusted bed just won't be the same.
+                        *set wealth -750
+                        *label huntmate
+                        
+                        *page_break
+                        Eventually, you find a suitable mate in a nearby kingdom.
+                        *goto matefound
+            #Not at all concerned.
+                Why aren't you more concerned?
+                
+                *choice
+                    #True love is worth far more than gold.
+                        I suppose you're right.
+                        *goto stop_at_nothing
+                    #No one would dare steal from me!
+                        *if infamy > 70
+                            Good point.
+                            *goto huntmate
+                        *else
+                            You overestimate your reputation!  You'll return to find that a noticeable fraction of your treasure trove has been stolen; your jewel-encrusted bed just won't be the same.
+                            *set wealth -750
+                            *goto huntmate
+                    #I don't really have that much gold to lose.
+                        *if wealth < 500
+                            I suppose you're right!
+                            *goto huntmate
+                        *else
+                            You underestimate your wealth!  You'll return to find that a noticeable fraction of your treasure trove has been stolen; your jewel-encrusted bed just won't be the same.
+                            *set wealth -750
+                            *goto huntmate
+                    #Are you calling me a coward?
+                        No!  No, no.  N—never mind.  Forget I asked.
+                        *goto huntmate
+    #Use a network of human spies to seek ${him} out.
+        *label spies
+        *if disdain > 60
+            Your spies do their best, but you've been keeping mostly to yourself in your lair; you don't have a very extensive network to call upon.
+            
+            Unfortunately, they haven't even heard of another dragon for miles.  What will you do now?
+            
+            *choice
+                #Give up.
+                    Well, at least you tried.
+                    *goto ending
+                #Go out hunting for a mate.
+                    *goto hunting
+        *else
+            Your spies report a suitable mate in a nearby kingdom.
+            *goto matefound
+    #Just wait in my lair; eventually ${he} will find me.
+        *label wait
+        Could it really be that easy?
+        *comment TODO should this work?
+        *goto ending
+
+*label matefound
+More than one, actually.
+
+To the north, you find a green dragon with a long spiked tail and kite-shaped plates on ${his} back. $!{he} terrorizes the countryside with ${his} fiery breath.
+
+To the west, there's a subtle, elegant black serpent.  They say that ${he} sometimes takes human form and walks among the people, whispering in the ears of kings.
+
+To the south, you encounter an enormous scaly sea-monster; when ${he} breaches, ${he} leaps out of the water seven times without exposing all of ${his} scales to the air. $!{he} has dragged countless ships to the bottom of the sea, where ${he} keeps a vast hoard of ancient treasures.
+
+To the east lives a strange five-clawed luck dragon with flowing whiskers, revered by the humans around ${him} as like unto a god.
+
+Which of these mates most interests you?
+
+*temp keystat
+
+*choice
+    #North.
+        *set keystat "brutality"
+        *goto attract
+    #West.
+        *set keystat "cunning"
+        *goto attract
+    #South.
+        *set keystat "finesse"
+        *goto attract
+    #East.
+        *set keystat "infamy"
+        *goto attract
+
+*label attract
+Excellent choice.  Now, you'll need to do something to impress ${him}.
+
+*choice
+    #Destroy a nearby village, to demonstrate my strength.
+        *if brutality > 70
+            *set infamy %+ 15
+            You smash a nearby hamlet to splinters, killing most of the humans who live there.
+            
+            Infamy increases.
+            
+            *if keystat="brutality"
+                *goto success
+            *else
+                Unfortunately, this dragon is quite territorial, and is not the least bit impressed by your Brutality.
+                *goto failure
+        *else
+            You make a serious effort, but this is not the first time these cities have been assaulted by dragons; they are well defended.  You do some damage, but nothing to write home about.
+            
+            Your potential mate is not the least bit impressed with your feeble accomplishments.
+            *goto failure
+    #Make graceful loops in the air, to display my maneuverability.
+        *if brutality < 30
+            You climb skyward on powerful wing strokes, then descend in a deep dive, pulling up at the last minute. You blot out the sun with your wingspan as you perform cartwheel after effortless cartwheel.
+            
+            *if keystat="finesse"
+                *goto success
+            *else
+                Unfortunately, this dragon is quite territorial and is not the least bit impressed by your Finesse.
+                *goto failure
+        *else
+            You climb skyward on powerful wing strokes, then descend in a deep dive, pulling up just before you hit the ground. You try to roll into a cartwheel, but your right wing muscles cramp up just as you're about to start it, so the cartwheel looks more like a mistake than a display of aerial Finesse.
+            
+            Your potential mate is not the least bit impressed with your feeble display.
+            *goto failure
+    #Challenge ${him} to a game of wits, to show off my intelligence.
+        You challenge ${him} to a game of chess.
+        
+        Do you cheat?
+        *choice
+            #Of course not!
+                *if cunning > 70
+                    *if keystat="cunning"
+                        Cleverly, you manage to win the chess game, but not so thoroughly as to offend your potential mate.
+                        
+                        *goto success
+                    *else
+                        Dragons love chess, but they love winning most of all.  You win the game, but instead of earning your potential mate's affection, your victory seems to poison ${him} against you.
+                        *goto failure
+                *else
+                    You lose.  This does not impress your potential mate in the slightest.
+                    
+                    *goto failure
+            #Maybe a little.
+                *set infamy %- 10
+                Cheating at chess is neither cunning nor honorable; dragons have very good memories. The dragon catches you cheating, which is a bit embarrassing for both of you.
+                
+                Infamy decreases.
+                
+                You can't talk your way out of a faux pas like this.
+                *goto failure
+    #Make an offering of an enormous sapphire, to exhibit my wealth.
+        *set wealth -500
+        What a lovely gem!
+        
+        Unfortunately, this dragon already has quite a bit of ${his} own treasure, and is not the least bit impressed by your display of wealth.
+        *goto failure
+    #Spread rumors of my impending arrival, highlighting my fearsome reputation.
+        *if infamy > 70
+            The whole kingdom is talking about you.  They whisper of your terrifying deeds and your lair filled with unimaginable treasures.
+            
+            *if keystat="infamy"
+                *goto success
+            *else
+                Unfortunately, this dragon is quite territorial and is not the least bit impressed by your reputation.
+                *goto failure
+        *else
+            You try to get a few people to talk about you, but you are, for the most part, unknown in this region.  Rumors about you are quickly confused with rumors about your potential mate; suffice it to say that ${he} is not the least bit impressed with your efforts.
+            *goto failure
+    #Steal some of ${his} gold and fly off.
+        *set cunning %+ 30
+        *set wealth +1000
+        Very clever of you.  
+        
+        Cunning increases.
+        
+        Of course, this doesn't help your chances with your potential mate at all, but you do manage to sneak off with two big talons full of rare loot.  You return to your lair before ${he} even notices anything is missing.
+        *goto ending
+
+*label failure
+$!{He} rejects your advances, and eventually you return home to your lair…alone.
+*label ending
+
+*page_break
+Time passes.  Eventually, the compulsion to find a mate passes, too.
+
+You still feel pretty lonely, but over time, you won't mind it as much.
+
+*finish
+
+*label success
+"Most impressive," ${he} says.
+
+*comment DIALOG: If I try to put in real dialog here, I'm going to need to fork at least 4x.  I'm not going to do it :-)
+
+$!{he} invites you to join ${him} in ${his} lair.
+
+*choice
+    #Accept the invitation.
+        You spend a delightful evening in ${his} lair.
+        
+        *label victory
+        *page_break
+        Congratulations; you have found a mate.  What will you do now?
+        *achieve lover
+        
+        *choice
+            #Move on; I can't be tied down like this.
+                Indeed, the life of a dragon is solitary by nature.  You bid your mate a fond farewell, then return to your lair, invigorated, but exhausted.
+                *finish
+            #Move in to ${his} lair, abandoning my kingdom.
+                You end the tyrannical reign of your own kingdom.  Your former subjects rejoice, celebrating in the streets; you no longer care.  You and your mate huddle together on an enormous treasure hoard (including both ${his} riches as well as your own) and begin a tyrannical reign over this new kingdom.
+                
+                Here, our story ends.
+                *page_break
+                *goto_scene ending
+            #Invite ${him} to live in my lair.
+                $!{he} graciously accepts.  Your kingdom now has two tyrannical dragons ruling over it. You will make a fine pair.
+
+                You spend many joyful years together before ${he} settles down for a long hibernation.  You will have to be all the more vigilant to protect your lair now that it contains your sleeping mate.
+                *finish
+    #Spurn the invitation.
+        Are you just playing "hard to get," or are you really rejecting ${him}?
+        
+        *choice
+            #I'm moving on, now that the hunt is over.
+                Fair enough.
+                *goto ending
+            #I'm just flirting.
+                *set cunning %+10
+                
+                It works; ${he} becomes all the more enamored of you.  You wind up spending a delightful evening in ${his} lair.
+                *goto victory
+            #I'm going to try to get one of the other dragons.
+                Unfortunately, spurning a dragon gives you a bit of a reputation.  None of the other dragons will have anything to do with you at this point.
+                
+                *goto ending

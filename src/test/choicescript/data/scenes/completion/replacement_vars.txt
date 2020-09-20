@@ -1,0 +1,8 @@
+*temp first_name "Jane"
+*temp last_name "Doe"
+*temp full_name (first_name&" ")&last_name
+*temp age 42
+*temp hobby 1
+*temp home_address ""
+I am ${a} years old and my name is ${f}.
+Today I wanted to go to the @{h park|shopping centre}

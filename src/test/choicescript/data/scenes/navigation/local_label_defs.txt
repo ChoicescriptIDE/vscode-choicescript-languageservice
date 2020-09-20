@@ -1,0 +1,21 @@
+*label start
+My initial text.
+My additional text.
+My extra text.
+
+*label mid
+And more and more.
+And more and more.
+*choice
+	# Go back
+		*goto start
+	# Skip it all
+		*goto end
+	# Continue
+		*goto next
+*label next
+Here is yet more.
+And more and more.
+*label end.
+We're done!
+*finish

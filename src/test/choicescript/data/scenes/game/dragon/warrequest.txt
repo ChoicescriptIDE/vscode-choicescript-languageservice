@@ -1,0 +1,262 @@
+ 
+As the sun climbs high, you bask yourself on a rock near your lair.  A group of humans slowly make their way up the slope towards you this day.  The humans wear armor and carry weapons, but their weapons are sheathed and they approach respectfully.  These are humans you know.
+
+As they enter the cleared area of stone that surrounds your lair, the humans kneel before you, recognizing your glory.  "O liege," begins the leader, "accept our praise and hear our petition."
+
+You incline your head slightly, acknowledging her and indicating that she may proceed.
+
+"As your magnificence is surely aware, almighty dragon, we are among the knights and lords that hold lands under your magnificence's rule.  We bring tribute each year, and now we come to beg a boon of you."  The knight pauses.  "Our enemies—people like ourselves, but with a mighty army—have begun invading your territory.  They have looted the less well-defended manors and burned some of the fields.  We are readying to fight them, but your magnificence's assistance would greatly strengthen our hand."
+
+One of the other knights interrupts.  "They are taking our animals and chattels and destroying the value of our lands.  You must aid us!"
+
+Your nostrils flare and a wisp of smoke puffs out of them.  He dares to refer to your animals, chattels, and lands as his own?  A grave insult indeed!  How do you respond?
+*choice
+  #Ignore the insult.
+    The minor insult the knight has offered you is far too insignificant for you to address, although you are gratified that the lead knight shushes him quickly.
+    
+    Your Disdain increases.
+    *set disdain %+20
+    *goto WarChoice
+  #Lecture the young knight on the nature of feudalism.
+    "Your animals and chattels?  Your lands?  Surely you mean my animals, chattels, and lands?" you say.
+    
+    "Of course, mighty one," says the leader of the delegation.  "Sir Edmund foolishly misspoke.  We would never presume to make a claim on your rights."
+    
+    "Good," you mutter with a warning glance at Sir Edmund.  His pallor is most gratifying.  
+    
+    Vigilance and Finesse increase.
+    *set disdain %+10
+    *set brutality %-10
+    *goto WarChoice
+  #Kill the individual offender.
+    A flash of one claw is all that it takes to deal with the insolent knight. His companions are clearly taken aback, yet they act as if nothing had happened.  But then, what choice do they have?  
+    
+    Vigilance, Brutality, and Infamy increase.
+    *set infamy %+ 10
+    *set disdain %-10
+    *set brutality %+10
+    *goto WarChoice
+  #Kill them all for their insolence!
+    A blast of flame incinerates half of them, and then you fall on the survivors with tooth and claw.  One of the knights has the temerity to try to draw her sword, but you dispatch her quickly enough.  Whatever matter they wished you to handle could not possibly be as important as enforcing your prerogatives.  
+    
+    Vigilance and Infamy increase; Brutality increases greatly.
+    *set infamy %+20
+    *set disdain %-20
+    *set brutality %+30
+    *goto NoHelp
+
+*label WarChoice
+
+The leader of the delegation clears her throat nervously.  "Mighty one, will you aid us in our time of need?"
+
+*choice
+  #I am honor-bound to defend my vassals.
+    "Very well," you rumble.  "You have served me loyally as vassals, and I will punish those who would dare threaten my interests."  
+    
+    Honor and Vigilance increase.
+    *set cunning %-20
+    *set disdain %-20
+    *goto War
+  #I need more information.
+  
+    Cunning increases.
+    
+    What do you need more information about?
+    *set cunning %+10
+    *choice
+      #How badly does the enemy threaten my tribute?
+        "The losses will likely be significant, your magnificence.  We expect to prevail, but the enemy will hurt us.  We may be unable to offer the sort of tribute we have customarily given."  
+        
+        Vigilance increases.
+        *set disdain %-10
+        *goto WarChoice2
+      #How powerful are your enemies?
+        "They are a threat to us," replies the lead knight.  "We will likely prevail, but it will be hard-fought without your aid.  Our enemies pale in comparison to your vast power, of course."  
+        
+        Finesse increases.
+        *set brutality %-10
+        *goto WarChoice2
+      #Does the enemy have loot worth taking?
+         One of the knights smiles, a greedy glint in his eye.  "Yes, indeed, mighty one. Our enemies have a wealthy port city.  Much trade flows through that port.  If you shatter the enemy's army, you will be able to plunder its gold for your own."  
+         
+         Cunning increases.
+         *set cunning %+10
+         *goto WarChoice2
+  #The humans can fend for themselves.
+    "Your war is of no interest to me," you say.  "Begone before I decide to use you for sport."
+    
+    The humans hurry down the hill, not wanting to annoy you further.  
+    
+    Disdain increases.
+    *set disdain %+20
+    *goto NoHelp
+
+*label WarChoice2
+
+Will you help the humans in their war?
+*choice
+  #Yes.  To war!
+    Based on what you have learned, you choose to go to war to aid the humans.
+    *goto War
+  #No, let them take care of it themselves.
+    Disdain increases.
+    
+    *set disdain %+10
+    *goto NoHelp
+
+*label War
+
+The humans convene a war council in the area surrounding your lair.
+
+*if (blasphemy > 0)
+  As you join them in the council, a steady rain begins to fall.  Their diviners report that the gods are displeased with you.  Still, you are a mighty dragon.  A little divine disfavor won't make much of a difference. 
+
+You lean in closely to read their tiny human maps, nearly killing several squires.
+
+With your support, your minions plan to engage their enemies in a single large field battle.  A decisive victory should end the incursions into your territory and set up an effective counter-attack.
+
+Do you take a role in the center of the battle, relying on your core combat ability, or do you plan on remaining hidden at first and then striking from surprise at a point when the enemy is vulnerable?
+
+*temp honor
+*set honor 100-cunning
+*temp finesse
+*set finesse 100-brutality
+
+*choice
+  #Participate in the center of the battle.
+    *if ((brutality+honor)>150)
+      You position yourself with the armored knights and lead a charge against the center of the enemy's position.  Between your awesome combat abilities and the competent performance of your knights, you shatter the enemy army. You rampage among the enemy troops as they try to flee, turning their defeat into an utter rout.  It becomes hard not to giggle, but you avoid it, to maintain morale.
+      
+      Brutality, Honor, and Infamy increase.
+      *set brutality %+10
+      *set cunning %-10
+      *set victory +2
+      *set infamy %+10
+      *goto looting
+    *elseif ((brutality+honor)>50)
+      You position yourself with the armored knights and lead a charge against the center of the enemy's position.  The fighting is fierce, but mere humans are no match for a dragon.  Your army wins a decisive victory, although the enemy withdraws in good order.
+      
+      You lick your talons and plan the next phase of your attack.
+      
+      Brutality and Honor increase.
+      *set brutality %+10
+      *set cunning %-10
+      *set victory +1
+      *goto ambush
+    *else
+      You position yourself with the armored knights and lead a charge against the center of the enemy's position.  
+      
+      Brutality and Honor increase.
+      
+      Unfortunately, the enemy army is more powerful than you would have thought credible.  They muster an effective lance charge after your initial attack, and one of the enemy knights scores a long gash down your side and through your wing muscles.
+     
+      The battle is inconclusive.  While you gain an opportunity to raid into their territory, you do not put an end to their depredations.  And even after it heals, your wing muscle is never quite as strong and responsive as it used to be.
+      
+      Infamy decreases.
+      *set infamy %-10
+      *set brutality %+10
+      *set cunning %-10
+      *set wounds +1
+      *goto ambush
+  #Remain hidden and strike from surprise.
+    *if ((cunning+finesse)>150)
+      You carefully plan the battle, giving specific instructions to your troops.  The battle is well underway and the enemy troops are fully committed when you drop out from a cloud above the battlefield.  From your angle of attack, you are flying directly out of the sun; they do not notice you until you are almost upon them.  Your fiery breath lays waste to their high command; you are then able to attack their knights from the rear, inflicting brutal casualties.
+     
+      Your troops respond perfectly to the opportunity, smashing the disorganized enemy and triggering a complete rout.  It becomes hard not to giggle, but you avoid it, to maintain morale.
+      
+      By the end of the day, most of the enemy army has been captured or slain, and the remainder is unable to pose an ongoing threat.
+      
+      Cunning, Finesse, and Infamy increase.
+      *set infamy %+10
+      *set brutality %-10
+      *set cunning %+10
+      *set victory +3
+      *goto looting
+    *elseif ((cunning+finesse)>50)
+      You attack from surprise in the middle of the battle.  The enemy responds quickly to your attack and demonstrates impressive discipline, but they are no match for a dragon and your attack still makes the difference.  Your army wins a decisive victory, but the enemy withdraws in good order.
+      
+      You lick your talons and plan the next phase of your attack.
+      
+      Cunning and Finesse increase.
+      *set brutality %-10
+      *set cunning %+10
+      *set victory +1
+      *goto ambush
+    *else
+      You set up in a hidden position before the battle, planning on emerging to attack at a key moment.  
+      
+      Cunning and Finesse increase.
+      
+      Unfortunately, the enemy spots you before you are ready.  They send a group of knights to attack you.  Without the support of your own army, you find yourself in a tough fight.  You manage to fight them off and withdraw successfully, but not before one of the enemy knights scores a long gash down your side and through your wing muscles.
+     
+      The battle as a whole is inconclusive.  While you gain some opportunity to raid into their territory, you do not put an end to their depredations. Even after it heals, your wing muscle is never quite as strong and responsive as it used to be.
+      
+      Infamy decreases.
+      *set infamy %-10
+      *set brutality %-10
+      *set cunning %+10
+      *set wounds +1
+      *goto ambush
+
+ 
+*label ambush
+*page_break
+You fly towards the enemy's territory; you will make them pay for this war with a punitive raid of your own.  As you approach, you see an effigy of yourself planted out in a field.  The mockery is most cruel, depicting you as a crude beast.
+
+*if (disdain>70)
+  *label IgnoreTrap
+  While it touches at your sense of pride, you know that the effigy is almost surely meant to lure you into an ambush.  You have enough Disdain for the japes of humans to bypass the trap.  Far better to pay them back by sacking their homes.
+  *goto looting
+*elseif (disdain>30)
+  Do you destroy the mockery?
+  *choice
+    #Yes.
+      *set disdain %-15
+      Vigilance increases.
+      
+      *goto AttackTrap
+    #No.
+      *set disdain %+15
+      Disdain increases.
+      
+      *goto IgnoreTrap
+*else
+  *label AttackTrap
+  *set wounds +1
+  *if (wounds >= 5)
+    You fly down to destroy the effigy and punish the humans near it, but it's a trap! They fire a concealed ballista at you and follow it up with a concerted volley of arrows.  Without your prior wounds, this would have been dangerous.  But because of your many grievous injuries, the ballista is able to knock you to the ground, and the arrows find chinks in your weakened armor.
+
+    You slaughter many of the humans, but then it dawns on you that you are fighting not for vengeance but for survival.  Even so, you think that you will be able to escape with your life.  Finally, however, a heavily armored knight charges you and drives her lance deep into your chest.  You struggle to rise despite the mortal wound, but she begins hammering your head with her sword.  All goes dark.
+
+    *goto_scene death
+  *else
+    You fly down to destroy the effigy and punish the humans near it, but it's a trap!  They fire a concealed ballista at you and follow it up with a concerted volley of arrows.  Only the ballista bolt truly hurts you, but it glances off your head, permanently blinding you in one eye. You kill all of the humans for their impudence, but you have still suffered a serious injury this day.
+    *goto looting
+
+*label looting
+*page_break
+
+You fly into the enemy territory.  You quickly sack various small towns, collecting a variety of booty for your troubles.  But then you fly into a major port city, where the real opportunity presents itself.  You can smell the rich supply of gold and jewels just waiting to be taken from a major temple.  And yet…sacking a temple might anger the gods.
+
+*choice
+  #Gods worry lesser beings, not dragons!
+    You sack the temple, leaving the building in ruins and carrying off most of its portable wealth.  Even the gold statuary of the gods will add to your hoard.  Some of the priests resist you, but they are not much as warriors and you quickly strike them down.  Your Wealth goes up dramatically. Your impiety angers the gods, but they do not act against you…yet.
+    *set blasphemy +1
+    *set wealth +5000
+    *goto WarConclusion
+  #I think I have enough loot without angering the gods.
+    You take as much other wealth as you can gather, but you leave the temple alone.  The missed opportunity for gain is outweighed by avoiding future problems.  Your Wealth goes up, but not as much as it could have.
+    *set wealth +1500
+    *goto WarConclusion
+
+*label WarConclusion
+
+In gratitude for your assistance in the war, your human minions provide you a particularly large tribute this year.  Nice work!
+*set wealth wealth+(victory*1000)
+*finish
+
+*label NoHelp
+
+Without your aid, the humans in your territory get the worst of it in the war with their neighbors.  This has little importance for you, and you avoided the risks implicit in battle. It does mean that the tribute this year is low, and you missed an opportunity to loot the humans' enemies.
+*set wealth -1000
+*finish

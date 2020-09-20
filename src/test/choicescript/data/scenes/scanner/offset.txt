@@ -1,0 +1,4 @@
+*temp n 0
+*temp x 1
+*temp str "str"
+${str} and ${n}.

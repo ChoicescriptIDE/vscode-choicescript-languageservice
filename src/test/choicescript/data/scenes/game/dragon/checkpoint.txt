@@ -1,0 +1,8 @@
+*if choice_user_restored
+  *goto_scene heroes
+
+We hope you're enjoying "Choice of the Dragon." You may now save your game below.
+
+*save_game heroes
+
+*goto_scene heroes

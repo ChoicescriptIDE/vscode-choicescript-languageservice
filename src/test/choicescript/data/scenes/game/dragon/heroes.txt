@@ -1,0 +1,195 @@
+There's a traveling party of adventurers in town.  The people are already calling them "heroes," telling tales of their past deeds.
+
+Do-gooders like these can be very dangerous.  What do you want to do?
+
+*choice
+    #Gather information about them.
+        *set cunning %+10
+        *set disdain %-10
+        They're pretty tough!  You really can't ignore them.  They're led by a brash young paladin.  They also have a wizard of some sort, a minstrel bard, a priest of the goddess of war, and a rogue.
+       
+        What now?
+       
+        *choice
+            #Challenge them to a duel.
+                *goto challenge
+            #Kidnap a princess to lure them out.
+                *goto kidnap
+            #Scare them off.
+                *goto scare
+    #Challenge them to a duel.
+        *label challenge
+        Are you really going to fight them directly on the field of battle?
+       
+        *choice
+            #Yes.
+                *set cunning %- 20
+                *set brutality %+ 10
+                *label fight
+                *if brutality>60
+                    You crush them mercilessly.  You are earning your reputation as a wyrm of legend!  Those filthy humans are never heard from again.
+                    
+                    Infamy increases.
+                    *set infamy %+ 15
+                    *achieve villain
+                   
+                    Unfortunately, you failed to notice that their rogue slipped into your treasure trove while you were afield.  He manages to steal a few trinkets before you return to your lair.  At least he was in a hurry, so he missed most of the really valuable stuff.
+                    *set wealth -500
+                    *finish
+                *else
+                    *label losefight
+                    Alas, these adventurers are tougher than they look.  As the wizard ensorcels you, the paladin's longsword cuts deeply into your torso. Even the priest lands a flurry of painful blows.
+                   
+                    You narrowly escape with your life.  They steal as much of your treasure as they can carry, and the bard's songs damage your reputation throughout the kingdom.  Moreover, you can never react quite as quickly as you could before the wizard's spell muddled your thoughts.
+
+                    The worst part is that they trigger revolts against you throughout your kingdom.  It takes you years to reassert control.  Even then, several of the more distant provinces never really recognize your rule again.
+                    
+                    Infamy decreases greatly.
+                    *set wounds +1
+                    *set infamy %- 30
+                    *set wealth -2000
+                    *finish
+            #No, I'm luring them into a trap.
+                You hit and fade, gradually drawing them onto a rickety bridge across a deep chasm.
+                *set cunning %+ 20
+                *set brutality %- 10
+                *label trap
+                *if brutality < 40
+                    You smash the bridge to particles, sending the adventurers hurtling to their doom.
+                    *set infamy %+ 10
+                    *achieve villain
+                   
+                    Well, most of them, anyway.  Unfortunately, you failed to notice that their rogue slipped into your treasure trove while you were afield. He manages to steal a few trinkets before you return to your lair.  At least he was in a hurry, so he missed most of the really valuable stuff.
+                    
+                    Infamy increases slightly.
+                    *set wealth -500
+                    *finish
+                *else
+                    Unfortunately, the heroes see through your feeble trap. Avoiding the bridge, the wizard casts a spell on his party, and they fly up to meet you in deadly combat.
+                   
+                    Alas, these adventurers are tougher than they look.  You narrowly escape with your life.  They steal as much of your treasure as they can carry, and the bard's songs damage your reputation throughout the kingdom.  Moreover, you can never react quite as quickly as you could before the wizard's spell muddled your thoughts.
+
+                    The worst part is that they trigger revolts against you throughout your kingdom.  It takes you years to reassert control.  Even then, several of the more distant provinces never really recognize your rule again.
+                    
+                    Infamy decreases greatly.
+                    *set wounds +1
+                    *set infamy %- 30
+                    *set wealth -2000
+                    *finish
+    #Kidnap a princess to lure them out.
+        *label kidnap
+        Let's be honest.  Are you kidnapping a princess for tactical reasons, or are you kidnapping a princess just because you like kidnapping princesses?
+       
+        *choice
+            #It's not like that!  It's purely strategic!
+                If you say so.
+                *goto princess
+            #A little of column A, a little of column B.
+                I thought as much.
+                *goto princess
+            #Mmmm…princesses…
+                I thought as much.
+                *goto princess
+        *label princess
+       
+        Anyway, kidnapping princesses is your specialty. It helps that her bower is in the highest eyrie in the castle; it's trivially accessible by air.  You rip off the roof, snatch the princess, and fly away chortling.
+       
+        Bound securely in your domain, the princess offers you vast riches if you set her free.  Do you accept her offer?
+       
+        *choice
+            #Yes.
+                *set cunning %- 50
+                *set infamy %- 30
+                The princess runs off without paying.  Eventually, the heroes
+                just wander off.
+                *finish
+            #No.
+                That would undermine your plan, wouldn't it?
+                *goto heroes_arrive
+        *label heroes_arrive
+
+        Eventually, the heroes arrive.  Their leader, a brave paladin in shining white armor, challenges you to a duel.  She is flanked by a wizard of some sort, as well as a priest of the goddess of war and a bard.
+       
+        *choice
+            #Accept their challenge.
+                *goto challenge
+            #Kill them on the spot.
+                *goto fight
+            #Kill and eat the princess before their very eyes.
+                The party of heroes looks crestfallen as you swallow the princess in one gulp; they have failed in their quest.  They turn to beat a hasty retreat.
+               
+                Do you permit them to escape?
+               
+                *choice
+                    #Let them run.
+                        *set disdain %+ 20
+                        Good riddance.  (Burp.)
+                       
+                        They spread word of your might and dominion throughout the land.
+                        
+                        Disdain increases and Infamy increases greatly.
+                        *set infamy %+ 30
+                        *achieve villain
+                        *finish
+                    #Kill them all.
+                        *set brutality %+ 15
+                        The party is disorganized and morale is low; you make short work of them and take their belongings as loot.  They are never heard from again.
+                        
+                        Infamy increases.
+                        *set wealth +500
+                        *set infamy %+ 15
+                        *achieve villain
+                        *finish
+                    #Kill all of them but one.
+                        *set cunning %+ 10
+                        The party is disorganized and morale is low; you make short work of them and take their belongings as loot, but you wisely leave the bard alive.
+                       
+                        She spreads word of your might and dominion throughout the land.
+                        
+                        Cunning increases; Infamy increases considerably.
+                        *set wealth +400
+                        *set infamy %+ 40
+                        *achieve villain
+                        *finish
+    #Scare them off.
+        *label scare
+        At midnight, you strafe the village with your breath weapon.  The commonfolk panic in the streets; the nobles tremble in the comfort of their warm beds.
+       
+        *if infamy > 70
+            The "heroes" flee with their lives, saving you a lot of trouble.
+            *achieve villain
+            *finish
+        *else
+            Unfortunately, instead of scaring off the adventurers, your antics strengthen their heroic resolve.
+           
+            The heroes emerge from the local traveler's inn.  Their leader, a brave paladin in shining white armor, challenges you to a duel.  She is flanked by a wizard of some sort, as well as a priest of the goddess of war and a bard.
+           
+            Will you accept the challenge?
+           
+            *choice
+                #Yes.
+                    *goto fight
+                #No, lure them into a trap.
+                    *goto trap
+    #Ignore them.
+        *set disdain %+ 30
+        *if infamy < 30
+            Most of the people think you're not too bad, as powerful dragons who have seized control of a kingdom go.  Many other monsters pose a bigger target for would-be heroes.  The adventurers wander off on an adventure to far-off lands, saving you a lot of trouble.
+            *finish
+        *else
+            Unfortunately, your reputation precedes you.  The heroes have come to take your head as a trophy, and now you have let them set the terms of the battle.
+           
+            Eventually, the heroes arrive.  Their leader, a brave paladin in shining white armor, challenges you to a duel.  She is flanked by a wizard of some sort, as well as a priest of the goddess of war and a bard.
+           
+            Will you accept the challenge?
+
+            *choice
+                #Yes.
+                    *goto fight
+                #No, lure them into a trap.
+                    *set cunning %- 25
+                    *set brutality %- 25
+                    You weren't prepared to lure them into a trap!  You tried to ignore them, remember?
+                   
+                    *goto losefight
+

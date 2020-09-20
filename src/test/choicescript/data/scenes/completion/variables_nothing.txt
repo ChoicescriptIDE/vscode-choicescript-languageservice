@@ -1,0 +1,4 @@
+*temp thisname ""
+*temp thatnum 0
+*temp novar ""
+*set my
