@@ -1,4 +1,4 @@
-name: test
+name: test and publish
 
 on:
   push:
@@ -25,3 +25,9 @@ jobs:
         run: |
           npm install .
           npm run prepublishOnly
+      - name: Publish
+        run: |
+          git checkout lib
+          git config --global user.name 'CSIDE-Shell'
+          git config --global user.email '32689095+CSIDE-Shell@users.noreply.github.com'
+          git add lib && git commit -m "Automatic build triggered by $GITHUB_SHA" && git push origin lib
