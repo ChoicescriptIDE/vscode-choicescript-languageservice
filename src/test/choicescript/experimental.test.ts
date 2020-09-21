@@ -123,6 +123,10 @@ suite('ChoiceScript — Experimental', () => {
 	});
 
 	test('#3 local label definitions', async function () {
+		/* tslint:disable */
+		this.skip();
+		/* tslint:enable */
+		/*
 		try {
 			let not_startup = TextDocument.create('test://test/not_startup.txt', 'choicescript', 0,
 				readFileSync("./src/test/choicescript/data/scenes/navigation/local_label_defs.txt").toString());
@@ -140,7 +144,7 @@ suite('ChoiceScript — Experimental', () => {
 			if (e && e.message) {
 				assert.fail(e.message);
 			}
-		}
+		}*/
 	});
 
 	test('#3 goto_scene scene reference', async function () {
