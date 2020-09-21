@@ -87,13 +87,13 @@ suite('CSS - Nodes', () => {
 
 		p1.adoptChild(child);
 		assert.ok(child.parent === p1);
-		assert.equal(p1.getChildren().length, 1);
+		assert.equal(p1!.getChildren().length, 1);
 		assert.equal(p2.getChildren().length, 0);
 
 		p2.adoptChild(child);
 		assert.ok(child.parent === p2);
-		assert.equal(p1.getChildren().length, 0);
-		assert.equal(p2.getChildren().length, 1);
+		assert.equal(p1!.getChildren().length, 0);
+		assert.equal(p2!.getChildren().length, 1);
 	});
 
 	function ruleset(input: string): nodes.RuleSet {
