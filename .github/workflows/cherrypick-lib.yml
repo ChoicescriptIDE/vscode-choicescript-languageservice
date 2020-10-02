@@ -1,0 +1,26 @@
+name: cherrypick-lib
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  cherrypick:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Cherrypick to lib
+        env:
+          token: ${{ secrets.TRIGGER_WORKFLOW }}
+        run: |
+          git config --global user.name 'CSIDE-Shell'
+          git config --global user.email '32689095+CSIDE-Shell@users.noreply.github.com'
+          git remote set-url origin https://CSIDE-Shell@github.com/ChoicescriptIDE/vscode-choicescript-languageservice.git
+
+          git checkout lib --
+          git cherry-pick $GITHUB_SHA
+          git push https://CSIDE-Shell:$token@github.com/ChoicescriptIDE/vscode-choicescript-languageservice.git lib
