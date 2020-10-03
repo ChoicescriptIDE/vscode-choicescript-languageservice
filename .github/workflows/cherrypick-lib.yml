@@ -19,8 +19,7 @@ jobs:
         run: |
           git config --global user.name 'CSIDE-Shell'
           git config --global user.email '32689095+CSIDE-Shell@users.noreply.github.com'
-          git remote set-url origin https://CSIDE-Shell@github.com/ChoicescriptIDE/vscode-choicescript-languageservice.git
 
           git checkout lib --
           git cherry-pick $GITHUB_SHA
-          git push https://CSIDE-Shell:$token@github.com/ChoicescriptIDE/vscode-choicescript-languageservice.git lib
+          git push https://CSIDE-Shell:$token@github.com/${{ github.repository }}.git lib
