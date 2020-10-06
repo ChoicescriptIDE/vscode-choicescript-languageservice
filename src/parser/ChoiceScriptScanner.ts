@@ -5,7 +5,6 @@
 'use strict';
 
 import { Line } from "./ChoiceScriptNodes";
-import { turquoise } from "color-name";
 
 export enum LineType {
 	CommentLine,
