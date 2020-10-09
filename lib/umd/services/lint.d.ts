@@ -1,0 +1,36 @@
+import { LintConfigurationSettings } from './lintRules';
+import * as nodes from '../parser/cssNodes';
+import { TextDocument } from '../cssLanguageTypes';
+import { CSSDataManager } from '../languageFacts/dataManager';
+export declare class LintVisitor implements nodes.IVisitor {
+    private cssDataManager;
+    static entries(node: nodes.Node, document: TextDocument, settings: LintConfigurationSettings, cssDataManager: CSSDataManager, entryFilter?: number): nodes.IMarker[];
+    static prefixes: string[];
+    private warnings;
+    private settings;
+    private keyframes;
+    private documentText;
+    private validProperties;
+    private constructor();
+    private isValidPropertyDeclaration;
+    private fetch;
+    private fetchWithValue;
+    private findValueInExpression;
+    getEntries(filter?: number): nodes.IMarker[];
+    private addEntry;
+    private getMissingNames;
+    visitNode(node: nodes.Node): boolean;
+    private completeValidations;
+    private visitUnknownAtRule;
+    private visitKeyframe;
+    private validateKeyframes;
+    private visitSimpleSelector;
+    private visitImport;
+    private visitRuleSet;
+    private visitPrio;
+    private visitNumericValue;
+    private visitFontFace;
+    private isCSSDeclaration;
+    private visitHexColorValue;
+    private visitFunction;
+}
