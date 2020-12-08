@@ -65,5 +65,6 @@ export declare class CSSCompletion {
     getCompletionsForExtendsReference(extendsRef: nodes.ExtendsReference, existingNode: nodes.Node | null, result: CompletionList): CompletionList;
     getCompletionForUriLiteralValue(uriLiteralNode: nodes.Node, result: CompletionList): CompletionList;
     getCompletionForImportPath(importPathNode: nodes.Node, result: CompletionList): CompletionList;
+    private hasCharacterAtPosition;
     private doesSupportMarkdown;
 }

@@ -17,6 +17,7 @@ export declare class Parser {
     peekKeyword(text: string): boolean;
     peekDelim(text: string): boolean;
     peek(type: TokenType): boolean;
+    peekOne(types: TokenType[]): boolean;
     peekRegExp(type: TokenType, regEx: RegExp): boolean;
     hasWhitespace(): boolean;
     consumeToken(): void;
@@ -57,8 +58,8 @@ export declare class Parser {
     _parseDeclarations(parseDeclaration: () => nodes.Node | null): nodes.Declarations | null;
     _parseBody<T extends nodes.BodyDeclaration>(node: T, parseDeclaration: () => nodes.Node | null): T;
     _parseSelector(isNested: boolean): nodes.Selector | null;
-    _parseDeclaration(resyncStopTokens?: TokenType[]): nodes.Declaration | null;
-    _tryParseCustomPropertyDeclaration(): nodes.Node | null;
+    _parseDeclaration(stopTokens?: TokenType[]): nodes.Declaration | null;
+    _tryParseCustomPropertyDeclaration(stopTokens?: TokenType[]): nodes.CustomPropertyDeclaration | null;
     /**
      * Parse custom property values.
      *
@@ -70,8 +71,8 @@ export declare class Parser {
      * terminators like semicolons and !important directives (when not inside
      * of delimitors).
      */
-    _parseCustomPropertyValue(): nodes.Node;
-    _tryToParseDeclaration(): nodes.Declaration | null;
+    _parseCustomPropertyValue(stopTokens?: TokenType[]): nodes.Node;
+    _tryToParseDeclaration(stopTokens?: TokenType[]): nodes.Declaration | null;
     _parseProperty(): nodes.Property | null;
     _parsePropertyIdentifier(): nodes.Identifier | null;
     _parseCharset(): nodes.Node | null;

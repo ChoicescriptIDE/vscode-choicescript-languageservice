@@ -199,19 +199,6 @@ export declare abstract class AbstractDeclaration extends Node {
     semicolonPosition: number | undefined;
     constructor(offset: number, length: number);
 }
-export declare class CustomPropertyDeclaration extends AbstractDeclaration {
-    property?: Property;
-    value?: Expression;
-    propertySet?: CustomPropertySet;
-    constructor(offset: number, length: number);
-    get type(): NodeType;
-    setProperty(node: Property | null): node is Property;
-    getProperty(): Property | undefined;
-    setValue(value: Expression | null): value is Expression;
-    getValue(): Expression | undefined;
-    setPropertySet(value: CustomPropertySet | null): value is CustomPropertySet;
-    getPropertySet(): CustomPropertySet | undefined;
-}
 export declare class CustomPropertySet extends BodyDeclaration {
     constructor(offset: number, length: number);
     get type(): NodeType;
@@ -230,6 +217,13 @@ export declare class Declaration extends AbstractDeclaration {
     getValue(): Expression | undefined;
     setNestedProperties(value: NestedProperties | null): value is NestedProperties;
     getNestedProperties(): NestedProperties | undefined;
+}
+export declare class CustomPropertyDeclaration extends Declaration {
+    propertySet?: CustomPropertySet;
+    constructor(offset: number, length: number);
+    get type(): NodeType;
+    setPropertySet(value: CustomPropertySet | null): value is CustomPropertySet;
+    getPropertySet(): CustomPropertySet | undefined;
 }
 export declare class Property extends Node {
     identifier?: Identifier;

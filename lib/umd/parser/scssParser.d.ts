@@ -17,7 +17,7 @@ export declare class SCSSParser extends cssParser.Parser {
     _parseOperator(): nodes.Node | null;
     _parseUnaryOperator(): nodes.Node | null;
     _parseRuleSetDeclaration(): nodes.Node | null;
-    _parseDeclaration(resyncStopTokens?: TokenType[]): nodes.Declaration | null;
+    _parseDeclaration(stopTokens?: TokenType[]): nodes.Declaration | null;
     _parseNestedProperties(): nodes.NestedProperties;
     _parseExtends(): nodes.Node | null;
     _parseSimpleSelectorBody(): nodes.Node | null;
