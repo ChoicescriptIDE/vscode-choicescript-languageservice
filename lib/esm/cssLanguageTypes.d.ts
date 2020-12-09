@@ -38,6 +38,10 @@ export interface ChoiceScriptLanguageSettings {
     lint?: LintSettings;
     spellcheck: SpellCheckSettings;
 }
+export interface HoverSettings {
+    documentation?: boolean;
+    references?: boolean;
+}
 export interface PropertyCompletionContext {
     propertyName: string;
     range: Range;

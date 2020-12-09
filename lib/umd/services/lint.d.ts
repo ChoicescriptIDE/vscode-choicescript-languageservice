@@ -1,7 +1,7 @@
-import { LintConfigurationSettings } from './lintRules';
-import * as nodes from '../parser/cssNodes';
 import { TextDocument } from '../cssLanguageTypes';
 import { CSSDataManager } from '../languageFacts/dataManager';
+import * as nodes from '../parser/cssNodes';
+import { LintConfigurationSettings } from './lintRules';
 export declare class LintVisitor implements nodes.IVisitor {
     private cssDataManager;
     static entries(node: nodes.Node, document: TextDocument, settings: LintConfigurationSettings, cssDataManager: CSSDataManager, entryFilter?: number): nodes.IMarker[];
@@ -25,6 +25,7 @@ export declare class LintVisitor implements nodes.IVisitor {
     private visitKeyframe;
     private validateKeyframes;
     private visitSimpleSelector;
+    private visitIdentifierSelector;
     private visitImport;
     private visitRuleSet;
     private visitPrio;

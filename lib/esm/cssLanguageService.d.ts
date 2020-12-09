@@ -1,5 +1,5 @@
 import { ChoiceScriptProjectIndex } from './parser/ChoiceScriptIndexer';
-import { LanguageSettings, ICompletionParticipant, DocumentContext, LanguageServiceOptions, Diagnostic, Position, CompletionList, Hover, Location, DocumentHighlight, DocumentLink, SymbolInformation, Range, CodeActionContext, Command, CodeAction, ColorInformation, Color, ColorPresentation, WorkspaceEdit, FoldingRange, SelectionRange, TextDocument, ICSSDataProvider, CSSDataV1, ChoiceScriptLanguageSettings, DocumentUri } from './cssLanguageTypes';
+import { LanguageSettings, ICompletionParticipant, DocumentContext, LanguageServiceOptions, Diagnostic, Position, CompletionList, Hover, Location, DocumentHighlight, DocumentLink, SymbolInformation, Range, CodeActionContext, Command, CodeAction, ColorInformation, Color, ColorPresentation, WorkspaceEdit, FoldingRange, SelectionRange, TextDocument, ICSSDataProvider, CSSDataV1, ChoiceScriptLanguageSettings, DocumentUri, HoverSettings } from './cssLanguageTypes';
 import { Scene } from './parser/ChoiceScriptNodes';
 export declare type Stylesheet = {};
 export * from './cssLanguageTypes';
@@ -11,7 +11,7 @@ export interface LanguageService {
     doComplete(document: TextDocument, position: Position, stylesheet: Stylesheet): CompletionList;
     doComplete2(document: TextDocument, position: Position, stylesheet: Stylesheet, documentContext: DocumentContext): Promise<CompletionList>;
     setCompletionParticipants(registeredCompletionParticipants: ICompletionParticipant[]): void;
-    doHover(document: TextDocument, position: Position, stylesheet: Stylesheet): Hover | null;
+    doHover(document: TextDocument, position: Position, stylesheet: Stylesheet, settings?: HoverSettings): Hover | null;
     findDefinition(document: TextDocument, position: Position, stylesheet: Stylesheet): Location | null;
     findReferences(document: TextDocument, position: Position, stylesheet: Stylesheet): Location[];
     findDocumentHighlights(document: TextDocument, position: Position, stylesheet: Stylesheet): DocumentHighlight[];

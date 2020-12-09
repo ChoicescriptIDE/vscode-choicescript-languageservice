@@ -360,9 +360,13 @@ export declare class ModuleConfiguration extends Node {
 }
 export declare class Forward extends Node {
     identifier?: Node;
+    members?: Nodelist;
+    parameters?: Nodelist;
     get type(): NodeType;
     setIdentifier(node: Node | null): node is Node;
     getIdentifier(): Node | undefined;
+    getMembers(): Nodelist;
+    getParameters(): Nodelist;
 }
 export declare class ForwardVisibility extends Node {
     identifier?: Node;

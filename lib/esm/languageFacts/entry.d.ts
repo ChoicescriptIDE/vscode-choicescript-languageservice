@@ -1,4 +1,4 @@
-import { EntryStatus, IPropertyData, IAtDirectiveData, IPseudoClassData, IPseudoElementData, IValueData, MarkupContent, MarkedString } from '../cssLanguageTypes';
+import { EntryStatus, IPropertyData, IAtDirectiveData, IPseudoClassData, IPseudoElementData, IValueData, MarkupContent, MarkedString, HoverSettings } from '../cssLanguageTypes';
 export interface Browsers {
     E?: string;
     FF?: string;
@@ -18,7 +18,7 @@ export declare const browserNames: {
     IE: string;
     O: string;
 };
-export declare function getEntryDescription(entry: IEntry2, doesSupportMarkdown: boolean): MarkupContent | undefined;
+export declare function getEntryDescription(entry: IEntry2, doesSupportMarkdown: boolean, settings?: HoverSettings): MarkupContent | undefined;
 export declare function textToMarkedString(text: string): MarkedString;
 /**
  * Input is like `["E12","FF49","C47","IE","O"]`
