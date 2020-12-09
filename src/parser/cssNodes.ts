@@ -1058,6 +1058,8 @@ export class ModuleConfiguration extends Node {
 export class Forward extends Node {
 
 	public identifier?: Node;
+	public members?: Nodelist;
+	public parameters?: Nodelist;
 
 	public get type(): NodeType {
 		return NodeType.Forward;
@@ -1069,6 +1071,20 @@ export class Forward extends Node {
 
 	public getIdentifier(): Node | undefined {
 		return this.identifier;
+	}
+
+	public getMembers(): Nodelist {
+		if (!this.members) {
+			this.members = new Nodelist(this);
+		}
+		return this.members;
+	}
+
+	public getParameters(): Nodelist {
+		if (!this.parameters) {
+			this.parameters = new Nodelist(this);
+		}
+		return this.parameters;
 	}
 
 }
@@ -1482,6 +1498,7 @@ export class ExtendsReference extends Node {
 		}
 		return this.selectors;
 	}
+
 }
 
 export class MixinContentReference extends Node {

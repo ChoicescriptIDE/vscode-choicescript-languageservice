@@ -840,6 +840,12 @@ export class SCSSParser extends cssParser.Parser {
 			return this.finish(node, ParseError.VariableValueExpected, [], [TokenType.Comma, TokenType.ParenthesisR]);
 		}
 
+		if (this.accept(TokenType.Exclamation)) {
+			if (this.hasWhitespace() || !this.acceptIdent('default')) {
+				return this.finish(node, ParseError.UnknownKeyword);
+			}
+		}
+
 		return this.finish(node);
 	}
 
@@ -853,6 +859,31 @@ export class SCSSParser extends cssParser.Parser {
 
 		if (!node.addChild(this._parseStringLiteral())) {
 			return this.finish(node, ParseError.StringLiteralExpected);
+		}
+
+		if (this.acceptIdent('with')) {
+			if (!this.accept(TokenType.ParenthesisL)) {
+				return this.finish(node, ParseError.LeftParenthesisExpected, [TokenType.ParenthesisR]);
+			}
+
+			// First variable statement, no comma.
+			if (!node.getParameters().addChild(this._parseModuleConfigDeclaration())) {
+				return this.finish(node, ParseError.VariableNameExpected);
+			}
+
+			while (this.accept(TokenType.Comma)) {
+				if (this.peek(TokenType.ParenthesisR)) {
+					break;
+				}
+				if (!node.getParameters().addChild(this._parseModuleConfigDeclaration())) {
+					return this.finish(node, ParseError.VariableNameExpected);
+				}
+			}
+
+			if (!this.accept(TokenType.ParenthesisR)) {
+				return this.finish(node, ParseError.RightParenthesisExpected);
+			}
+
 		}
 
 		if (!this.peek(TokenType.SemiColon) && !this.peek(TokenType.EOF)) {
@@ -894,6 +925,7 @@ export class SCSSParser extends cssParser.Parser {
 
 		while (node.addChild(this._parseVariable() || this._parseIdent())) {
 			// Consume all variables and idents ahead.
+			this.accept(TokenType.Comma);
 		}
 
 		// More than just identifier 

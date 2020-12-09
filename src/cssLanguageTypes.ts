@@ -52,6 +52,11 @@ export interface ChoiceScriptLanguageSettings {
 	spellcheck: SpellCheckSettings;
 }
 
+export interface HoverSettings {
+	documentation?: boolean;
+	references?: boolean
+}
+
 export interface PropertyCompletionContext {
 	propertyName: string;
 	range: Range;
