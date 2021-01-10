@@ -1,0 +1,15 @@
+*if true
+	do a thing
+	*if false
+		don't do another thing
+	*else
+		why!
+*elsif (some_other_thing)
+	My super cool smoothie
+*elseif ((5+4) - other_number)
+	*if (nest)
+		Let's nest some more!
+	*else
+		Enough nesting...
+*else
+	don't a thing

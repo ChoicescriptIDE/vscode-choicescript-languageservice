@@ -9,7 +9,9 @@ import { ParseError, CSIssueType } from './ChoiceScriptErrors';
 import { TextDocument } from '../cssLanguageTypes';
 import { isDefined } from '../utils/objects';
 import { standardCommandList, flowCommandList, fullCommandList, allCommands } from '../data/commands';
-import { DocumentUri } from 'vscode-languageserver-types';
+import { DocumentUri, integer } from 'vscode-languageserver-types';
+import { EOL } from 'os';
+import { Nodelist } from './cssNodes';
 
 export interface IMark {
 	prev?: IToken;
@@ -34,6 +36,9 @@ export class ChoiceScriptParser {
 	public indentUnitSize: number = 2;
 	public indentLevel: number = 0;
 	public lineNum: number = 1;
+
+	//
+	public implicitControlFlow = true;
 
 	private lastErrorToken?: IToken;
 
@@ -277,7 +282,8 @@ export class ChoiceScriptParser {
 			}
 			if (line.getLineType() !== nodes.LineType.Comment) {
 				if (line.indent > indentLevel) {
-					this.markError(line.getIndentNode()!, ParseError.IndentationError);
+					// console.log("INDENT: " + line.indent + ", " + indentLevel);
+					// this.markError(line.getIndentNode()!, ParseError.IndentationError);
 				} else if (line.indent < indentLevel) {
 					this.indentLevel = line.indent;
 				}
@@ -675,14 +681,20 @@ export class ChoiceScriptParser {
 		return null;
 	}
 
-	public _parseChoiceScriptStatement(): nodes.Node {
+	public _parseChoiceScriptStatement(): nodes.Node | null {
+		// first let's save ourselves a lot of effort:
+		// if there's no asterisk, then it's definitely not a command
+		if (!this.peek(TokenType.Asterisk)) {
+			return null;
+		}
 		return this._parseChoiceScriptComment()
+		|| this._parseSceneList()
 		|| this._parseVariableDeclaration()
 		|| this._parseLabelDeclaration()
 		|| this._parseSetCommand()
-		|| this._parseChoiceCommand()
+		|| this._parseChoiceCommand() // _parseChoiceBlock
 		|| this._parseFlowCommand()
-		|| this._parseIfCommand()
+		|| this._parseIfBlock()
 		|| this._parseStandardCommand()
 		|| this._parseInvalidCommand();
 	}
@@ -696,18 +708,6 @@ export class ChoiceScriptParser {
 			this.consumeToken();
 		}
 		return this.finish(comment);
-	}
-
-	public _parseChoiceScriptCommand(): nodes.Node {
-		return this._parseChoiceScriptComment()
-			|| this._parseVariableDeclaration()
-			|| this._parseLabelDeclaration()
-			|| this._parseSetCommand()
-			|| this._parseChoiceCommand()
-			|| this._parseFlowCommand()
-			|| this._parseIfCommand()
-			|| this._parseStandardCommand()
-			|| this._parseInvalidCommand();
 	}
 
 	public _parseLabelDeclaration(): nodes.LabelDeclaration {
@@ -773,6 +773,32 @@ export class ChoiceScriptParser {
 		}
 
 		return <nodes.Variable>this.finish(node);
+	}
+
+	public _parseSceneList(): nodes.Node | null {
+		const node = this.create(nodes.Node);
+		if (!this.acceptOneKeyword(["scene_list"])) {
+			return null!;
+		}
+		if (!this.accept(TokenType.EOL)) {
+			return this.finish(node, ParseError.EmptySceneList);
+		}
+		let prevIndent = this.indentLevel;
+		let sceneLine = this._parseLine();
+		let newIndent = sceneLine.getIndentNode()?.indentDepth || 0;
+		if (newIndent <= prevIndent) {
+			return this.finish(node, ParseError.EmptySceneList);
+		}
+		let currentIndent = newIndent;
+		while (currentIndent === newIndent) {
+			node.addChild(sceneLine);
+			let line = this._parseLine();
+			currentIndent = line.getIndentNode()?.indentDepth!;
+		}
+		if (currentIndent > newIndent) {
+			return this.finish(node, ParseError.IndentationError);
+		}
+		return this.finish(node);
 	}
 
 	// FIXME: Labels only have to pass !labelName.test(/\s/)
@@ -852,19 +878,110 @@ export class ChoiceScriptParser {
 		return this.finish(node);
 	}
 
-	public _parseIfCommand(inline?: boolean): nodes.Node | null {
+	public _parseIfElsifOrElseCommand(command: string = "if"): nodes.Node | null {
 		const node = this.create(nodes.Command);
-		if (!this.acceptOneKeyword(["if", "selectable_if"])) {
+		if (!this.acceptOneKeyword([command])) {
 			return null!;
 		}
-		if (inline && !this.accept(TokenType.ParenthesisL)) {
-			// inline *ifs must be braced
-			return null;
-		}
-		if (!node.addChild(this._parseCSExpr(inline ? TokenType.ParenthesisR: undefined, undefined))) {
-			return this.finish(node, ParseError.ExpressionExpected);
+		switch(command) {
+			case "if":
+			case "elsif":
+			case "elseif":
+				if (!node.addChild(this._parseCSExpr())) {
+					return this.finish(node, ParseError.ExpressionExpected);
+				}
+				break;	
+			case "else":
+				break;
+			default:
+				return this.finish(node, ParseError.GenericSyntaxError);
 		}
 		return this.finish(node);
+	}
+
+	public _parseIfBlock(): nodes.Node | null {
+
+		let localIndent = this.indentLevel;
+
+		const ifblock = this.create(nodes.CodeBlock);
+	
+		// *if
+
+		let ifNode;
+		if (!(ifNode = this._parseIfElsifOrElseCommand())) {
+			return null!;
+		}
+		ifblock.addChild(ifNode);
+		if (!this.accept(TokenType.EOL)) {
+			return this.finish(ifblock, ParseError.IndentBlockExpected);
+		}
+		ifNode.addChild(this._parseBlock());
+
+		let loneIf = this.mark();
+
+		// *elsif?
+
+		let parser = this;
+		function parseEE(name: string) {
+			let mark = parser.mark();
+			let nextLine = parser.create(nodes.Line);
+			nextLine.addIndent(parser._parseIndentation());
+			let command = parser._parseIfElsifOrElseCommand(name);
+			if (command && !parser.accept(TokenType.EOL)) {
+				parser.markError(command, ParseError.IndentBlockExpected);
+			}
+			nextLine.addChild(command);
+			return command ? parser.finish(nextLine) : parser.restoreAtMark(mark);
+		}
+
+		let elsifNode;
+		while ((elsifNode = parseEE("elsif")) || (elsifNode = parseEE("elseif"))) {
+			ifblock.addChild(elsifNode);
+			if (!elsifNode.addChild(this._parseBlock())) {
+				this.markError(elsifNode, ParseError.IndentBlockExpected);
+			}
+		}
+	
+		// *else
+		let elseNode;
+		if (elseNode = parseEE("else")) {
+			ifblock.addChild(elseNode);
+			if (!elseNode.addChild(this._parseBlock())) {
+				this.markError(elseNode, ParseError.IndentBlockExpected);
+			}
+		}
+
+		return this.finish(ifblock);
+	}
+
+	// A 'block' of code/text under an if or choice
+	public _parseBlock(): nodes.CodeBlock | null {
+		let cb = this.create(nodes.CodeBlock);
+		let localIndent = ++this.indentLevel;
+		let mark, line;
+		while(true) {
+			mark = this.mark();
+			line = this._parseLine();
+			//console.log(line.indent, localIndent, this.scanner.substring(line.offset, line.length));
+			if (line.indent < localIndent) {
+				this.restoreAtMark(mark);
+				break;
+			} else if (line.indent > localIndent) {
+				this.markError(line, ParseError.IndentationError);
+				break;
+			}/* else if (this.peek(TokenType.EOF)) {
+				cb.addChild(line);
+				break;
+			}*/
+			//console.log(line.indent, line.getText());
+			cb.addChild(line);
+		}
+		this.indentLevel--;
+		if (cb.getChildren().length < 1) {
+			this.restoreAtMark(mark);
+			return null;
+		}
+		return cb;
 	}
 
 	public _parseReuseCommand(): nodes.Node {
@@ -911,11 +1028,11 @@ export class ChoiceScriptParser {
 		this.restoreAtMark(mark);*/
 
 		line.addChild(this._parseReuseCommand()); // optional
-		line.addChild(this._parseIfCommand(true /* inline */)); // inline / optional
+		//line.addChild(this._parseIfCommand(true /* inline */)); // inline / optional
 
 		if (!this.accept(TokenType.Hash)) {
 			this.restoreAtMark(indentMark);
-			if (!line.addChild(this._parseIfBlock(true /* choiceOption */))) {
+			if (!line.addChild(this._parseIfBlock( /* true, choiceOption */))) {
 				this.restoreAtMark(mark);
 				return null;
 			} else {
@@ -935,31 +1052,6 @@ export class ChoiceScriptParser {
 		this.indentLevel++;
 		//while(line.addChild(this._parseLine())) {}
 		return this.finish(line);
-	}
-
-
-
-	public _parseIfBlock(guardsChoiceOption?: boolean): nodes.Node | null {
-		const node = this.create(nodes.Node);
-		if (!this.acceptOneKeyword(["if"])) {
-			return null!;
-		}
-
-		if (!node.addChild(this._parseCSExpr(undefined, undefined))) {
-			return this.finish(node, ParseError.ExpressionExpected);
-		}
-
-		if (!this.accept(TokenType.EOL)) {
-			throw new Error("ParseError: Expected EOL after IF statement");
-		}
-
-		if (guardsChoiceOption) {
-			if (!node.addChild(this._parseChoiceOptionLine())) {
-				return this.finish(node, ParseError.ExpectedChoiceOption);
-			}
-		}
-
-		return this.finish(node);
 	}
 
 	public _parseChoiceOptionText(): nodes.ChoiceOption {
@@ -984,20 +1076,63 @@ export class ChoiceScriptParser {
 		return this.finish(option);
 	}
 
+	/*public _parseChoiceOptions(): nodes.Line[] | null {
+		let node = this.create(nodes.Node); // "Option Wrapper"
+		let currentIndent = this.indentLevel;
+		let options: nodes.Line[] = [];
+		let opt;
+		while (opt = this._parseChoiceOptionLine()) {
+			options.push(opt);
+		}
+		for (let opt of options) {
+			let indent = opt?.getIndentNode()?.indentDepth;
+			if (indent! <= currentIndent) {
+
+			}
+		}
+		let firstOptionLine = this._parseChoiceOptionLine();
+		let newIndent = firstOptionLine?.getIndentNode()?.indentDepth;
+
+		if (newIndent! <= currentIndent) {
+			this.markError(firstOptionLine!, ParseError.IndentationError);
+		}
+		this.indentLevel = currentIndent;
+		return null;
+	}*/
+
 	public _parseChoiceCommand(): nodes.ChoiceCommand | null {
 		const node = this.create(nodes.ChoiceCommand);
-		if (this.acceptOneKeyword(["choice"])) {
-			// TODO? complicated to support nested choices
+		let isFake = false;
+		if (this.acceptOneKeyword(["fake_choice"])) {
+			isFake = true;
+		}
+		if (isFake || this.acceptOneKeyword(["choice"])) {
 			while (!this.peek(TokenType.EOL) && !this.peek(TokenType.EOF)) { this.consumeToken(); }
 			this.accept(TokenType.EOL);
-			this.indentLevel++;
+			
 			while(node.addChild(this._parseChoiceOptionLine())) {}
 			if (node.hasChildren()) {
 				return this.finish(node);
 			} else {
 				return this.finish(node, ParseError.NoChoiceOption);
 			}
+			// TODO? complicated to support nested choices
+			//let options = this._parseChoiceOptions();
+			/*
+			while (!this.peek(TokenType.EOL) && !this.peek(TokenType.EOF)) { this.consumeToken(); }
+			this.accept(TokenType.EOL);
+			let prevIndent = this.indentLevel;
+			while(node.addChild(this._parseChoiceOptionLine())) {}
+			if (node.hasChildren()) {
+				return this.finish(node);
+			} else {
+				return this.finish(node, ParseError.NoChoiceOption);
+			}*/
 		}
+		return null;
+	}
+
+	public _parseChoiceBlock(): nodes.Node | null {
 		return null;
 	}
 
@@ -1050,30 +1185,6 @@ export class ChoiceScriptParser {
 		this.markError(node, ParseError.UnknownCommand);
 		this.consumeToken(); // assume the next token is the attempted command
 		return this.finish(node);
-	}
-
-	public _needsSemicolonAfter(node: nodes.Node): boolean {
-		switch (node.type) {
-			case nodes.NodeType.Keyframe:
-			case nodes.NodeType.ViewPort:
-			case nodes.NodeType.Media:
-			case nodes.NodeType.Namespace:
-			case nodes.NodeType.If:
-			case nodes.NodeType.For:
-			case nodes.NodeType.Each:
-			case nodes.NodeType.While:
-			case nodes.NodeType.FunctionDeclaration:
-			case nodes.NodeType.MixinContentDeclaration:
-				return false;
-			case nodes.NodeType.VariableDeclaration:
-			case nodes.NodeType.ReturnStatement:
-			case nodes.NodeType.MediaQuery:
-			case nodes.NodeType.Import:
-			case nodes.NodeType.AtApplyRule:
-			case nodes.NodeType.CustomPropertyDeclaration:
-				return true;
-		}
-		return false;
 	}
 
 	public _parseNumericalOperator(): nodes.Operator {
@@ -1253,5 +1364,13 @@ export class ChoiceScriptParser {
 
 		}
 		return null;
+	}
+
+	private __decreaseIndent(levels: integer) {
+		this.indentLevel -= (this.indentUnitSize * levels);
+	}
+
+	private __increaseIndent(levels: integer) {
+		this.indentLevel += (this.indentUnitSize * levels);
 	}
 }

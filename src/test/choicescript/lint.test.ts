@@ -46,7 +46,7 @@ function assertChoiceScriptCommand(input: string, ...rules: Rule[]): void {
 function assertChoiceScriptCommand2(input: string, rules: Rule[], messages?: string[], settings?: LintConfigurationSettings): void {
 	for (const p of parsers) {
 		const document = TextDocument.create('test://test/startup.txt', 'choicescript', 0, input);
-		const node = p.internalParse(input, p._parseChoiceScriptCommand)!;
+		const node = p.internalParse(input, p._parseChoiceScriptStatement)!;
 		assertEntries(node, document, rules, messages, settings);
 	}
 }
@@ -61,7 +61,7 @@ suite('ChoiceScript - Lint', () => {
 
 	test('Deprecated operators', function () {
 		assertChoiceScriptCommand('*set mynum mynum % 2', Rules.DeprecatedOperatorPercent);
-		assertChoiceScriptCommand('*set mynum -% 2');
+		assertChoiceScriptCommand('*set mynum -% 2'); // percent followed by a - or + is valid
 		assertChoiceScriptCommand('*script doSomeJavaScript();', Rules.ScriptCommandUnsupported);
 	});
 

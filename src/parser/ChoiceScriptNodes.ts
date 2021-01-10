@@ -694,6 +694,12 @@ export class ChoiceCommand extends StandardCommand {
 	}
 }
 
+export class IfElseCommand extends StandardCommand {
+	private condition: Expression | null = null; // null for *else
+	private next: IfElseCommand | null = null;
+	private prev: IfElseCommand | null = null;
+}
+
 export class ChoiceOption extends Node {
 
 	constructor(offset: number, length: number) {
@@ -769,6 +775,11 @@ export class Line extends Node {
 		return this.indentDepth;
 	}
 
+}
+
+/* Indented 'blocks' under *if/*else statements or choice #options */
+export class CodeBlock extends Node {
+	public options: [] = [];
 }
 
 export class TextLine extends Line {
