@@ -1,0 +1,8 @@
+*if true
+	do a thing
+	*if false
+		don't do another thing
+	*else
+		why!
+*else
+	don't a thing

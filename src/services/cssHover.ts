@@ -15,16 +15,21 @@ import { CSSDataManager } from '../languageFacts/dataManager';
 export class CSSHover {
 	private supportsMarkdown: boolean | undefined;
 	private readonly selectorPrinting: SelectorPrinting;
+	private defaultSettings?: HoverSettings;
 
 	constructor(private readonly clientCapabilities: ClientCapabilities | undefined, private readonly cssDataManager: CSSDataManager) {
 		this.selectorPrinting = new SelectorPrinting(cssDataManager);
 	}
 
-	public doHover(document: TextDocument, position: Position, stylesheet: nodes.Stylesheet, settings?: HoverSettings): Hover | null {
+	public configure(settings: HoverSettings | undefined) {
+		this.defaultSettings = settings;
+	}
+
+
+	public doHover(document: TextDocument, position: Position, stylesheet: nodes.Stylesheet, settings = this.defaultSettings): Hover | null {
 		function getRange(node: nodes.Node) {
 			return Range.create(document.positionAt(node.offset), document.positionAt(node.end));
 		}
-
 		const offset = document.offsetAt(position);
 		const nodepath = nodes.getNodePath(stylesheet, offset);
 

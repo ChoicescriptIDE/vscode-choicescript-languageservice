@@ -5,12 +5,20 @@
 'use strict';
 
 import * as assert from 'assert';
+import { readFileSync, readdirSync, fstat } from 'fs';
+import { basename } from 'path';
 import { ChoiceScriptParser } from '../../parser/ChoiceScriptParser';
 import { TokenType } from '../../parser/ChoiceScriptScanner';
 import * as nodes from '../../parser/ChoiceScriptNodes';
 import { ParseError } from '../../parser/ChoiceScriptErrors';
 import * as commands from '../../data/commands';
 import { Rule } from '../../services/textRules';
+import { Scene, ParseErrorCollector, IRule, Level, Node, IMarker } from '../../parser/ChoiceScriptNodes';
+import {
+	TextDocument
+} from '../../cssLanguageService';
+import { Range } from 'vscode-languageserver-types';
+import { fork } from 'child_process';
 
 export function assertNode(text: string, parser: ChoiceScriptParser, f: (...args: any[]) => nodes.Node | null): nodes.Node {
 	let node = parser.internalParse(text, f)!;
@@ -130,17 +138,17 @@ suite('ChoiceScript - Parser', () => {
 		let parser = new ChoiceScriptParser();
 
 		// A few valid examples:
-		assertNode('*set my_var 5', parser, parser._parseChoiceScriptCommand.bind(parser));
-		assertNode('*goto mylabel', parser, parser._parseChoiceScriptCommand.bind(parser));
-		assertNode('*gosub myroutine', parser, parser._parseChoiceScriptCommand.bind(parser));
-		assertNode('*rand', parser, parser._parseChoiceScriptCommand.bind(parser));
+		assertNode('*set my_var 5', parser, parser._parseChoiceScriptStatement.bind(parser));
+		assertNode('*goto mylabel', parser, parser._parseChoiceScriptStatement.bind(parser));
+		assertNode('*gosub myroutine', parser, parser._parseChoiceScriptStatement.bind(parser));
+		assertNode('*rand', parser, parser._parseChoiceScriptStatement.bind(parser));
 
 		// And invalid:
-		assertError('*sets', parser, parser._parseChoiceScriptCommand.bind(parser), ParseError.UnknownCommand);
-		assertError('*win', parser, parser._parseChoiceScriptCommand.bind(parser), ParseError.UnknownCommand);
-		assertError('*do_nothing', parser, parser._parseChoiceScriptCommand.bind(parser), ParseError.UnknownCommand);
-		assertError('*create_array', parser, parser._parseChoiceScriptCommand.bind(parser), ParseError.UnknownCommand);
-		assertError('*_command', parser, parser._parseChoiceScriptCommand.bind(parser), ParseError.UnknownCommand);
+		assertError('*sets', parser, parser._parseChoiceScriptStatement.bind(parser), ParseError.UnknownCommand);
+		assertError('*win', parser, parser._parseChoiceScriptStatement.bind(parser), ParseError.UnknownCommand);
+		assertError('*do_nothing', parser, parser._parseChoiceScriptStatement.bind(parser), ParseError.UnknownCommand);
+		assertError('*create_array', parser, parser._parseChoiceScriptStatement.bind(parser), ParseError.UnknownCommand);
+		assertError('*_command', parser, parser._parseChoiceScriptStatement.bind(parser), ParseError.UnknownCommand);
 
 		// Asterisks followed by non-letters should be text lines rather than unknown commands
 		assertNoNode('*-', parser, parser._parseChoiceScriptStatement.bind(parser));
@@ -168,6 +176,18 @@ suite('ChoiceScript - Parser', () => {
 		/* tslint:disable */
 		this.skip();
 		/* tslint:enable */
+		let parser = new ChoiceScriptParser("auto");
+		assertNode('*if true\n  Do something\n  *else\n  Don\'t do something', parser, parser._parseIfBlock.bind(parser));
+		assertNode('*if true\n  Do something', parser, parser._parseIfBlock.bind(parser));
+	});
+
+	test('Choice Options', function() {
+		/* tslint:disable */
+		this.skip();
+		/* tslint:enable */
+		let parser = new ChoiceScriptParser("auto");
+		assertNode('*fake_choice\n  #option_space\n  #option_space2\n', parser, parser._parseChoiceCommand.bind(parser));
+
 		/*
 		let parser = new ChoiceScriptParser("auto");
 		assertNode('*choice\n  #option_space', parser, parser._parseChoiceCommand.bind(parser));
@@ -320,17 +340,26 @@ suite('ChoiceScript - Parser', () => {
 		assert(node.csType === nodes.ChoiceScriptType.Number, `Got: ${node.csType}, but expected: ${nodes.ChoiceScriptType.Number}`);
 	});
 
+	test('scene_list', function() {
+		let parser = new ChoiceScriptParser();
+		assertNode("*scene_list\n\tscene1\n\tscene2", parser, parser._parseSceneList);
+		assertError("*scene_list", parser, parser._parseSceneList, ParseError.EmptySceneList);
+		assertError("*scene_list\n\tscene1\n\t\tscene2", parser, parser._parseSceneList, ParseError.IndentationError);
+	});
+
 	test('Indentation', function() {
-		/* tslint:disable */
-		this.skip();
-		/* tslint:enable */
-		/*let parser = new ChoiceScriptParser();
+		let parser = new ChoiceScriptParser();
 		assertNode("		", parser, parser._parseIndentation);
 		assertNode("   ", parser, parser._parseIndentation);
 		assertError("  	", parser, parser._parseIndentation, ParseError.MixedIndentation);
 		assertError("	 	 ", parser, parser._parseIndentation, ParseError.MixedIndentation);
-
-		assertError("*choice\n#Option 1", parser, parser._parseLine, ParseError.IndentationError);*/
+/*
+		const filePath = "./src/test/choicescript/data/scenes/parser/indentation/startup.txt";
+		let textDoc: TextDocument = TextDocument.create(filePath, 'choicescript', 0, readFileSync(filePath).toString());
+		let node = parser.internalParse(readFileSync(filePath).toString(), parser._parseScene.bind(parser, textDoc));
+		let markers = ParseErrorCollector.entries(node!); 
+		assert(markers.length === 0, `issues:\n\t${markers.map((m)=>m.getMessage() + textDoc.getText({ start: textDoc.positionAt(m.getOffset()), end: textDoc.positionAt(m.getOffset() + m.getLength())}) + "\n" + "Line " + textDoc.positionAt(m.getOffset()).line).join("\n\t")}\n`);
+	*/
 	});
 
 	test('DELETE ME', function() {
@@ -339,6 +368,33 @@ suite('ChoiceScript - Parser', () => {
 	});
 
 });
+
+suite('Parser - Blocks', () => {
+
+	// Positive
+	let parser = new ChoiceScriptParser();
+	const testDir = "./src/test/choicescript/data/scenes/parser/ifblocks/";
+	let testFiles = readdirSync("./src/test/choicescript/data/scenes/parser/ifblocks");
+	testFiles.filter((name) => !/\_fail\.txt/.test(name)).forEach(function(fileName) {
+		console.log("pos", fileName);
+		test(basename(fileName), function() {
+			let filePath = testDir + fileName;
+			let textDoc: TextDocument = TextDocument.create(filePath, 'choicescript', 0, readFileSync(filePath).toString());
+			assertNode(textDoc.getText(), parser, parser._parseIfBlock);	
+		});
+	});
+
+	// Negative
+	testFiles.filter((name) => /\_fail\.txt$/.test(name)).forEach(function(fileName) {
+		console.log("neg", fileName);
+		test(basename(fileName), function() {
+			let filePath = testDir + fileName;
+			let textDoc: TextDocument = TextDocument.create(filePath, 'choicescript', 0, readFileSync(filePath).toString());
+			assertError(textDoc.getText(), parser, parser._parseIfBlock, ParseError.IndentBlockExpected);	
+		});
+	});
+
+})
 
 /* More improvements:
 *if trained_survival ""

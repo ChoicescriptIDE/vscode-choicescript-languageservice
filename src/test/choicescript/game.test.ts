@@ -51,12 +51,8 @@ suite('ChoiceScript — Full Games', () => {
 
 	for (let g of games) {
 		test(g, async function () {
-			/* tslint:disable */
-			this.skip();
-			/* tslint:enable */
-			/* need to comment out or TS complains
 			const gamePath = `./src/test/choicescript/data/scenes/game/${g}/`;
-			let scenePaths = readdirSync(gamePath).map((path)=>gamePath+path);
+			let scenePaths = readdirSync(gamePath).map((path)=>gamePath+path).filter((filename) => /\.txt/.test(filename));
 			let textDocs: TextDocument[] = [];
 			let totalIssues = 0;
 			for (let sp of scenePaths) {
@@ -79,7 +75,7 @@ suite('ChoiceScript — Full Games', () => {
 			ChoiceScriptIndexer.index.purge(textDocs[0].uri);
 			if (totalIssues > 0) {
 				assert.fail(`${totalIssues} issues detected in game '${g}'.`);
-			}*/
+			}
 		});
 	}
 });
