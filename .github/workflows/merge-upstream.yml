@@ -20,5 +20,5 @@ jobs:
           git remote add upstream https://github.com/Microsoft/vscode-css-languageservice
           git fetch upstream
 
-          git merge --no-edit upstream/master
-          git push origin master
+          git merge --no-edit upstream/main
+          git push origin main

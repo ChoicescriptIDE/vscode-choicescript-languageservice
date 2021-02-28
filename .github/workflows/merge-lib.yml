@@ -21,5 +21,5 @@ jobs:
           git config --global user.email '32689095+CSIDE-Shell@users.noreply.github.com'
 
           git checkout lib --
-          git merge master
+          git merge main
           git push https://CSIDE-Shell:$token@github.com/${{ github.repository }}.git lib
